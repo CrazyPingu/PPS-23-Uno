@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/PPS-23-Uno.iml" filepath="$PROJECT_DIR$/.idea/modules/PPS-23-Uno.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/PPS-23-Uno-build.iml" filepath="$PROJECT_DIR$/.idea/modules/PPS-23-Uno-build.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/PPS-23-Uno.PPS-23-Uno-build.iml" filepath="$PROJECT_DIR$/.idea/modules/PPS-23-Uno.PPS-23-Uno-build.iml" />
     </modules>
   </component>
