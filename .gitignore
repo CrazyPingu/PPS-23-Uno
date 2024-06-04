@@ -11,3 +11,5 @@ project
 .DS_Store
 .idea/modules/PPS-23-UNO.iml
 /.bsp
+
+.idea/workspace.xml
