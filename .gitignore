@@ -9,6 +9,6 @@ target/
 project
 
 .DS_Store
-/.bsp
+.bsp/
 
 .idea/
