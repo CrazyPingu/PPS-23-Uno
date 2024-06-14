@@ -2,6 +2,9 @@ import cards.SimpleCardImpl
 import org.scalatest.funsuite.AnyFunSuite
 import utils.Color
 
+/**
+ * Tests for the SimpleCardImpl class.
+ */
 class SimpleCardTest extends AnyFunSuite:
 
   test("SimpleCardImpl should return correct number"):
