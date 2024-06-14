@@ -8,21 +8,21 @@ Enum Color{
     BLACK
 }
 
-interface Cards {
+interface Card {
     + Color getColor()
 }
 
-interface SimpleCards implements Cards {
+interface SimpleCard implements Card {
     + int getNumber()
 }
 
-class SimpleCardsImpl implements SimpleCards {
+class SimpleCardImpl implements SimpleCard {
     - Color color
     - int number
     + int getNumber()
 }
 
-abstract class SpecialCard implements Cards {
+abstract class SpecialCard implements Card {
     - Color color
 }
 
