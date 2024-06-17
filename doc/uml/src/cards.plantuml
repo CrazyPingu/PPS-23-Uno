@@ -1,0 +1,53 @@
+@startuml cards
+
+Enum Color{
+    RED
+    GREEN
+    BLUE
+    YELLOW
+    BLACK
+}
+
+interface Card {
+    + Color getColor()
+}
+
+interface SimpleCard implements Card {
+    + int getNumber()
+}
+
+class SimpleCardImpl implements SimpleCard {
+    - Color color
+    - int number
+    + int getNumber()
+}
+
+abstract class SpecialCard implements Card {
+    - Color color
+}
+
+class ReverseCard extends SpecialCard {}
+
+class ChangeColor extends SpecialCard {}
+
+class SkipCard extends SpecialCard {
+    - int numberToSkip
+    + getNumberToSkip()
+}
+
+class DrawCard extends SpecialCard {
+    - int numberToDraw
+    + getNumberToDraw()
+}
+
+class Deck implements List<Card>{
+    + void shuffle()
+    + Card draw()
+}
+
+class PlayerHand implements List<Card> {
+    + void addCard(Card card)
+    + void playCard(Card card)
+}
+
+@enduml
