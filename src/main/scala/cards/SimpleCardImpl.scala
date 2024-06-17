@@ -10,9 +10,7 @@ import utils.Color
  * @param color The color of the card
  */
 class SimpleCardImpl(private var num: Int, private var color: Color) extends SimpleCard:
-
-  def getNumber: Int = num
-
-  def getColor: Color = color
+  val number: Int = num
+  val cardColor: Color = color
 
   override def toString: String = s"${color.toString} $num"

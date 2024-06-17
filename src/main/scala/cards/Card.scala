@@ -7,8 +7,8 @@ import utils.Color
  * A card can be a simple card (with a number and a color) or a special card(with an effect).
  */
 trait Card:
-
+  def cardColor: Color
   /**
    * @return The color of the card
    */
-  def getColor: Color
+  def getColor: Color = cardColor

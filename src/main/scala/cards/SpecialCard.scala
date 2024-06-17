@@ -8,5 +8,8 @@ import utils.Color
  * @param color The color of the card
  */
 abstract class SpecialCard(private val color: Color) extends Card:
+  val cardColor: Color = color
 
-  def getColor: Color = color
+  override def toString: String = s"${color.toString} Special"
+
+
