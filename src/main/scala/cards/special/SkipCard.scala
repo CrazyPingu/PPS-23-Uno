@@ -2,6 +2,7 @@ package cards.special
 
 import cards.SpecialCard
 import utils.Color
+import utils.ImageHandler.loadCardImage
 
 /**
  * Represents a card that has the effect of skipping the next player's turn.
@@ -9,7 +10,7 @@ import utils.Color
  * @param color The color of the card
  * @param numberToSkip The number of players to skip
  */
-class SkipCard(private val color: Color, private val numberToSkip: Int) extends SpecialCard(color):
+class SkipCard(private val color: Color, private val numberToSkip: Int) extends SpecialCard(color, loadCardImage("Skip", color)):
 
   override def toString: String = "Skip " + color.toString
 

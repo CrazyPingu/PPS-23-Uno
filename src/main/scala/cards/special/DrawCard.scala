@@ -2,6 +2,7 @@ package cards.special
 
 import cards.SpecialCard
 import utils.Color
+import utils.ImageHandler.loadCardImage
 
 /**
  * Class that represents a card that has the effect of drawing a certain number of cards from the deck.
@@ -9,7 +10,7 @@ import utils.Color
  * @param color The color of the card
  * @param numberToDraw The number of cards to draw
  */
-class DrawCard(private val color: Color, private val numberToDraw: Int) extends SpecialCard(color):
+class DrawCard(private val color: Color, private val numberToDraw: Int) extends SpecialCard(color, loadCardImage("Draw", color)):
 
   override def toString: String = "Draw " + numberToDraw + " " + color.toString
 
