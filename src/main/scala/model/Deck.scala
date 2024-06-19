@@ -1,9 +1,8 @@
 package model
 
-import model.cards.special.{ChangeColor, DrawCard, ReverseCard, SkipCard}
-import model.cards.{Card, SimpleCardImpl}
+import model.cards.Card
+import model.cards.factory.CardFactoryImpl
 import utils.Color
-import utils.ImageHandler.loadCardImage
 
 import scala.collection.mutable.ArrayBuffer
 import scala.util.Random
@@ -17,20 +16,22 @@ import scala.util.Random
  */
 class Deck extends ArrayBuffer[Card]:
 
+  private final val factory: CardFactoryImpl = new CardFactoryImpl
+
   // Add colored cards to the deck
   for color <- Color.values if color != Color.Black do
-    this += new SimpleCardImpl(0, color, loadCardImage("0", color))
+    this += factory.createSimpleCard(0, color)
     for _ <- 0 to 1 do
-      this += new SkipCard(color, 1)
-      this += new ReverseCard(color)
-      this += new DrawCard(color, 2)
+      this += factory.createSkipCard(1, color)
+      this += factory.createReverseCard(color)
+      this += factory.createDrawCard(2, color)
     for number <- 0 to 17 do
-      this += new SimpleCardImpl(number / 2 + 1, color, loadCardImage((number / 2 + 1).toString, color))
+      this += factory.createSimpleCard(number / 2 + 1, color)
 
   // Add wild cards to the deck
   for _ <- 0 to 3 do
-    this += new ChangeColor()
-    this += new DrawCard(Color.Black, 4)
+    this += factory.createChangeColor()
+    this += factory.createDrawCard(4, Color.Black)
 
   this.shuffle()
 
