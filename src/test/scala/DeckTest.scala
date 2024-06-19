@@ -18,7 +18,7 @@ class DeckTest extends AnyFunSuite:
     val colors = Seq(Color.Red, Color.Green, Color.Blue, Color.Yellow)
     for color <- colors do
       val numberCards = deck.collect:
-        case card: SimpleCardImpl if card.getColor == color => card
+        case card: SimpleCardImpl if card.color == color => card
       assert(numberCards.size == 19)
 
 
@@ -27,7 +27,7 @@ class DeckTest extends AnyFunSuite:
     val colors = Seq(Color.Red, Color.Green, Color.Blue, Color.Yellow)
     for color <- colors do
       val reverseCards = deck.collect:
-        case card: ReverseCard if card.getColor == color => card
+        case card: ReverseCard if card.color == color => card
       assert(reverseCards.size == 2)
 
 
@@ -36,7 +36,7 @@ class DeckTest extends AnyFunSuite:
     val colors = Seq(Color.Red, Color.Green, Color.Blue, Color.Yellow)
     for color <- colors do
       val skipCards = deck.collect:
-        case card: SkipCard if card.getColor == color => card
+        case card: SkipCard if card.color == color => card
       assert(skipCards.size == 2)
 
 
@@ -45,14 +45,14 @@ class DeckTest extends AnyFunSuite:
     val colors = Seq(Color.Red, Color.Green, Color.Blue, Color.Yellow)
     for color <- colors do
       val drawCards = deck.collect:
-        case card: DrawCard if card.getColor == color && card.getNumberToDraw == 2 => card
+        case card: DrawCard if card.color == color && card.getNumberToDraw == 2 => card
       assert(drawCards.size == 2)
 
 
   test("Deck should contain 4 wild draw 4 cards"):
     val deck = new Deck()
     val wildDrawCards = deck.collect:
-      case card: DrawCard if card.getColor == Color.Black && card.getNumberToDraw == 4 => card
+      case card: DrawCard if card.color == Color.Black && card.getNumberToDraw == 4 => card
     assert(wildDrawCards.size == 4)
 
 

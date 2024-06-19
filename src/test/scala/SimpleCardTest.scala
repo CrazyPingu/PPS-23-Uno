@@ -10,12 +10,12 @@ class SimpleCardTest extends AnyFunSuite:
 
   test("SimpleCardImpl should return correct number"):
     val card = new SimpleCardImpl(5, Color.Red, loadCardImage("5", Color.Red))
-    assert(card.getNumber == 5)
+    assert(card.num == 5)
 
 
   test("SimpleCardImpl should return correct color"):
     val card = new SimpleCardImpl(5, Color.Red, loadCardImage("5", Color.Red))
-    assert(card.getColor == Color.Red)
+    assert(card.color == Color.Red)
 
 
   test("SimpleCardImpl toString should return correct string"):
