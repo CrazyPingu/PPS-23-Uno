@@ -1,4 +1,4 @@
-import cards.SimpleCardImpl
+import model.cards.SimpleCardImpl
 import org.scalatest.funsuite.AnyFunSuite
 import utils.Color
 import utils.ImageHandler.loadCardImage

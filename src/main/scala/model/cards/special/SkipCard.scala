@@ -1,6 +1,6 @@
-package cards.special
+package model.cards.special
 
-import cards.SpecialCard
+import model.cards.SpecialCard
 import utils.Color
 import utils.ImageHandler.loadCardImage
 

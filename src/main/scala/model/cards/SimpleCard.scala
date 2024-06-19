@@ -1,4 +1,4 @@
-package cards
+package model.cards
 
 /**
  * A simple card that has a number.

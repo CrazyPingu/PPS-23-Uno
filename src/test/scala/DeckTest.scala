@@ -1,5 +1,6 @@
-import cards.special.{ChangeColor, DrawCard, ReverseCard, SkipCard}
-import cards.{Deck, SimpleCardImpl}
+import model.Deck
+import model.cards.SimpleCardImpl
+import model.cards.special.{ChangeColor, DrawCard, ReverseCard, SkipCard}
 import org.scalatest.funsuite.AnyFunSuite
 import utils.Color
 

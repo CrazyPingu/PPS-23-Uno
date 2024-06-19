@@ -1,8 +1,10 @@
-package cards
+package model
 
-import cards.special.{ChangeColor, DrawCard, ReverseCard, SkipCard}
+import model.cards.special.{ChangeColor, DrawCard, ReverseCard, SkipCard}
+import model.cards.{Card, SimpleCardImpl}
 import utils.Color
 import utils.ImageHandler.loadCardImage
+
 import java.util
 import scala.jdk.CollectionConverters.*
 import scala.util.Random
