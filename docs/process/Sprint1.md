@@ -12,12 +12,14 @@ essenziali per il gioco.
 
 ## Deadline
 
-La _Deadline_ di questo sprint è stata fissata al 26/06/2024.
+La _Deadline_ di questo sprint è stata fissata al 03/07/2024.
 
 # Sprint Review
 
-//
+Il team ha completato con successo tutti gli obiettivi prefissati per questo sprint dentro la _Deadline_ stabilita.
 
 # Sprint Retrospective
 
-//
+Durante lo svolgimento di questo sprint i componenti del team hanno avuto modo di confrontarsi e collaborare 
+attivamente facendo emergere numerose considerazioni e riflessioni sul lavoro svolto. Grazie a queste ultime 
+risultano più chiari i passaggi successivi per il proseguimento del progetto. 
