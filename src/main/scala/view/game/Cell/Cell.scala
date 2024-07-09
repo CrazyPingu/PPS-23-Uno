@@ -8,6 +8,8 @@ import javax.swing.{ImageIcon, JButton}
  * A cell of the game
  */
 class Cell extends JButton:
+  private var _storedImg: Option[Image] = None
+
   setBorderPainted(false)
   setContentAreaFilled(false)
   setFocusPainted(false)
@@ -15,7 +17,7 @@ class Cell extends JButton:
 
   /**
    * Constructor of the cell
-   * 
+   *
    * @param img the image of the cell
    */
   def this(img: Image) =
@@ -24,13 +26,17 @@ class Cell extends JButton:
 
   /**
    * Set the icon of the cell
-   * 
+   *
    * @param img the image of the cell
    */
   def setIcon(img: Image): Unit =
-    addComponentListener(
-      new ComponentAdapter:
-        override def componentResized(e: java.awt.event.ComponentEvent): Unit =
-          if (img != null)
+    _storedImg = Some(img)
+    if getWidth > 0 && getHeight > 0 then
+      super.setIcon(new ImageIcon(img.getScaledInstance(getWidth, getHeight, Image.SCALE_SMOOTH)))
+    else
+      addComponentListener(
+        new ComponentAdapter:
+          override def componentResized(e: java.awt.event.ComponentEvent): Unit =
             setIcon(new ImageIcon(img.getScaledInstance(getWidth, getHeight, Image.SCALE_SMOOTH)))
-    )
+            removeComponentListener(this)
+      )

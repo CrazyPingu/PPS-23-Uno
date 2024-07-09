@@ -23,3 +23,8 @@ object CoordinateHandler:
    * The coordinate of the button to call uno
    */
   val unoCallCoordinate: (Int, Int) = (panelGridDimension(0) - 5, panelGridDimension(1) - 3)
+
+  /**
+   * The coordinate that contains the image of the direction of the game
+   */
+  val directionCellCoordinate: (Int, Int) = (panelGridDimension(0) - 5, 2)

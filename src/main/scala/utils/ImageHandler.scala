@@ -11,6 +11,8 @@ object ImageHandler:
   val backgroundTable: Image = loadImage("Table.png")
 
   val unoButton: Image = loadImage("cards/UnoButton.png")
+  
+  val direction: Image = loadImage("Direction.png")
 
   private def loadImage(path: String): Image =
     try ImageIO.read(new File("src/main/resources/" + path))
