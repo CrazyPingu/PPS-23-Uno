@@ -1,14 +1,33 @@
-import model.cards.SimpleCardImpl
-import utils.Color.Red
-import utils.ImageHandler.loadCardImage
+import controller.Controller
+import model.{Deck, Hand}
+import utils.PlayerTypes
+import view.game.Gui
 
 object main:
 
   def main(args: Array[String]): Unit =
-    val card = new SimpleCardImpl(5, utils.Color.Red, loadCardImage("5", Red))
-    println(card)
 
-    for _ <- 0 to 1 do
-      println("Hello, world!")
+    val deck = new Deck()
+//    val hands = Array(new Hand, new Hand, new Hand, new Hand)
+
+    val pHand = new Hand
+    val hands = Map(
+      PlayerTypes.Player -> pHand,
+      PlayerTypes.Bot1 -> new Hand,
+      PlayerTypes.Bot2 -> new Hand,
+      PlayerTypes.Bot3 -> new Hand
+    )
+
+
+    for _ <- 0 to 2 do
+      for hand <- hands.values do
+        hand.addCard(deck.draw())
+
+    val controller = new Controller(pHand, deck)
+
+    val gui = new Gui(controller, hands)
+
+    controller.setGui(gui)
+
 
 
