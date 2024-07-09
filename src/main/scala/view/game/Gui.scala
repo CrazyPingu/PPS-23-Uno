@@ -2,13 +2,13 @@ package view.game
 
 import controller.Controller
 import model.Hand
+import utils.ImageHandler.backgroundTable
 import utils.PlayerTypes.Bot2
 import utils.{ImageHandler, PlayerTypes}
-import view.Frame
 import view.game.Cell.{CardCell, Cell, DeckCell, UsedCardCell}
 import view.game.CoordinateHandler.{deckCoordinate, panelGridDimension, usedCardCoordinate}
 
-import java.awt.GridLayout
+import java.awt.{Graphics, Graphics2D, GridLayout, Image}
 import javax.swing.JPanel
 import scala.collection.immutable
 
@@ -18,25 +18,17 @@ import scala.collection.immutable
  * @param controller the controller of the game
  * @param hands      the hands of the player and the bots (1 player and 3 bots)
  */
-class Gui(controller: Controller, hands: immutable.Map[PlayerTypes, Hand]):
-  private val _frame: Frame = new Frame
+class Gui(controller: Controller, hands: immutable.Map[PlayerTypes, Hand]) extends JPanel:
+  private val _backgroundImage: Image = backgroundTable
   private val _layout: GridLayout = new GridLayout(panelGridDimension(1), panelGridDimension(0))
-  private val _panel: JPanel = new BackgroundPanel(_layout)
-
+  setLayout(_layout)
   updateGui()
 
-  _frame.add(_panel)
-  _frame.setLocationRelativeTo(null)
-  _frame.setVisible(true)
-
   /**
-   * Update the GUI
-   *
-   * @param hands      the hands of the player and the bots (1 player and 3 bots)
-   * @param controller the controller of the game
+   * Refresh the GUI, removing all the components and adding them again
    */
   def updateGui(): Unit =
-    _panel.removeAll()
+    this.removeAll()
 
     val lastRow = _layout.getRows - 1
     val lastCol = _layout.getColumns - 1
@@ -62,10 +54,10 @@ class Gui(controller: Controller, hands: immutable.Map[PlayerTypes, Hand]):
           new Cell(ImageHandler.retroCards) // Bot3 hand placeholder
         case _ => new Cell
 
-      _panel.add(cell)
+      this.add(cell)
 
-    _panel.validate()
-    _panel.repaint()
+    this.validate()
+    this.repaint()
 
 
   /**
@@ -78,3 +70,10 @@ class Gui(controller: Controller, hands: immutable.Map[PlayerTypes, Hand]):
    */
   private def isWithinHand(position: Int, startPosition: Int, hand: Hand): Boolean =
     position >= startPosition && position < startPosition + hand.size
+
+
+  override def paintComponent(g: Graphics): Unit =
+    super.paintComponent(g)
+    val g2d: Graphics2D = g.asInstanceOf[Graphics2D]
+    g2d.drawImage(_backgroundImage, 0, 0, getWidth, getHeight, this)
+

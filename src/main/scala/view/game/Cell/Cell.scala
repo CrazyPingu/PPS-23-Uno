@@ -14,7 +14,6 @@ class Cell extends JButton:
     this()
     setIcon(img)
 
-  @Override
   def setIcon(img: Image): Unit =
     addComponentListener(
       new ComponentAdapter:
