@@ -6,6 +6,10 @@ import javax.imageio.ImageIO
 
 object ImageHandler:
 
+  val retroCards : Image = loadImage("cards/Retro.png")
+
+  val backgroundTable : Image = loadImage("Table.png")
+
   private def loadImage(path: String): Image =
     try {
       ImageIO.read(new File("src/main/resources/" + path))
