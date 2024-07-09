@@ -10,16 +10,13 @@ import utils.ImageHandler
  */
 class UnoCell(controller: Controller) extends Cell:
   private var _visible: Boolean = false
+  setIcon(ImageHandler.unoButton)
+  setVisible(_visible)
 
   addActionListener(
     _ => if _visible then println("UnoCell clicked!")
   )
 
-  /**
-   * Set the visibility of the cell
-   *
-   * @param value the value to set the visibility to
-   */
   override def setVisible(value: Boolean): Unit =
+    super.setVisible(value)
     _visible = value
-    if value then setIcon(ImageHandler.retroCards) else setIcon(null)

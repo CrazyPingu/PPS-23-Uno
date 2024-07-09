@@ -5,8 +5,8 @@ import model.Hand
 import utils.ImageHandler.backgroundTable
 import utils.PlayerTypes.Bot2
 import utils.{ImageHandler, PlayerTypes}
-import view.game.Cell.{CardCell, Cell, DeckCell, UnoCell, UsedCardCell}
-import view.game.CoordinateHandler.{deckCoordinate, panelGridDimension, unoCallCoordinate, usedCardCoordinate}
+import view.game.Cell.{CardCell, Cell, DeckCell, DirectionCell, UnoCell, UsedCardCell}
+import view.game.CoordinateHandler.*
 
 import java.awt.{Graphics, Graphics2D, GridLayout, Image}
 import javax.swing.JPanel
@@ -22,6 +22,7 @@ class Gui(controller: Controller, hands: immutable.Map[PlayerTypes, Hand]) exten
   private val _backgroundImage: Image = backgroundTable
   private val _layout: GridLayout = new GridLayout(panelGridDimension(1), panelGridDimension(0))
   private val _unoButton = new UnoCell(controller)
+  private val _directionCell = new DirectionCell
   setLayout(_layout)
   updateGui()
 
@@ -46,6 +47,7 @@ class Gui(controller: Controller, hands: immutable.Map[PlayerTypes, Hand]) exten
         case (r, c) if r == deckCoordinate(1) && c == deckCoordinate(0)         => new DeckCell(controller)
         case (r, c) if r == usedCardCoordinate(1) && c == usedCardCoordinate(0) => new UsedCardCell(controller)
         case (r, c) if r == unoCallCoordinate(1) && c == unoCallCoordinate(0)   => _unoButton
+        case (r, c) if r == directionCellCoordinate(1) && c == directionCellCoordinate(0) => _directionCell
         case (0, c) if isWithinHand(c, startingPositions(PlayerTypes.Bot2), hands(PlayerTypes.Bot2)) =>
           new Cell(ImageHandler.retroCards) // Bot2 hand placeholder
         case (`lastRow`, c) if isWithinHand(c, startingPositions(PlayerTypes.Player), hands(PlayerTypes.Player)) =>
@@ -67,6 +69,11 @@ class Gui(controller: Controller, hands: immutable.Map[PlayerTypes, Hand]) exten
    * @param show true to show the button, false to hide it
    */
   def toggleVisibilityUnoButton(show: Boolean): Unit = _unoButton.setVisible(show)
+
+  /**
+   * Reverse the direction of the game
+   */
+  def reverseDirection(): Unit = _directionCell.reverseDirection()
 
   /**
    * Check if a position is within a hand
