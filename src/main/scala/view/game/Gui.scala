@@ -5,8 +5,8 @@ import model.Hand
 import utils.ImageHandler.backgroundTable
 import utils.PlayerTypes.Bot2
 import utils.{ImageHandler, PlayerTypes}
-import view.game.Cell.{CardCell, Cell, DeckCell, UsedCardCell}
-import view.game.CoordinateHandler.{deckCoordinate, panelGridDimension, usedCardCoordinate}
+import view.game.Cell.{CardCell, Cell, DeckCell, UnoCell, UsedCardCell}
+import view.game.CoordinateHandler.{deckCoordinate, panelGridDimension, unoCallCoordinate, usedCardCoordinate}
 
 import java.awt.{Graphics, Graphics2D, GridLayout, Image}
 import javax.swing.JPanel
@@ -21,6 +21,7 @@ import scala.collection.immutable
 class Gui(controller: Controller, hands: immutable.Map[PlayerTypes, Hand]) extends JPanel:
   private val _backgroundImage: Image = backgroundTable
   private val _layout: GridLayout = new GridLayout(panelGridDimension(1), panelGridDimension(0))
+  private val _unoButton = new UnoCell(controller)
   setLayout(_layout)
   updateGui()
 
@@ -42,8 +43,9 @@ class Gui(controller: Controller, hands: immutable.Map[PlayerTypes, Hand]) exten
 
     for row <- 0 until _layout.getRows; col <- 0 until _layout.getColumns do
       val cell = (row, col) match
-        case (r, c) if r == deckCoordinate(1) && c == deckCoordinate(0) => new DeckCell(controller)
+        case (r, c) if r == deckCoordinate(1) && c == deckCoordinate(0)         => new DeckCell(controller)
         case (r, c) if r == usedCardCoordinate(1) && c == usedCardCoordinate(0) => new UsedCardCell(controller)
+        case (r, c) if r == unoCallCoordinate(1) && c == unoCallCoordinate(0)   => _unoButton
         case (0, c) if isWithinHand(c, startingPositions(PlayerTypes.Bot2), hands(PlayerTypes.Bot2)) =>
           new Cell(ImageHandler.retroCards) // Bot2 hand placeholder
         case (`lastRow`, c) if isWithinHand(c, startingPositions(PlayerTypes.Player), hands(PlayerTypes.Player)) =>
@@ -59,6 +61,12 @@ class Gui(controller: Controller, hands: immutable.Map[PlayerTypes, Hand]) exten
     this.validate()
     this.repaint()
 
+  /**
+   * Toggle the visibility of the uno button
+   *
+   * @param show true to show the button, false to hide it
+   */
+  def toggleVisibilityUnoButton(show: Boolean): Unit = _unoButton.setVisible(show)
 
   /**
    * Check if a position is within a hand
@@ -71,9 +79,7 @@ class Gui(controller: Controller, hands: immutable.Map[PlayerTypes, Hand]) exten
   private def isWithinHand(position: Int, startPosition: Int, hand: Hand): Boolean =
     position >= startPosition && position < startPosition + hand.size
 
-
   override def paintComponent(g: Graphics): Unit =
     super.paintComponent(g)
     val g2d: Graphics2D = g.asInstanceOf[Graphics2D]
     g2d.drawImage(_backgroundImage, 0, 0, getWidth, getHeight, this)
-
