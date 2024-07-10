@@ -8,9 +8,9 @@ import utils.{ImageHandler, PlayerTypes}
 import view.game.Cell.{CardCell, Cell, DeckCell, DirectionCell, UnoCell, UsedCardCell}
 import view.game.CoordinateHandler.*
 
-import java.awt.{Graphics, Graphics2D, GridLayout}
+import java.awt.{Component, Graphics, Graphics2D, GridLayout}
 import javax.swing.JPanel
-import scala.collection.{immutable, mutable}
+import scala.collection.immutable
 
 /**
  * The graphical user interface of the game
@@ -22,7 +22,6 @@ class Gui(controller: Controller, hands: immutable.Map[PlayerTypes, Hand]) exten
   private val layout: GridLayout = new GridLayout(panelGridDimension(1), panelGridDimension(0))
   private val unoButton = new UnoCell(controller)
   private val directionCell = new DirectionCell
-  private val cells: mutable.Map[(Int, Int), Cell] = mutable.Map()
   setLayout(layout)
   createGui()
 
@@ -43,7 +42,6 @@ class Gui(controller: Controller, hands: immutable.Map[PlayerTypes, Hand]) exten
         case (`lastRow`, c)                                                               => new CardCell()
         case _                                                                            => new Cell()
 
-      cells += (row, col) -> cell
       this.add(cell)
 
     updateGui()
@@ -64,42 +62,30 @@ class Gui(controller: Controller, hands: immutable.Map[PlayerTypes, Hand]) exten
       PlayerTypes.Player -> (layout.getColumns - hands(PlayerTypes.Player).size) / 2
     )
 
-    for row <- 0 until layout.getRows; col <- 0 until layout.getColumns do
-      (row, col) match
-//      Bot2 hand
+    for i <- 0 until getComponentCount do
+      val component = getComponent(i)
+
+      (i / layout.getColumns, i % layout.getColumns) match
+//        Bot2 hand
         case (0, c) if isWithinHand(c, startingPositions(PlayerTypes.Bot2), hands(PlayerTypes.Bot2)) =>
-          cells(0, c).setIcon(retroCards)
-        case (0, c) => cells(0, c).setIcon(null)
+          applyIcon(component, c - startingPositions(PlayerTypes.Bot2), Bot2, true)
+        case (0, c) => applyIcon(component, c - startingPositions(PlayerTypes.Bot2), Bot2, false)
 
-//      Player hand
+//        Player hand
         case (`lastRow`, c) if isWithinHand(c, startingPositions(PlayerTypes.Player), hands(PlayerTypes.Player)) =>
-          hands(PlayerTypes.Player)
-            .lift(c - startingPositions(PlayerTypes.Player))
-            .foreach:
-              card =>
-                cells(lastRow, c) match
-                  case cardCell: CardCell => cardCell.applyCard(card)
-                  case _                  => ()
+          applyIcon(component, c - startingPositions(PlayerTypes.Player), PlayerTypes.Player, true)
         case (`lastRow`, c) =>
-          hands(PlayerTypes.Player)
-            .lift(c - startingPositions(PlayerTypes.Player))
-            .foreach:
-              card =>
-                cells(lastRow, c) match
-                  case cardCell: CardCell => cardCell.removeCard()
-                  case _                  => ()
+          applyIcon(component, c - startingPositions(PlayerTypes.Player), PlayerTypes.Player, false)
 
-//      Bot1 hand
+//        Bot1 hand
         case (r, 0) if isWithinHand(r, startingPositions(PlayerTypes.Bot1), hands(PlayerTypes.Bot1)) =>
-          cells(r, 0).setIcon(retroCards)
-        case (r, 0) =>
-          cells(r, 0).setIcon(null)
+          applyIcon(component, r - startingPositions(PlayerTypes.Bot1), PlayerTypes.Bot1, true)
+        case (r, 0) => applyIcon(component, r - startingPositions(PlayerTypes.Bot1), PlayerTypes.Bot1, false)
 
-//      Bot3 hand
+//        Bot3 hand
         case (r, `lastCol`) if isWithinHand(r, startingPositions(PlayerTypes.Bot3), hands(PlayerTypes.Bot3)) =>
-          cells(r, `lastCol`).setIcon(retroCards) // Bot3 hand placeholder
-        case (r, `lastCol`) =>
-          cells(r, `lastCol`).setIcon(null)
+          applyIcon(component, r - startingPositions(PlayerTypes.Bot3), PlayerTypes.Bot3, true)
+        case (r, `lastCol`) => applyIcon(component, r - startingPositions(PlayerTypes.Bot3), PlayerTypes.Bot3, false)
 
         case _ => ()
 
@@ -125,6 +111,23 @@ class Gui(controller: Controller, hands: immutable.Map[PlayerTypes, Hand]) exten
    */
   private def isWithinHand(position: Int, startPosition: Int, hand: Hand): Boolean =
     position >= startPosition && position < startPosition + hand.size
+
+  /**
+   * Apply the icon to the component understanding if it is a card or a cell
+   *
+   * @param component the component to apply the icon
+   * @param indexInHand the index of the possible card in the hand of the player
+   * @param playerTypes the type of the player
+   * @param action true if you want to show the card / set the retro of the card visible, false otherwise
+   */
+  private def applyIcon(component: Component, indexInHand: Int, playerTypes: PlayerTypes, action: Boolean): Unit =
+    hands(playerTypes)
+      .lift(indexInHand)
+      .foreach:
+        card =>
+          component match
+            case cardCell: CardCell => if action then cardCell.applyCard(card) else cardCell.removeCard()
+            case _                  => component.asInstanceOf[Cell].setIcon(if action then retroCards else null)
 
   override def paintComponent(g: Graphics): Unit =
     super.paintComponent(g)
