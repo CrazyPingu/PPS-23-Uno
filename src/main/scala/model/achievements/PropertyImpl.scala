@@ -8,7 +8,7 @@ class PropertyImpl(private val propertyName: String, private val propThreshold: 
   private var isTrue: Boolean = false
 
   override def update(event: GameEvent): Unit = event.propertyName match
-    case name if name.equals(event.propertyName) => isTrue = comparator.compare(event.data, threshold)
+    case `name` if name.equals(event.propertyName) => isTrue = comparator.compare(event.data, threshold)
     case _ => // Do nothing
 
   override def checkProperty(): Boolean = isTrue
