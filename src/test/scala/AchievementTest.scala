@@ -1,13 +1,13 @@
-import model.achievements.PropertyImpl
+import model.achievements.{AchievementImpl, PropertyImpl}
 import org.scalatest.funsuite.AnyFunSuite
 import utils.ComparisonOperator
 
 class AchievementTest extends AnyFunSuite:
     
   test("Achieve something with 1 property"):
-    val property1 = PropertyImpl("test", 1, ComparisonOperator.Equal)
-
-    assert(true)
+    val propertyList = List(PropertyImpl("test", 1, ComparisonOperator.Equal))
+    val achievement = AchievementImpl("achievement-test", "achievement test desc", propertyList, false)
+    assert(achievement.achieve())
 
   test("Achieve something with multiple properties"):
     assert(true)
