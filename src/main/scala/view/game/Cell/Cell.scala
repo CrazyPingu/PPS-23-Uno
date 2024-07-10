@@ -1,5 +1,9 @@
 package view.game.Cell
 
+import utils.ImageHandler.rotateImage
+import utils.Rotation
+import utils.Rotation.NONE
+
 import java.awt.Image
 import java.awt.event.ComponentAdapter
 import javax.swing.{ImageIcon, JButton}
@@ -8,8 +12,6 @@ import javax.swing.{ImageIcon, JButton}
  * A cell of the game
  */
 class Cell extends JButton:
-  private var _storedImg: Option[Image] = None
-
   setBorderPainted(false)
   setContentAreaFilled(false)
   setFocusPainted(false)
@@ -29,15 +31,18 @@ class Cell extends JButton:
    *
    * @param img the image of the cell
    */
+  def setIcon(img: Image, rotation: Rotation): Unit =
+    if img != null && getWidth > 0 && getHeight > 0 then
+      super.setIcon(
+        new ImageIcon(rotateImage(img, rotation).getScaledInstance(getWidth, getHeight, Image.SCALE_SMOOTH))
+      )
+    else if img != null then
+      addComponentListener(
+        new ComponentAdapter:
+          override def componentResized(e: java.awt.event.ComponentEvent): Unit =
+            setIcon(new ImageIcon(img.getScaledInstance(getWidth, getHeight, Image.SCALE_SMOOTH)))
+            removeComponentListener(this)
+      )
+
   def setIcon(img: Image): Unit =
-    _storedImg = Some(img)
-    if img != null then
-      if getWidth > 0 && getHeight > 0 then
-        super.setIcon(new ImageIcon(img.getScaledInstance(getWidth, getHeight, Image.SCALE_SMOOTH)))
-      else
-        addComponentListener(
-          new ComponentAdapter:
-            override def componentResized(e: java.awt.event.ComponentEvent): Unit =
-              setIcon(new ImageIcon(img.getScaledInstance(getWidth, getHeight, Image.SCALE_SMOOTH)))
-              removeComponentListener(this)
-        )
+    setIcon(img, NONE)

@@ -2,6 +2,7 @@ package view.game
 
 import controller.Controller
 import model.Hand
+import model.cards.Card
 import utils.ImageHandler.{backgroundTable, retroCards, rotateImage}
 import utils.PlayerTypes.Bot2
 import utils.Rotation.{FLIP_VERTICAL, NONE, ROTATE_LEFT, ROTATE_RIGHT}
@@ -23,6 +24,7 @@ class Gui(controller: Controller, hands: immutable.Map[PlayerTypes, Hand]) exten
   private val layout: GridLayout = new GridLayout(panelGridDimension(1), panelGridDimension(0))
   private val unoButton = new UnoCell(controller)
   private val directionCell = new DirectionCell
+  private val usedCardCell = new UsedCardCell
   setLayout(layout)
   createGui()
 
@@ -36,9 +38,9 @@ class Gui(controller: Controller, hands: immutable.Map[PlayerTypes, Hand]) exten
 
     for row <- 0 until layout.getRows; col <- 0 until layout.getColumns do
       val cell = (row, col) match
-        case (r, c) if r == deckCoordinate(1) && c == deckCoordinate(0)         => new DeckCell(controller)
-        case (r, c) if r == usedCardCoordinate(1) && c == usedCardCoordinate(0) => new UsedCardCell(controller)
-        case (r, c) if r == unoCallCoordinate(1) && c == unoCallCoordinate(0)   => unoButton
+        case (r, c) if r == deckCoordinate(1) && c == deckCoordinate(0)                   => new DeckCell(controller)
+        case (r, c) if r == usedCardCoordinate(1) && c == usedCardCoordinate(0)           => usedCardCell
+        case (r, c) if r == unoCallCoordinate(1) && c == unoCallCoordinate(0)             => unoButton
         case (r, c) if r == directionCellCoordinate(1) && c == directionCellCoordinate(0) => directionCell
         case (`lastRow`, c)                                                               => new CardCell()
         case _                                                                            => new Cell()
@@ -103,6 +105,13 @@ class Gui(controller: Controller, hands: immutable.Map[PlayerTypes, Hand]) exten
    * Reverse the direction of the game
    */
   def reverseDirection(): Unit = directionCell.reverseDirection()
+
+  /**
+   * Dispose a card in the used card cell
+   *
+   * @param card the card to dispose
+   */
+  def disposeCard(card: Card): Unit = usedCardCell.disposeCard(card)
 
   /**
    * Check if a position is within a hand

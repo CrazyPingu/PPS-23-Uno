@@ -1,19 +1,18 @@
 package view.game.Cell
 
 import utils.ImageHandler
+import utils.Rotation.{FLIP_HORIZONTAL, NONE}
 
-import java.awt.Graphics2D
-import java.awt.image.BufferedImage
-
+/**
+ * A cell that represents the direction of the game
+ */
 class DirectionCell extends Cell:
-  private var _currentImg = ImageHandler.direction
-  setIcon(_currentImg)
+  private var dir = true
+  setIcon(ImageHandler.direction)
 
+  /**
+   * Reverse the direction of the cell
+   */
   def reverseDirection(): Unit =
-    val dimension: (Int, Int) = (_currentImg.getWidth(null), _currentImg.getHeight(null))
-    val flippedImage = new BufferedImage(dimension(0), dimension(1), BufferedImage.TYPE_INT_ARGB)
-    val g2d: Graphics2D = flippedImage.createGraphics()
-    g2d.drawImage(_currentImg, 0, 0, dimension(0), dimension(1), dimension(0), 0, 0, dimension(1), null)
-    g2d.dispose()
-    setIcon(flippedImage)
-    _currentImg = flippedImage
+    setIcon(ImageHandler.direction, if dir then FLIP_HORIZONTAL else NONE)
+    dir = !dir
