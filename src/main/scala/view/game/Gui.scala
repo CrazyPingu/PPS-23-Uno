@@ -117,11 +117,11 @@ class Gui(controller: Controller, hands: immutable.Map[PlayerTypes, Hand]) exten
    *
    * @param component the component to apply the icon
    * @param indexInHand the index of the possible card in the hand of the player
-   * @param playerTypes the type of the player
+   * @param playerType the type of the player
    * @param action true if you want to show the card / set the retro of the card visible, false otherwise
    */
-  private def applyIcon(component: Component, indexInHand: Int, playerTypes: PlayerTypes, action: Boolean): Unit =
-    hands(playerTypes)
+  private def applyIcon(component: Component, indexInHand: Int, playerType: PlayerTypes, action: Boolean): Unit =
+    hands(playerType)
       .lift(indexInHand)
       .foreach:
         card =>
