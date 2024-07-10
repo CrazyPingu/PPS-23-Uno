@@ -1,7 +1,7 @@
 package utils
 
 trait Observer:
-  def update(event: GameEvent): Unit
+  def update(event: Event): Unit
 
 trait Observable:
   private var observers: List[Observer] = List()
@@ -12,5 +12,7 @@ trait Observable:
   def removeObserver(observer: Observer) : Unit =
     observers = observers.filterNot(_ == observer)
     
-  def notifyObserver(event: GameEvent) : Unit =
+  def notifyObserver(event: Event) : Unit =
     observers.foreach(_.update(event))
+    
+    
