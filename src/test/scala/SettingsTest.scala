@@ -1,6 +1,6 @@
 import org.scalatest.funsuite.AnyFunSuite
 
-class OptionsTest extends AnyFunSuite:
+class SettingsTest extends AnyFunSuite:
 
   test("Updating the settings"):
     assert(true)
