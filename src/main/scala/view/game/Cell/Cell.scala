@@ -31,12 +31,13 @@ class Cell extends JButton:
    */
   def setIcon(img: Image): Unit =
     _storedImg = Some(img)
-    if getWidth > 0 && getHeight > 0 then
-      super.setIcon(new ImageIcon(img.getScaledInstance(getWidth, getHeight, Image.SCALE_SMOOTH)))
-    else
-      addComponentListener(
-        new ComponentAdapter:
-          override def componentResized(e: java.awt.event.ComponentEvent): Unit =
-            setIcon(new ImageIcon(img.getScaledInstance(getWidth, getHeight, Image.SCALE_SMOOTH)))
-            removeComponentListener(this)
-      )
+    if img != null then
+      if getWidth > 0 && getHeight > 0 then
+        super.setIcon(new ImageIcon(img.getScaledInstance(getWidth, getHeight, Image.SCALE_SMOOTH)))
+      else
+        addComponentListener(
+          new ComponentAdapter:
+            override def componentResized(e: java.awt.event.ComponentEvent): Unit =
+              setIcon(new ImageIcon(img.getScaledInstance(getWidth, getHeight, Image.SCALE_SMOOTH)))
+              removeComponentListener(this)
+        )
