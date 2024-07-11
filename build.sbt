@@ -9,5 +9,9 @@ lazy val root = project
     scalaVersion := scala3Version,
 
 //    libraryDependencies += "com.github.sbt" % "junit-interface" % "0.13.2" % Test
-    libraryDependencies += "org.scalatest" %% "scalatest" % "3.2.18" % Test
+    
+    libraryDependencies ++= Seq(
+      "org.scalatest" %% "scalatest" % "3.2.18" % Test,
+      "org.playframework" %% "play-json" % "3.0.4"
+    )
   )
