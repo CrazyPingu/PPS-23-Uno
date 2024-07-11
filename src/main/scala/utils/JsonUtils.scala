@@ -17,7 +17,6 @@ object JsonUtils:
   def saveToFile[T](filePath: String, data: T)(implicit writes: Writes[T]): Unit =
     val json = Json.prettyPrint(Json.toJson(data))
     val path = Paths.get(filePath)
-    if (!Files.exists(path.getParent)) {
+    if !Files.exists(path.getParent) then
       Files.createDirectories(path.getParent)
-    }
     Files.write(path, json.getBytes, StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING)
