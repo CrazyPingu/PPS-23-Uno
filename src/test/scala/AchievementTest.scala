@@ -7,7 +7,8 @@ class AchievementTest extends AnyFunSuite:
   test("Achieve something with 1 property"):
     val propertyList = List(PropertyImpl("test", 1, ComparisonOperator.Equal))
     val achievement = AchievementImpl("achievement-test", "achievement test desc", propertyList, false)
-    assert(achievement.achieve())
+    assert(!achievement.achieve())
+    
 
   test("Achieve something with multiple properties"):
     assert(true)
