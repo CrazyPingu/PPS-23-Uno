@@ -5,8 +5,7 @@ import utils.JsonUtils
 class SettingsImpl(filePath: String) extends Settings:
 
   private val path = filePath
-  private val defaultSettings = GameSettings("easy")
-  private var settings: GameSettings = JsonUtils.loadFromFile[GameSettings](filePath).getOrElse(defaultSettings)
+  private var settings: GameSettings = JsonUtils.loadFromFile[GameSettings](filePath).getOrElse(GameSettings.defaultSettings)
 
   override def getSettings: GameSettings = settings
 
@@ -15,5 +14,5 @@ class SettingsImpl(filePath: String) extends Settings:
     JsonUtils.saveToFile(path, settings)
 
   override def resetSettings(): Unit =
-    settings = defaultSettings
+    settings = GameSettings.defaultSettings
     JsonUtils.saveToFile(path, settings)
