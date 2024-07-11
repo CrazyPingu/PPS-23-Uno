@@ -12,17 +12,17 @@ object CoordinateHandler:
   /**
    * The coordinate of the deck
    */
-  val deckCoordinate: (Int, Int) = (panelGridDimension(0) / 2 - 1, panelGridDimension(1) / 2)
+  val deckCoordinate: (Int, Int) = (panelGridDimension(0) / 2 - 2, panelGridDimension(1) / 2)
 
   /**
    * The coordinate of the used card
    */
-  val usedCardCoordinate: (Int, Int) = (panelGridDimension(0) / 2 + 1, deckCoordinate(1))
+  val usedCardCoordinate: (Int, Int) = (panelGridDimension(0) / 2 - 1, panelGridDimension(1) / 2)
 
   /**
    * The coordinate of the button to call uno
    */
-  val unoCallCoordinate: (Int, Int) = (panelGridDimension(0) - 5, panelGridDimension(1) - 3)
+  val unoCallCoordinate: (Int, Int) = (panelGridDimension(0) / 2 + 1, panelGridDimension(1) / 2)
 
   /**
    * The coordinate that contains the image of the direction of the game

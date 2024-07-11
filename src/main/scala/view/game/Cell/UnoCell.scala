@@ -9,14 +9,8 @@ import utils.ImageHandler
  * @param controller the controller of the games
  */
 class UnoCell(controller: Controller) extends Cell:
-  private var _visible: Boolean = false
   setIcon(ImageHandler.unoButton)
-  setVisible(_visible)
 
   addActionListener(
-    _ => if _visible then println("UnoCell clicked!")
+    _ => println("UnoCell clicked!")
   )
-
-  override def setVisible(value: Boolean): Unit =
-    super.setVisible(value)
-    _visible = value
