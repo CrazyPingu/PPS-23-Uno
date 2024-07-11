@@ -13,6 +13,11 @@ La _Deadline_ di questo sprint è stata fissata al 10/07/2024.
 
 # Sprint Review
 
+Il team ha completato gran parte delle attività previste per questo sprint. 
+Alcune GUI non sono state realizzate per evitare conflitti di codice e duplicazioni; 
+pertanto, queste attività verranno rimandate al prossimo sprint.
 
 # Sprint Retrospective
 
+Durante questo sprint abbiamo verificato che la maggior parte delle classi che modellano il progetto sono già state 
+completate. Pertanto, ci sono buone prospettive per iniziare a programmare l'interfacciamento tra la GUI e il codice.
