@@ -1,14 +1,19 @@
 package model.settings
 
-class SettingsImpl extends Settings:
-  
-  SettingsImpl()
+import utils.JsonUtils
 
-  def loadSettings(): Option[GameSettings] = ???
+class SettingsImpl(filePath: String) extends Settings:
 
-  def saveSettings(settings: GameSettings): Unit = ???
+  private val path = filePath
+  private val defaultSettings = GameSettings("easy")
+  private var settings: GameSettings = JsonUtils.loadFromFile[GameSettings](filePath).getOrElse(defaultSettings)
 
-  def getSettings: GameSettings = ???
+  override def getSettings: GameSettings = settings
 
-  def updateSettings(newSettings: GameSettings): Unit = ???
+  override def updateSettings(newSettings: GameSettings): Unit =
+    settings = newSettings
+    JsonUtils.saveToFile(path, settings)
 
+  override def resetSettings(): Unit =
+    settings = defaultSettings
+    JsonUtils.saveToFile(path, settings)
