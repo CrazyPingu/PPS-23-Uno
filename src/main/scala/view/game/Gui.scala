@@ -2,6 +2,7 @@ package view.game
 
 import controller.Controller
 import model.Hand
+import model.bot.BotPlayer
 import model.cards.Card
 import utils.ImageHandler.{backgroundTable, retroCards, rotateImage}
 import utils.PlayerTypes.Bot2
@@ -12,15 +13,17 @@ import view.game.CoordinateHandler.*
 
 import java.awt.{Component, Graphics, Graphics2D, GridLayout}
 import javax.swing.JPanel
-import scala.collection.immutable
 
 /**
  * The graphical user interface of the game
  *
  * @param controller the controller of the game
- * @param hands      the hands of the player and the bots (1 player and 3 bots)
+ * @param bot1 the first bot player
+ * @param bot2 the second bot player
+ * @param bot3 the third bot player
+ * @param player the player
  */
-class Gui(controller: Controller, hands: immutable.Map[PlayerTypes, Hand]) extends JPanel:
+class Gui(controller: Controller, bot1: BotPlayer, bot2: BotPlayer, bot3: BotPlayer, player: Hand) extends JPanel:
   private val layout: GridLayout = new GridLayout(panelGridDimension(1), panelGridDimension(0))
   private val unoButton = new UnoCell(controller)
   private val directionCell = new DirectionCell
@@ -59,10 +62,10 @@ class Gui(controller: Controller, hands: immutable.Map[PlayerTypes, Hand]) exten
     val lastCol = layout.getColumns - 1
 
     val startingPositions = Map(
-      PlayerTypes.Bot1 -> (layout.getRows - hands(PlayerTypes.Bot1).size) / 2,
-      PlayerTypes.Bot2 -> (layout.getColumns - hands(PlayerTypes.Bot2).size) / 2,
-      PlayerTypes.Bot3 -> (layout.getRows - hands(PlayerTypes.Bot3).size) / 2,
-      PlayerTypes.Player -> (layout.getColumns - hands(PlayerTypes.Player).size) / 2
+      PlayerTypes.Bot1 -> (layout.getRows - bot1.size) / 2,
+      PlayerTypes.Bot2 -> (layout.getColumns - bot2.size) / 2,
+      PlayerTypes.Bot3 -> (layout.getRows - bot3.size) / 2,
+      PlayerTypes.Player -> (layout.getColumns - player.size) / 2
     )
 
     for i <- 0 until getComponentCount do
@@ -70,24 +73,24 @@ class Gui(controller: Controller, hands: immutable.Map[PlayerTypes, Hand]) exten
 
       (i / layout.getColumns, i % layout.getColumns) match
 //        Bot2 hand top row
-        case (0, c) if isWithinHand(c, startingPositions(PlayerTypes.Bot2), hands(PlayerTypes.Bot2)) =>
+        case (0, c) if isWithinHand(c, startingPositions(PlayerTypes.Bot2), bot2) =>
           applyIcon(component, c - startingPositions(PlayerTypes.Bot2), Bot2, true, FLIP_VERTICAL)
         case (0, c) => applyIcon(component, c - startingPositions(PlayerTypes.Bot2), Bot2, false, FLIP_VERTICAL)
 
 //        Player hand bottom row
-        case (`lastRow`, c) if isWithinHand(c, startingPositions(PlayerTypes.Player), hands(PlayerTypes.Player)) =>
+        case (`lastRow`, c) if isWithinHand(c, startingPositions(PlayerTypes.Player), player) =>
           applyIcon(component, c - startingPositions(PlayerTypes.Player), PlayerTypes.Player, true)
         case (`lastRow`, c) =>
           applyIcon(component, c - startingPositions(PlayerTypes.Player), PlayerTypes.Player, false)
 
 //        Bot1 hand left column
-        case (r, 0) if isWithinHand(r, startingPositions(PlayerTypes.Bot1), hands(PlayerTypes.Bot1)) =>
+        case (r, 0) if isWithinHand(r, startingPositions(PlayerTypes.Bot1), bot1) =>
           applyIcon(component, r - startingPositions(PlayerTypes.Bot1), PlayerTypes.Bot1, true, ROTATE_RIGHT)
         case (r, 0) =>
           applyIcon(component, r - startingPositions(PlayerTypes.Bot1), PlayerTypes.Bot1, false, ROTATE_RIGHT)
 
 //        Bot3 hand right column
-        case (r, `lastCol`) if isWithinHand(r, startingPositions(PlayerTypes.Bot3), hands(PlayerTypes.Bot3)) =>
+        case (r, `lastCol`) if isWithinHand(r, startingPositions(PlayerTypes.Bot3), bot3) =>
           applyIcon(component, r - startingPositions(PlayerTypes.Bot3), PlayerTypes.Bot3, true, ROTATE_LEFT)
         case (r, `lastCol`) =>
           applyIcon(component, r - startingPositions(PlayerTypes.Bot3), PlayerTypes.Bot3, false, ROTATE_LEFT)
@@ -140,7 +143,7 @@ class Gui(controller: Controller, hands: immutable.Map[PlayerTypes, Hand]) exten
     action: Boolean,
     rotation: Rotation
   ): Unit =
-    hands(playerType)
+    player
       .lift(indexInHand)
       .foreach:
         card =>
