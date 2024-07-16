@@ -38,7 +38,7 @@ class Deck extends ArrayBuffer[Card]:
   /**
    * Shuffles the deck.
    */
-  def shuffle(): Unit =
+  private def shuffle(): Unit =
     val shuffledList = Random.shuffle(this)
     this.clear()
     this.addAll(shuffledList)

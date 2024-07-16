@@ -1,21 +1,13 @@
 package view.game.Cell
 
+import controller.Controller
 import model.cards.Card
 
 /**
  * A cell that contains a card
  */
-class CardCell extends Cell:
+class CardCell(controller: Controller) extends Cell:
   private var card: Option[Card] = None
-
-  /**
-   * Constructor of the cell with a card
-   *
-   * @param card the card to apply
-   */
-  def this(card: Card) =
-    this()
-    applyCard(card)
 
   /**
    * Apply a card to the cell
@@ -36,5 +28,5 @@ class CardCell extends Cell:
   addActionListener(
     _ =>
       if card.isEmpty then println("CardCell clicked! Empty")
-      else println("CardCell clicked! " + card.get.toString)
+      else controller.chooseCard(card.get)
   )

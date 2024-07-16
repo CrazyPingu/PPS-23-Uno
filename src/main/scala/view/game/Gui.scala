@@ -2,7 +2,7 @@ package view.game
 
 import controller.Controller
 import model.Hand
-import model.bot.BotPlayer
+import model.bot.{BotPlayer, EasyBotPlayerImpl}
 import model.cards.Card
 import utils.ImageHandler.{backgroundTable, retroCards, rotateImage}
 import utils.PlayerTypes.Bot2
@@ -18,18 +18,26 @@ import javax.swing.JPanel
  * The graphical user interface of the game
  *
  * @param controller the controller of the game
- * @param bot1 the first bot player
- * @param bot2 the second bot player
- * @param bot3 the third bot player
- * @param player the player
  */
-class Gui(controller: Controller, bot1: BotPlayer, bot2: BotPlayer, bot3: BotPlayer, player: Hand) extends JPanel:
+class Gui(controller: Controller) extends JPanel:
   private val layout: GridLayout = new GridLayout(panelGridDimension(1), panelGridDimension(0))
   private val unoButton = new UnoCell(controller)
   private val directionCell = new DirectionCell
   private val usedCardCell = new UsedCardCell
   setLayout(layout)
-  createGui()
+
+  private var bot1 = Option.empty[BotPlayer]
+  private var bot2 = Option.empty[BotPlayer]
+  private var bot3 = Option.empty[BotPlayer]
+  private var player = Option.empty[Hand]
+
+  def setEntity(bot1: BotPlayer, bot2: BotPlayer, bot3: BotPlayer, player: Hand): Unit =
+    this.bot1 = Option(bot1)
+    this.bot2 = Option(bot2)
+    this.bot3 = Option(bot3)
+    this.player = Option(player)
+    println("Entity set")
+    createGui()
 
   /**
    * Create the GUI adding all the components
@@ -45,7 +53,7 @@ class Gui(controller: Controller, bot1: BotPlayer, bot2: BotPlayer, bot3: BotPla
         case (r, c) if r == usedCardCoordinate(1) && c == usedCardCoordinate(0)           => usedCardCell
         case (r, c) if r == unoCallCoordinate(1) && c == unoCallCoordinate(0)             => unoButton
         case (r, c) if r == directionCellCoordinate(1) && c == directionCellCoordinate(0) => directionCell
-        case (`lastRow`, c)                                                               => new CardCell()
+        case (`lastRow`, c)                                                               => new CardCell(controller)
         case _                                                                            => new Cell()
 
       this.add(cell)
@@ -62,10 +70,10 @@ class Gui(controller: Controller, bot1: BotPlayer, bot2: BotPlayer, bot3: BotPla
     val lastCol = layout.getColumns - 1
 
     val startingPositions = Map(
-      PlayerTypes.Bot1 -> (layout.getRows - bot1.size) / 2,
-      PlayerTypes.Bot2 -> (layout.getColumns - bot2.size) / 2,
-      PlayerTypes.Bot3 -> (layout.getRows - bot3.size) / 2,
-      PlayerTypes.Player -> (layout.getColumns - player.size) / 2
+      PlayerTypes.Bot1 -> (layout.getRows - bot1.get.size) / 2,
+      PlayerTypes.Bot2 -> (layout.getColumns - bot2.get.size) / 2,
+      PlayerTypes.Bot3 -> (layout.getRows - bot3.get.size) / 2,
+      PlayerTypes.Player -> (layout.getColumns - player.get.size) / 2
     )
 
     for i <- 0 until getComponentCount do
@@ -73,24 +81,24 @@ class Gui(controller: Controller, bot1: BotPlayer, bot2: BotPlayer, bot3: BotPla
 
       (i / layout.getColumns, i % layout.getColumns) match
 //        Bot2 hand top row
-        case (0, c) if isWithinHand(c, startingPositions(PlayerTypes.Bot2), bot2) =>
+        case (0, c) if isWithinHand(c, startingPositions(PlayerTypes.Bot2), bot2.get) =>
           applyIcon(component, c - startingPositions(PlayerTypes.Bot2), Bot2, true, FLIP_VERTICAL)
         case (0, c) => applyIcon(component, c - startingPositions(PlayerTypes.Bot2), Bot2, false, FLIP_VERTICAL)
 
 //        Player hand bottom row
-        case (`lastRow`, c) if isWithinHand(c, startingPositions(PlayerTypes.Player), player) =>
+        case (`lastRow`, c) if isWithinHand(c, startingPositions(PlayerTypes.Player), player.get) =>
           applyIcon(component, c - startingPositions(PlayerTypes.Player), PlayerTypes.Player, true)
         case (`lastRow`, c) =>
           applyIcon(component, c - startingPositions(PlayerTypes.Player), PlayerTypes.Player, false)
 
 //        Bot1 hand left column
-        case (r, 0) if isWithinHand(r, startingPositions(PlayerTypes.Bot1), bot1) =>
+        case (r, 0) if isWithinHand(r, startingPositions(PlayerTypes.Bot1), bot1.get) =>
           applyIcon(component, r - startingPositions(PlayerTypes.Bot1), PlayerTypes.Bot1, true, ROTATE_RIGHT)
         case (r, 0) =>
           applyIcon(component, r - startingPositions(PlayerTypes.Bot1), PlayerTypes.Bot1, false, ROTATE_RIGHT)
 
 //        Bot3 hand right column
-        case (r, `lastCol`) if isWithinHand(r, startingPositions(PlayerTypes.Bot3), bot3) =>
+        case (r, `lastCol`) if isWithinHand(r, startingPositions(PlayerTypes.Bot3), bot3.get) =>
           applyIcon(component, r - startingPositions(PlayerTypes.Bot3), PlayerTypes.Bot3, true, ROTATE_LEFT)
         case (r, `lastCol`) =>
           applyIcon(component, r - startingPositions(PlayerTypes.Bot3), PlayerTypes.Bot3, false, ROTATE_LEFT)
@@ -143,7 +151,7 @@ class Gui(controller: Controller, bot1: BotPlayer, bot2: BotPlayer, bot3: BotPla
     action: Boolean,
     rotation: Rotation
   ): Unit =
-    player
+    player.get
       .lift(indexInHand)
       .foreach:
         card =>
