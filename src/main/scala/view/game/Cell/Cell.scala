@@ -12,10 +12,10 @@ import javax.swing.{ImageIcon, JButton}
  * A cell of the game
  */
 class Cell extends JButton:
-//  setBorderPainted(false)
-//  setContentAreaFilled(false)
-//  setFocusPainted(false)
-//  setOpaque(false)
+  setBorderPainted(false)
+  setContentAreaFilled(false)
+  setFocusPainted(false)
+  setOpaque(false)
 
   /**
    * Constructor of the cell
