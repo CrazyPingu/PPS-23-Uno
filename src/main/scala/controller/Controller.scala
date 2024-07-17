@@ -18,10 +18,11 @@ class Controller:
   def setGui(gui: Gui): Unit =
     this.gui = Some(gui)
 
-  def startNewGame(hand: Hand, deck: Deck, lastPlayedCard: Card): Unit =
+  def startNewGame(hand: Hand, deck: Deck): Unit =
     this.hand = Some(hand)
     this.deck = Some(deck)
-    this.lastPlayedCard = Some(lastPlayedCard)
+    this.lastPlayedCard = Some(deck.draw())
+    this.gui.get.disposeCard(lastPlayedCard.get)
 
   def chooseCard(card: Card): Unit =
     if isCompatible(card, lastPlayedCard.get) then

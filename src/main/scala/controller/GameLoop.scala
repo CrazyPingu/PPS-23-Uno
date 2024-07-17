@@ -1,7 +1,6 @@
 package controller
 
 import model.bot.EasyBotPlayerImpl
-import model.cards.Card
 import model.{Deck, Hand}
 import view.game.Gui
 
@@ -12,12 +11,10 @@ class GameLoop(controller: Controller, gui: Gui):
   private val bot2 = new EasyBotPlayerImpl
   private val bot3 = new EasyBotPlayerImpl
   private val directionClockwise = true
-  private val lastPlayedCard: Card = deck.draw()
 
   gui.setEntity(bot1, bot2, bot3, pHand)
-  gui.disposeCard(lastPlayedCard)
 
-  controller.startNewGame(pHand, deck, lastPlayedCard)
+  controller.startNewGame(pHand, deck)
 
   def start(): Unit =
     println("GameLoop started")
