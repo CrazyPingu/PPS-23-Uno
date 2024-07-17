@@ -111,6 +111,17 @@ class Gui(controller: Controller) extends JPanel:
   def toggleVisibilityUnoButton(show: Boolean): Unit = unoButton.setVisible(show)
 
   /**
+   * Block the player from performing every action
+   *
+   * @param toggle false to block the player, true to allow the player to perform actions
+   */
+  def allowPlayerAction(toggle: Boolean): Unit =
+//    Block the cell containing the deck
+    getComponent(deckCoordinate(1) * layout.getColumns + deckCoordinate(0)).setEnabled(toggle)
+//    Toggle last row
+    for i <- 0 until layout.getColumns do getComponent((layout.getRows - 1) * layout.getColumns + i).setEnabled(toggle)
+
+  /**
    * Reverse the direction of the game
    */
   def reverseDirection(): Unit = directionCell.reverseDirection()
