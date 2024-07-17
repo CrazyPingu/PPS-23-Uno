@@ -14,15 +14,14 @@ class SettingsGui extends JPanel:
   private val settingsFilePath: String = s"$projectRoot/config/settings.json"
 
   private val settings : Settings = SettingsImpl(settingsFilePath)
-  
+
   private val button1: JButton = new JButton("Button 1")
   private val button2: JButton = new JButton("Button 2")
 
-  // Add the buttons to the panel
   add(button1)
   add(button2)
 
-  
 
-  
+
+
 
