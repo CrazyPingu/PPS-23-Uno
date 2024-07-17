@@ -5,10 +5,8 @@ import scala.collection.mutable.ArrayBuffer
 
 /**
  * A class representing a hand of cards.
- *
  */
 class Hand extends ArrayBuffer[Card]:
-
 
   /**
    * Adds a card to the hand.
@@ -24,14 +22,12 @@ class Hand extends ArrayBuffer[Card]:
    * @return `true` if the card was successfully removed, `false` otherwise.
    */
   def removeCard(card: Card): Boolean =
-    if (this.contains(card))
+    if this.contains(card) then
       this -= card
       true
-    else
-      false
+    else false
 
   /**
-   *
    * @return The number of cards in the hand.
    */
   def getCardCount: Int = this.size

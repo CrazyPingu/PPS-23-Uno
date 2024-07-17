@@ -12,10 +12,10 @@ import javax.swing.{ImageIcon, JButton}
  * A cell of the game
  */
 class Cell extends JButton:
-  setBorderPainted(false)
-  setContentAreaFilled(false)
-  setFocusPainted(false)
-  setOpaque(false)
+//  setBorderPainted(false)
+//  setContentAreaFilled(false)
+//  setFocusPainted(false)
+//  setOpaque(false)
 
   /**
    * Constructor of the cell
@@ -32,7 +32,8 @@ class Cell extends JButton:
    * @param img the image of the cell
    */
   def setIcon(img: Image, rotation: Rotation): Unit =
-    if img != null && getWidth > 0 && getHeight > 0 then
+    if img == null then super.setIcon(null)
+    else if img != null && getWidth > 0 && getHeight > 0 then
       super.setIcon(
         new ImageIcon(rotateImage(img, rotation).getScaledInstance(getWidth, getHeight, Image.SCALE_SMOOTH))
       )

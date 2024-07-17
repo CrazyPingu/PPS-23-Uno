@@ -26,7 +26,5 @@ class CardCell(controller: Controller) extends Cell:
     setIcon(null)
 
   addActionListener(
-    _ =>
-      if card.isEmpty then println("CardCell clicked! Empty")
-      else controller.chooseCard(card.get)
+    _ => if card.isDefined then controller.chooseCard(card.get)
   )
