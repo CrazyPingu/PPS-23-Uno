@@ -1,14 +1,18 @@
-import model.cards.SimpleCardImpl
-import utils.Color.Red
-import utils.ImageHandler.loadCardImage
+import controller.{Controller, GameLoop}
+import model.bot.EasyBotPlayerImpl
+import model.{Deck, Hand}
+import view.game.Gui
+import view.{CardLayoutId, Frame}
 
 object main:
 
   def main(args: Array[String]): Unit =
-    val card = new SimpleCardImpl(5, utils.Color.Red, loadCardImage("5", Red))
-    println(card)
 
-    for _ <- 0 to 1 do
-      println("Hello, world!")
+    val controller = new Controller()
+    val gui = new Gui(controller)
+    controller.setGui(gui)
+    val frame = new Frame()
+    frame.add(gui, CardLayoutId.Game)
+    frame.show(CardLayoutId.Game)
 
-
+    new GameLoop(controller, gui).start()
