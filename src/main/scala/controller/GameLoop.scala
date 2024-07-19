@@ -9,8 +9,9 @@ import view.game.Gui
 
 import scala.concurrent.Future
 import scala.concurrent.ExecutionContext.Implicits.global
+import scala.util.Random
 
-class GameLoop(private val controller: Controller, private val gui: Gui):
+class GameLoop(private val controller: GameController, private val gui: Gui):
   private val player: Hand = Hand()
   private val (bot1, bot2, bot3) = createBotPlayers()
   private var turnOrder = List(player, bot1, bot2, bot3)
@@ -21,8 +22,7 @@ class GameLoop(private val controller: Controller, private val gui: Gui):
     println("GameLoop started")
     val deck = Deck(controller)
     currentTurn = 0
-
-//    var directionClockwise = true
+    clockWiseDirection = true
 
     gui.setEntity(bot1, bot2, bot3, player)
     controller.startNewGame(player, deck)
@@ -31,7 +31,7 @@ class GameLoop(private val controller: Controller, private val gui: Gui):
 
   def nextTurn(): Unit =
     Future:
-      Thread.sleep(1000)
+      Thread.sleep((1500 + Random.nextInt(1500)).toLong)
       currentTurn = (currentTurn + (if clockWiseDirection then 1 else -1) + turnOrder.size) % turnOrder.size
       turnOrder(currentTurn) match
         case bot: BotPlayer =>

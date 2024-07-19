@@ -1,6 +1,6 @@
 package model
 
-import controller.Controller
+import controller.GameController
 import model.cards.Card
 import model.cards.factory.CardFactoryImpl
 import utils.Color
@@ -14,7 +14,7 @@ import scala.util.Random
  * 19 number cards (1 zero and 2 of each number up to 9), 2 reverse cards, 2 skip cards, 2 draw 2 cards,
  * 4 wild draw 4 cards, 4 wild cards.
  */
-class Deck(private val controller: Controller) extends ArrayBuffer[Card]:
+class Deck(private val controller: GameController) extends ArrayBuffer[Card]:
 
   private final val factory: CardFactoryImpl = new CardFactoryImpl(controller)
 

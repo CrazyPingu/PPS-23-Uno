@@ -2,10 +2,11 @@ package controller
 
 import model.cards.{Card, SpecialCard}
 import model.{Deck, Hand}
+import utils.Color
 import utils.Compatibility.isCompatible
 import view.game.Gui
 
-class Controller:
+class GameController:
   private var gui: Option[Gui] = None
   private var gameLoop: Option[GameLoop] = None
   private var deck: Option[Deck] = None
@@ -60,6 +61,9 @@ class Controller:
 
   def skipNextTurn(numberToSkip: Int): Unit =
     gameLoop.get.skipNextTurn(numberToSkip)
+
+  def changeColor(color: Color): Unit =
+    println("Chosen color = " + color)
 
   private def checkIfSpecialCard(card: Card): Unit =
     card match

@@ -1,6 +1,6 @@
 package model.cards.special
 
-import controller.Controller
+import controller.GameController
 import model.cards.SpecialCard
 import utils.Color
 import utils.ImageHandler.loadCardImage
@@ -11,7 +11,7 @@ import utils.ImageHandler.loadCardImage
  * @param cardColor    The color of the card
  * @param numberToDraw The number of cards to draw
  */
-class DrawCard(private val cardColor: Color, private val numberToDraw: Int, private val controller: Controller)
+class DrawCard(private val cardColor: Color, private val numberToDraw: Int, private val controller: GameController)
     extends SpecialCard(cardColor, loadCardImage("Draw", cardColor), controller):
 
   override def toString: String = "Draw " + numberToDraw + " " + color.toString

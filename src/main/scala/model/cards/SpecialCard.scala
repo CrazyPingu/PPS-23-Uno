@@ -1,6 +1,6 @@
 package model.cards
 
-import controller.Controller
+import controller.GameController
 import utils.Color
 
 import java.awt.Image
@@ -16,7 +16,7 @@ import javax.imageio.ImageIO
 abstract class SpecialCard(
   private val cardColor: Color,
   private val cardImage: Image,
-  private val controller: Controller
+  private val controller: GameController
 ) extends Card:
   val color: Color = cardColor
   val image: Image = cardImage

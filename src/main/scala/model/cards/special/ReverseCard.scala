@@ -1,6 +1,6 @@
 package model.cards.special
 
-import controller.Controller
+import controller.GameController
 import model.cards.SpecialCard
 import utils.Color
 import utils.ImageHandler.loadCardImage
@@ -10,7 +10,7 @@ import utils.ImageHandler.loadCardImage
  *
  * @param cardColor The color of the card
  */
-class ReverseCard(private val cardColor: Color, private val controller: Controller)
+class ReverseCard(private val cardColor: Color, private val controller: GameController)
     extends SpecialCard(cardColor, loadCardImage("Reverse", cardColor), controller):
 
   override def toString: String = "Reverse " + color.toString

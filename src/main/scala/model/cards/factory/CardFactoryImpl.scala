@@ -1,6 +1,6 @@
 package model.cards.factory
 
-import controller.Controller
+import controller.GameController
 import model.cards.special.{ChangeColor, DrawCard, ReverseCard, SkipCard}
 import model.cards.{Card, SimpleCardImpl}
 import utils.Color
@@ -9,7 +9,7 @@ import utils.ImageHandler.loadCardImage
 /**
  * Factory for creating cards.
  */
-class CardFactoryImpl(private val controller: Controller) extends CardFactory:
+class CardFactoryImpl(private val controller: GameController) extends CardFactory:
 
   def createSimpleCard(num: Int, color: Color): Card =
     new SimpleCardImpl(num, color, loadCardImage(num.toString, color))

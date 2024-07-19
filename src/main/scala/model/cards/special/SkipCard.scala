@@ -1,6 +1,6 @@
 package model.cards.special
 
-import controller.Controller
+import controller.GameController
 import model.cards.SpecialCard
 import utils.Color
 import utils.ImageHandler.loadCardImage
@@ -11,7 +11,7 @@ import utils.ImageHandler.loadCardImage
  * @param cardColor    The color of the card
  * @param numberToSkip The number of players to skip
  */
-class SkipCard(private val cardColor: Color, private val numberToSkip: Int, private val controller: Controller)
+class SkipCard(private val cardColor: Color, private val numberToSkip: Int, private val controller: GameController)
     extends SpecialCard(cardColor, loadCardImage("Skip", cardColor), controller):
 
   override def toString: String = "Skip " + color.toString
