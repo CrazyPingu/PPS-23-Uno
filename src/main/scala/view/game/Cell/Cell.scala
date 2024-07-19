@@ -32,7 +32,7 @@ class Cell extends JButton:
    *
    * @param img the image of the cell
    */
-  def setIcon(img: Image, rotation: Rotation): Unit =
+  def setIcon(img: Image, rotation: Rotation = NONE): Unit =
     if img == null then
       super.setIcon(null)
       super.setDisabledIcon(null)
@@ -51,6 +51,3 @@ class Cell extends JButton:
             setDisabledIcon(image)
             removeComponentListener(this)
       )
-
-  def setIcon(img: Image): Unit =
-    setIcon(img, NONE)

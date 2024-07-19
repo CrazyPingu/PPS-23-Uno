@@ -2,7 +2,7 @@ package model
 
 import controller.GameController
 import model.cards.Card
-import model.cards.factory.CardFactoryImpl
+import model.cards.factory.{CardFactory, CardFactoryImpl}
 import utils.Color
 
 import scala.collection.mutable.ArrayBuffer
@@ -14,9 +14,7 @@ import scala.util.Random
  * 19 number cards (1 zero and 2 of each number up to 9), 2 reverse cards, 2 skip cards, 2 draw 2 cards,
  * 4 wild draw 4 cards, 4 wild cards.
  */
-class Deck(private val controller: GameController) extends ArrayBuffer[Card]:
-
-  private final val factory: CardFactoryImpl = new CardFactoryImpl(controller)
+class Deck(private val factory: CardFactory) extends ArrayBuffer[Card]:
 
   // Add colored cards to the deck
   for color <- Color.values if color != Color.Black do
