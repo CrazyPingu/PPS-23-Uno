@@ -24,4 +24,4 @@ class SkipCard(private val cardColor: Color, private val numberToSkip: Int, priv
   /**
    * The next player has to skip a certain number of turns.
    */
-  override def execute(): Unit = println("Skip " + numberToSkip + " players")
+  override def execute(): Unit = controller.skipNextTurn(numberToSkip)

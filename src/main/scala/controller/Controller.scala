@@ -58,6 +58,9 @@ class Controller:
   def nextDrawCard(numberToDraw: Int): Unit =
     gameLoop.get.nextDrawCard(numberToDraw)
 
+  def skipNextTurn(numberToSkip: Int): Unit =
+    gameLoop.get.skipNextTurn(numberToSkip)
+
   private def checkIfSpecialCard(card: Card): Unit =
     card match
       case c: SpecialCard => c.execute()
