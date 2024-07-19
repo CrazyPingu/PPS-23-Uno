@@ -12,7 +12,7 @@ import utils.ImageHandler.loadCardImage
  * @param numberToDraw The number of cards to draw
  */
 class DrawCard(private val cardColor: Color, private val numberToDraw: Int, private val controller: GameController)
-    extends SpecialCard(cardColor, loadCardImage("Draw", cardColor), controller):
+    extends SpecialCard(cardColor, loadCardImage("Draw" + numberToDraw, cardColor), controller):
 
   override def toString: String = "Draw " + numberToDraw + " " + color.toString
 
