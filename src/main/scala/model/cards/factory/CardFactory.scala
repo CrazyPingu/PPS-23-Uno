@@ -1,13 +1,16 @@
 package model.cards.factory
 
+import controller.GameController
 import model.cards.Card
 import utils.Color
+
+import java.lang.ModuleLayer.Controller
 
 /**
  * Factory for creating cards.
  */
 trait CardFactory:
-  
+
   /**
    * Creates a simple card with the given number and color.
    *
@@ -20,7 +23,7 @@ trait CardFactory:
   /**
    * @return The created change color card.
    */
-  def createChangeColor(): Card
+  def createChangeColor(color: Color = Color.Black): Card
 
   /**
    * Creates a draw card with the given number of cards to draw.
@@ -46,5 +49,3 @@ trait CardFactory:
    * @return The created skip card.
    */
   def createSkipCard(turnToSkip: Int, color: Color): Card
-
-
