@@ -24,4 +24,4 @@ class DrawCard(private val cardColor: Color, private val numberToDraw: Int, priv
   /**
    * The next player has to draw a certain number of cards from the deck.
    */
-  override def execute(): Unit = println("Draw " + numberToDraw + " cards")
+  override def execute(): Unit = controller.nextDrawCard(numberToDraw)

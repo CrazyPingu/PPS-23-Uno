@@ -13,10 +13,13 @@ class Controller:
   var lastPlayedCard: Option[Card] = None
 
   def drawCard(hand: Hand): Unit =
+    drawCard(hand, 1, true)
+
+  def drawCard(hand: Hand, num: Int, skipTurn: Boolean): Unit =
     gui.get.allowPlayerAction(false)
-    hand.addCard(deck.get.draw())
+    for _ <- 0 until num do hand.addCard(deck.get.draw())
     gui.get.updateGui()
-    gameLoop.get.nextTurn()
+    if skipTurn then gameLoop.get.nextTurn()
 
   def drawCard(): Unit =
     drawCard(playerHand.get)
@@ -40,7 +43,7 @@ class Controller:
       checkIfSpecialCard(card)
       gui.get.updateGui()
       gameLoop.get.nextTurn()
-    else throw new Exception("Card not compatible " + card + "\nLast played card " + lastPlayedCard.get)
+    else println("Card not compatible " + card + "\nLast played card " + lastPlayedCard.get)
 
     if playerHand.get.isEmpty then println("You have won")
     else if hand.isEmpty then println("You have lost")
@@ -51,6 +54,9 @@ class Controller:
   def reverseDirection(): Unit =
     gameLoop.get.reverseTurnOrder()
     gui.get.reverseDirection()
+
+  def nextDrawCard(numberToDraw: Int): Unit =
+    gameLoop.get.nextDrawCard(numberToDraw)
 
   private def checkIfSpecialCard(card: Card): Unit =
     card match

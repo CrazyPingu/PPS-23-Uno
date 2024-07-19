@@ -47,6 +47,13 @@ class GameLoop(private val controller: Controller, private val gui: Gui):
 
   def reverseTurnOrder(): Unit = clockWiseDirection = !clockWiseDirection
 
+  def nextDrawCard(numberToDraw: Int): Unit =
+//    Obtain next player in turn order
+    val nextPlayer = turnOrder((currentTurn + (if clockWiseDirection then 1 else -1) + turnOrder.size) % turnOrder.size)
+    println("Next player " + nextPlayer.size)
+    controller.drawCard(nextPlayer, numberToDraw, false)
+    println("Next player " + nextPlayer.size)
+
   private def createBotPlayers(): (BotPlayer, BotPlayer, BotPlayer) =
     (new EasyBotPlayerImpl, new EasyBotPlayerImpl, new EasyBotPlayerImpl)
 
@@ -60,7 +67,7 @@ class GameLoop(private val controller: Controller, private val gui: Gui):
       bot3.addCard(deck.draw())
       player.addCard(deck.draw())
 
-    player.addCard(new CardFactoryImpl(controller).createReverseCard(Red))
+    player.addCard(new CardFactoryImpl(controller).createDrawCard(2, Red))
     gui.updateGui()
     println("Bot1 " + bot1)
     println("Bot2 " + bot2)
