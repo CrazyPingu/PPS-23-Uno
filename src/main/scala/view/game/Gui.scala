@@ -1,6 +1,6 @@
 package view.game
 
-import controller.Controller
+import controller.GameController
 import model.Hand
 import model.bot.{BotPlayer, EasyBotPlayerImpl}
 import model.cards.Card
@@ -18,7 +18,7 @@ import javax.swing.JPanel
  *
  * @param controller the controller of the game
  */
-class Gui(controller: Controller) extends JPanel:
+class Gui(controller: GameController) extends JPanel:
   private val layout: GridLayout = new GridLayout(panelGridDimension(1), panelGridDimension(0))
   private val unoButton = new UnoCell(controller)
   private val directionCell = new DirectionCell
@@ -109,6 +109,17 @@ class Gui(controller: Controller) extends JPanel:
    * @param show true to show the button, false to hide it
    */
   def toggleVisibilityUnoButton(show: Boolean): Unit = unoButton.setVisible(show)
+
+  /**
+   * Block the player from performing every action
+   *
+   * @param toggle false to block the player, true to allow the player to perform actions
+   */
+  def allowPlayerAction(toggle: Boolean): Unit =
+//    Block the cell containing the deck
+    getComponent(deckCoordinate(1) * layout.getColumns + deckCoordinate(0)).setEnabled(toggle)
+//    Toggle last row
+    for i <- 0 until layout.getColumns do getComponent((layout.getRows - 1) * layout.getColumns + i).setEnabled(toggle)
 
   /**
    * Reverse the direction of the game

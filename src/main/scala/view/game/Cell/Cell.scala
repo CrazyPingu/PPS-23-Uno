@@ -16,6 +16,7 @@ class Cell extends JButton:
   setContentAreaFilled(false)
   setFocusPainted(false)
   setOpaque(false)
+  setContentAreaFilled(false)
 
   /**
    * Constructor of the cell
@@ -31,19 +32,22 @@ class Cell extends JButton:
    *
    * @param img the image of the cell
    */
-  def setIcon(img: Image, rotation: Rotation): Unit =
-    if img == null then super.setIcon(null)
-    else if img != null && getWidth > 0 && getHeight > 0 then
-      super.setIcon(
-        new ImageIcon(rotateImage(img, rotation).getScaledInstance(getWidth, getHeight, Image.SCALE_SMOOTH))
+  def setIcon(img: Image, rotation: Rotation = NONE): Unit =
+    if img == null then
+      super.setIcon(null)
+      super.setDisabledIcon(null)
+    else if getWidth > 0 && getHeight > 0 then
+      val image: ImageIcon = new ImageIcon(
+        rotateImage(img, rotation).getScaledInstance(getWidth, getHeight, Image.SCALE_SMOOTH)
       )
-    else if img != null then
+      super.setIcon(image)
+      super.setDisabledIcon(image)
+    else
       addComponentListener(
         new ComponentAdapter:
           override def componentResized(e: java.awt.event.ComponentEvent): Unit =
-            setIcon(new ImageIcon(img.getScaledInstance(getWidth, getHeight, Image.SCALE_SMOOTH)))
+            val image: ImageIcon = new ImageIcon(img.getScaledInstance(getWidth, getHeight, Image.SCALE_SMOOTH))
+            setIcon(image)
+            setDisabledIcon(image)
             removeComponentListener(this)
       )
-
-  def setIcon(img: Image): Unit =
-    setIcon(img, NONE)

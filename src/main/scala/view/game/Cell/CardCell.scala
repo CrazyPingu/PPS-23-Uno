@@ -1,12 +1,12 @@
 package view.game.Cell
 
-import controller.Controller
+import controller.GameController
 import model.cards.Card
 
 /**
  * A cell that contains a card
  */
-class CardCell(controller: Controller) extends Cell:
+class CardCell(controller: GameController) extends Cell:
   private var card: Option[Card] = None
 
   /**
