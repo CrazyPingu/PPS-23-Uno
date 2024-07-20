@@ -42,6 +42,7 @@ class GameLoop(private val controller: GameController, private val gui: Gui, val
               println("Bot" + currentTurn + " drew a card")
               controller.drawCard(bot)
         case _ =>
+          controller.checkUno()
           gui.allowPlayerAction(true)
           println("Player's turn")
 
