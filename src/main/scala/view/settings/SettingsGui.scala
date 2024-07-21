@@ -1,10 +1,11 @@
 package view.settings
 
 import model.settings.{GameSettings, Settings, SettingsImpl}
+import utils.ImageHandler.{backgroundSettings, backgroundTable}
 import view.game.CoordinateHandler.panelGridDimension
 
 import java.awt.event.{ActionEvent, ActionListener}
-import java.awt.{Color, FlowLayout, Graphics, GridLayout}
+import java.awt.{Color, FlowLayout, Graphics, Graphics2D, GridLayout}
 import javax.swing.{Box, JButton, JComboBox, JLabel, JPanel}
 
 class SettingsGui extends JPanel:
@@ -20,7 +21,9 @@ class SettingsGui extends JPanel:
   private val difficultyPanel : JPanel = new JPanel()
   private val difficultyLabel : JLabel = new JLabel("Difficulty:")
   private val difficultyOptions: JComboBox[String] = new JComboBox(Array("Easy", "Hard"))
+  difficultyLabel.setForeground(Color.WHITE)
   difficultyPanel.setLayout(new FlowLayout())
+  difficultyPanel.setOpaque(false)
   difficultyPanel.add(difficultyLabel)
   difficultyPanel.add(difficultyOptions)
   add(difficultyPanel)
@@ -30,7 +33,9 @@ class SettingsGui extends JPanel:
   private val buttonPanel : JPanel = new JPanel()
   private val buttonLabel : JLabel = new JLabel("Button:")
   private val buttonOptions: JComboBox[String] = new JComboBox(Array("Option 1", "Option 2", "Option 3"))
+  buttonLabel.setForeground(Color.WHITE)
   buttonPanel.setLayout(new FlowLayout())
+  buttonPanel.setOpaque(false)
   buttonPanel.add(buttonLabel)
   buttonPanel.add(buttonOptions)
   add(buttonPanel)
@@ -41,6 +46,7 @@ class SettingsGui extends JPanel:
   private val saveSettings : JButton = new JButton("Save settings")
   private val goBackButton: JButton = new JButton("Go Back to Menu")
   endPanel.setLayout(new FlowLayout())
+  endPanel.setOpaque(false)
   endPanel.add(saveSettings)
   endPanel.add(goBackButton)
   add(endPanel)
@@ -54,7 +60,7 @@ class SettingsGui extends JPanel:
   goBackButton.addActionListener((e: ActionEvent) =>
     println("Go Back to Menu button pressed"))
 
-  //override protected def paintComponent(g: Graphics): Unit =
-  //  super.paintComponent(g)
-  //  g.setColor(Color.RED)
-  //  g.fillRect(0, 0, getWidth, getHeight)
+  override protected def paintComponent(g: Graphics): Unit =
+    super.paintComponent(g)
+    val g2d: Graphics2D = g.asInstanceOf[Graphics2D]
+    g2d.drawImage(backgroundSettings, 0, 0, getWidth, getHeight, this)
