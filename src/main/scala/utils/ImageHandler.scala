@@ -15,6 +15,8 @@ object ImageHandler:
 
   val backgroundTable: Image = loadImage("Table.png")
 
+  val backgroundSettings: Image = loadImage("Settings.png")
+
   val unoButton: Image = loadImage("cards/UnoButton.png")
 
   val direction: Image = loadImage("Direction.png")
