@@ -4,7 +4,7 @@ import model.settings.{GameSettings, Settings, SettingsImpl}
 import view.game.CoordinateHandler.panelGridDimension
 
 import java.awt.event.{ActionEvent, ActionListener}
-import java.awt.GridLayout
+import java.awt.{Color, FlowLayout, Graphics, GridLayout}
 import javax.swing.{Box, JButton, JComboBox, JLabel, JPanel}
 
 class SettingsGui extends JPanel:
@@ -19,25 +19,28 @@ class SettingsGui extends JPanel:
 
   private val difficultyPanel : JPanel = new JPanel()
   private val difficultyLabel : JLabel = new JLabel("Difficulty")
-  private val difficultyOptions: JComboBox[String] = new JComboBox(Array("Easy", "Medium", "Hard"))
+  private val difficultyOptions: JComboBox[String] = new JComboBox(Array("Easy", "Hard"))
+  difficultyPanel.setLayout(new FlowLayout())
   difficultyPanel.add(difficultyLabel)
   difficultyPanel.add(difficultyOptions)
   add(difficultyPanel)
 
   add(Box.createVerticalStrut(10))
 
-  private val button2Panel : JPanel = new JPanel()
-  private val button2Label : JLabel = new JLabel("Button 2")
-  private val button2Options: JComboBox[String] = new JComboBox(Array("Option 1", "Option 2", "Option 3"))
-  button2Panel.add(button2Label)
-  button2Panel.add(button2Options)
-  add(button2Panel)
+  private val buttonPanel : JPanel = new JPanel()
+  private val buttonLabel : JLabel = new JLabel("Button")
+  private val buttonOptions: JComboBox[String] = new JComboBox(Array("Option 1", "Option 2", "Option 3"))
+  buttonPanel.setLayout(new FlowLayout())
+  buttonPanel.add(buttonLabel)
+  buttonPanel.add(buttonOptions)
+  add(buttonPanel)
 
   add(Box.createVerticalStrut(20))
 
   private val endPanel : JPanel = new JPanel()
   private val saveSettings : JButton = new JButton("Save settings")
   private val goBackButton: JButton = new JButton("Go Back to Menu")
+  endPanel.setLayout(new FlowLayout())
   endPanel.add(saveSettings)
   endPanel.add(goBackButton)
   add(endPanel)
