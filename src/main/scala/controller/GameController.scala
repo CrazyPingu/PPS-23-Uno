@@ -16,6 +16,7 @@ class GameController(private val frame: Frame, private val cardFactory: CardFact
   private var deck: Option[Deck] = None
   private var playerHand: Option[Hand] = None
   var lastPlayedCard: Option[Card] = None
+  var unoCalled = false
 
   def drawCard(hand: Hand = playerHand.get, num: Int = 1, skipTurn: Boolean = true): Unit =
     gui.get.allowPlayerAction(false)
@@ -81,6 +82,20 @@ class GameController(private val frame: Frame, private val cardFactory: CardFact
     disposeCard(lastPlayedCard.get)
     frame.show(CardLayoutId.Game)
     gameLoop.get.nextTurn()
+
+  def callUno(): Unit =
+    if playerHand.get.size == 1 then
+      unoCalled = true
+      gui.get.setUnoButtonChecked(true)
+
+  def checkUno(): Unit =
+    if !unoCalled && playerHand.get.size == 1 then
+      println("You didn't call UNO!")
+      drawCard(playerHand.get, 1, false)
+    else if unoCalled then
+      println("Called UNO correctly!")
+    unoCalled = false
+    gui.get.setUnoButtonChecked(false)
 
   private def checkIfSpecialCard(card: Card): Unit =
     card match

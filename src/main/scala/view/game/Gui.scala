@@ -133,6 +133,9 @@ class Gui(controller: GameController) extends JPanel:
    */
   def disposeCard(card: Card): Unit = usedCardCell.disposeCard(card)
 
+
+  def setUnoButtonChecked(checked: Boolean): Unit = unoButton.setChecked(checked)
+
   /**
    * Check if a position is within a hand
    *
@@ -175,3 +178,4 @@ class Gui(controller: GameController) extends JPanel:
     super.paintComponent(g)
     val g2d: Graphics2D = g.asInstanceOf[Graphics2D]
     g2d.drawImage(backgroundTable, 0, 0, getWidth, getHeight, this)
+

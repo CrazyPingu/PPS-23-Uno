@@ -18,6 +18,8 @@ object ImageHandler:
   val unoButton: Image = loadImage("cards/UnoButton.png")
 
   val direction: Image = loadImage("Direction.png")
+  
+  val check: Image = loadImage("cards/Check.png")
 
   def loadCardImage(cardName: String, color: Color): Image =
     loadImage("cards/" + color.toString + "/" + color.toString + "_" + cardName + ".png")
