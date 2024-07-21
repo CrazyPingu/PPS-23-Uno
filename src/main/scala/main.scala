@@ -20,7 +20,7 @@ object main:
     frame.add(gui, CardLayoutId.Game)
     frame.add(settingsGui, CardLayoutId.Settings)
 
-    frame.show(CardLayoutId.Game)
-    //frame.show(CardLayoutId.Settings)
+    //frame.show(CardLayoutId.Game)
+    frame.show(CardLayoutId.Settings)
 
     new GameLoop(controller, gui).start()

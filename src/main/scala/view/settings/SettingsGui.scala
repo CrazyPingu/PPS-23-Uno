@@ -18,7 +18,7 @@ class SettingsGui extends JPanel:
   add(Box.createVerticalGlue())
 
   private val difficultyPanel : JPanel = new JPanel()
-  private val difficultyLabel : JLabel = new JLabel("Difficulty")
+  private val difficultyLabel : JLabel = new JLabel("Difficulty:")
   private val difficultyOptions: JComboBox[String] = new JComboBox(Array("Easy", "Hard"))
   difficultyPanel.setLayout(new FlowLayout())
   difficultyPanel.add(difficultyLabel)
@@ -28,7 +28,7 @@ class SettingsGui extends JPanel:
   add(Box.createVerticalStrut(10))
 
   private val buttonPanel : JPanel = new JPanel()
-  private val buttonLabel : JLabel = new JLabel("Button")
+  private val buttonLabel : JLabel = new JLabel("Button:")
   private val buttonOptions: JComboBox[String] = new JComboBox(Array("Option 1", "Option 2", "Option 3"))
   buttonPanel.setLayout(new FlowLayout())
   buttonPanel.add(buttonLabel)
