@@ -9,7 +9,7 @@ import javax.swing.{JFrame, JPanel, WindowConstants}
  * Enum to handle the different layouts of the frame using CardLayout
  */
 enum CardLayoutId:
-  case Game, MainMenu, Settings, Rules, Win, Lose, ChangeColor, Base
+  case Game, MainMenu, Settings, Tutorial, Achievement, Win, Lose, ChangeColor, Base
 
 /**
  * The frame of the application, that contains all the panels.
