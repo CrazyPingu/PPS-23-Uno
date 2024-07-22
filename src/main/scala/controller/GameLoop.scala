@@ -77,8 +77,15 @@ class GameLoop(private val controller: GameController, private val gui: Gui, val
   /**
    * Give starting cards to all players
    */
-  private def giveStartingCards(bot1: BotPlayer, bot2: BotPlayer, bot3: BotPlayer, player: Hand, deck: Deck): Unit =
-    for _ <- 0 until 1 do
+  private def giveStartingCards(
+    bot1: BotPlayer,
+    bot2: BotPlayer,
+    bot3: BotPlayer,
+    player: Hand,
+    deck: Deck,
+    numToDraw: Int = 7
+  ): Unit =
+    for _ <- 0 until numToDraw do
       bot1.addCard(deck.draw())
       bot2.addCard(deck.draw())
       bot3.addCard(deck.draw())
