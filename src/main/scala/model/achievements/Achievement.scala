@@ -1,10 +1,7 @@
 package model.achievements
 
-trait Achievement:
-    
-    def achieve(): Boolean
-    
-    def saveAchievement(): Unit
-    
-    def createJsonAchievement(): Unit
-    
+import utils.Observer
+
+trait Achievement extends Observer:
+
+  def checkAchievement(): Boolean
