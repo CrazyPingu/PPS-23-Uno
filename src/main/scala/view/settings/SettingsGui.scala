@@ -89,6 +89,7 @@ class SettingsGui(pageController: PageController, controller: SettingsController
 
   connectSliderToLabel(startCardSlider, startCardValue)
   connectSliderToLabel(handicapSlider, handicapValue)
+  updateWithSavedSettings()
 
   saveSettings.addActionListener((e: ActionEvent) =>
     val newSettings: GameSettings = GameSettings(
@@ -97,6 +98,11 @@ class SettingsGui(pageController: PageController, controller: SettingsController
       handicapSlider.getValue
     )
     controller.saveSettings(newSettings)
+  )
+
+  resetSettings.addActionListener((e: ActionEvent) =>
+    controller.resetSettings()
+    updateWithSavedSettings()
   )
 
   goBackButton.addActionListener((e: ActionEvent) =>
@@ -108,6 +114,12 @@ class SettingsGui(pageController: PageController, controller: SettingsController
       val slider: JSlider = e.getSource.asInstanceOf[JSlider]
       label.setText(slider.getValue.toString)
     )
+
+  private def updateWithSavedSettings(): Unit =
+    val currentSettings: GameSettings = controller.settings.gameSettings
+    difficultyOptions.setSelectedIndex(Difficulty.toInt(currentSettings.difficulty))
+    startCardSlider.setValue(currentSettings.startCardValue)
+    handicapSlider.setValue(currentSettings.handicap)
 
   override protected def paintComponent(g: Graphics): Unit =
     super.paintComponent(g)
