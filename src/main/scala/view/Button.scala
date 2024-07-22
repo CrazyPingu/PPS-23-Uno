@@ -16,3 +16,11 @@ class Button(text: String) extends JButton:
   setFont(getFont.deriveFont(20f))
   setBorderPainted(false)
   setBackground(Color.WHITE)
+  setForeground(Color.BLACK)
+
+  addMouseListener(new java.awt.event.MouseAdapter:
+    override def mouseEntered(e: java.awt.event.MouseEvent): Unit =
+      setBackground(Color.LIGHT_GRAY)
+    override def mouseExited(e: java.awt.event.MouseEvent): Unit =
+      setBackground(Color.WHITE)
+  )
