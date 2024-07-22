@@ -9,13 +9,10 @@ class SettingsController:
   private val SETTINGS_FILEPATH: String = s"$PROJECT_ROOT/config/settings.json"
 
   private var gui: Option[SettingsGui] = None
-  private val settings: Settings = SettingsImpl(SETTINGS_FILEPATH)
+  val settings: Settings = SettingsImpl(SETTINGS_FILEPATH)
 
-  def setGui(gui: SettingsGui): Unit =
-    this.gui = Some(gui)
+  def saveSettings(gameSettings: GameSettings): Unit =
+    settings.updateSettings(gameSettings)
 
-  def updateSettings(newSettings: GameSettings): Unit =
-    this.settings.updateSettings(newSettings)
-
-  def getCurrentDifficulty: Difficulty =
-    this.settings.gameSettings.difficulty
+  def resetSettings(): Unit =
+    settings.updateSettings(GameSettings.DEFAULT_SETTINGS)
