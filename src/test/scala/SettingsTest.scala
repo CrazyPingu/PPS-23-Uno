@@ -1,4 +1,4 @@
-import model.settings.{GameSettings, Settings, SettingsImpl}
+import model.settings.{Difficulty, GameSettings, Settings, SettingsImpl}
 import org.scalatest.BeforeAndAfterAll
 import org.scalatest.funsuite.AnyFunSuite
 
@@ -11,22 +11,21 @@ class SettingsTest extends AnyFunSuite with BeforeAndAfterAll:
 
   test("Updating the settings"):
     val settings: Settings = SettingsImpl(settingsFilePath)
-    assert(settings.settings.equals(GameSettings.defaultSettings))
-    settings.updateSettings(GameSettings("hard"))
-    assert(settings.settings.equals(GameSettings("hard")))
+    assert(settings.gameSettings.equals(GameSettings.DEFAULT_SETTINGS))
+    settings.updateSettings(GameSettings(Difficulty.Hard, 5, 1))
+    assert(settings.gameSettings.equals(GameSettings(Difficulty.Hard, 5, 1)))
 
   test("Check if the settings saves and loads the data"):
     var settings: Settings = SettingsImpl(settingsFilePath)
-    settings.updateSettings(GameSettings("hard"))
+    settings.updateSettings(GameSettings(Difficulty.Hard, 7, 0))
     settings = SettingsImpl(settingsFilePath)
-    assert(settings.settings.equals(GameSettings("hard")))
+    assert(settings.gameSettings.equals(GameSettings(Difficulty.Hard, 7, 0)))
 
   test("Resetting the settings"):
-
     val settings: Settings = SettingsImpl(settingsFilePath)
-    assert(settings.settings.equals(GameSettings("hard")))
+    assert(settings.gameSettings.equals(GameSettings(Difficulty.Hard, 7, 0)))
     settings.resetSettings()
-    assert(settings.settings.equals(GameSettings.defaultSettings))
+    assert(settings.gameSettings.equals(GameSettings.DEFAULT_SETTINGS))
 
   override def afterAll(): Unit =
     Files.delete(Paths.get(settingsFilePath))
