@@ -9,6 +9,13 @@ object CoordinateHandler:
    */
   val panelGridDimension: (Int, Int) = (27, 11)
 
+  val arrowCoordinate: List[(Int, Int)] = List(
+    (panelGridDimension(1) - 3, panelGridDimension(0) / 2),
+    (panelGridDimension(1) / 2, 2),
+    (2, panelGridDimension(0) / 2),
+    (panelGridDimension(1) / 2, panelGridDimension(0) - 3)
+  )
+
   /**
    * The coordinate of the deck
    */

@@ -1,6 +1,6 @@
 package view.game.Cell
 
-import controller.Controller
+import controller.GameController
 import utils.ImageHandler
 
 /**
@@ -8,7 +8,7 @@ import utils.ImageHandler
  *
  * @param controller the controller of the game
  */
-class DeckCell(controller: Controller) extends Cell:
+class DeckCell(controller: GameController) extends Cell:
   setIcon(ImageHandler.retroCards)
 
   addActionListener(
