@@ -3,11 +3,11 @@ package model.settings
 import model.settings.Difficulty.{Difficulty, Easy}
 import play.api.libs.json.{Format, Json, OFormat, Reads, Writes}
 
-case class GameSettings(difficulty: Difficulty, startCardValue: Int)
+case class GameSettings(difficulty: Difficulty, startCardValue: Int, handicap: Int)
 
 object GameSettings:
+  val DEFAULT_SETTINGS: GameSettings = GameSettings(Difficulty.Easy, 7, 0)
   implicit val gameSettingsFormat: OFormat[GameSettings] = Json.format[GameSettings]
-  val defaultSettings: GameSettings = GameSettings(Difficulty.Easy, 7)
 
 object Difficulty extends Enumeration:
   type Difficulty = Value
