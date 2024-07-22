@@ -7,9 +7,9 @@ class Button(text: String) extends JButton:
 
   def this(text: String, buttonSize: (Int, Int)) =
     this(text)
-    setPreferredSize(new Dimension(buttonSize._1, buttonSize._2))
-    setMaximumSize(new Dimension(buttonSize._1, buttonSize._2))
-    setMinimumSize(new Dimension(buttonSize._1, buttonSize._2))
+    setPreferredSize(new Dimension(buttonSize(0), buttonSize(1)))
+    setMaximumSize(new Dimension(buttonSize(0), buttonSize(1)))
+    setMinimumSize(new Dimension(buttonSize(0), buttonSize(1)))
 
   setText(text)
   setFocusable(false)
