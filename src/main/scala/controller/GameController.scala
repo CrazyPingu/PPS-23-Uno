@@ -33,6 +33,8 @@ class GameController(private val pageController: PageController, private val car
     this.deck = Some(deck)
     lastPlayedCard = Some(deck.draw())
     this.gui.get.disposeCard(this.lastPlayedCard.get)
+    this.unoCalled = false
+    gui.get.setUnoButtonChecked(false)
 
   def chooseCard(card: Card, hand: Hand = playerHand.get): Unit =
     if isCompatible(card, lastPlayedCard.get) then
@@ -41,14 +43,13 @@ class GameController(private val pageController: PageController, private val car
       hand.removeCard(card)
       checkIfSpecialCard(card)
 
-//      Wait in case of special card effect to finish like changing color
+      if playerHand.get.isEmpty then pageController.showWin()
+      else if hand.isEmpty then pageController.showLose()
+
       if card.color != Color.Black then
         gui.get.updateGui()
         gameLoop.get.nextTurn()
     else println("Card not compatible " + card + "\nLast played card " + lastPlayedCard.get)
-
-    if playerHand.get.isEmpty then println("You have won")
-    else if hand.isEmpty then println("You have lost")
 
   def reverseDirection(): Unit =
     gameLoop.get.reverseTurnOrder()
