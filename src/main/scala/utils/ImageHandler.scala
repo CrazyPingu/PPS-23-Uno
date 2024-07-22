@@ -19,6 +19,9 @@ object ImageHandler:
 
   val direction: Image = loadImage("Direction.png")
 
+  val winBackground: Image = loadImage("Win.png")
+  val defeatBackground: Image = loadImage("Defeat.png")
+
   val check: Image = loadImage("cards/Check.png")
 
   val gameLogo: Image = loadImage("Logo.png")
