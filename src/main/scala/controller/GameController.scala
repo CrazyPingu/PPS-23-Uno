@@ -10,13 +10,13 @@ import utils.Compatibility.isCompatible
 import view.{CardLayoutId, Frame}
 import view.game.Gui
 
-class GameController(private val frame: Frame, private val cardFactory: CardFactory):
+class GameController(private val pageController: PageController, private val cardFactory: CardFactory):
   private var gui: Option[Gui] = None
   private var gameLoop: Option[GameLoop] = None
   private var deck: Option[Deck] = None
   private var playerHand: Option[Hand] = None
   var lastPlayedCard: Option[Card] = None
-  var unoCalled = false
+  private var unoCalled = false
 
   def drawCard(hand: Hand = playerHand.get, num: Int = 1, skipTurn: Boolean = true): Unit =
     gui.get.allowPlayerAction(false)
@@ -62,7 +62,7 @@ class GameController(private val frame: Frame, private val cardFactory: CardFact
     gameLoop.get.skipNextTurn(numberToSkip)
 
   def showChangeColor(): Unit =
-    if gameLoop.get.currentPlayer == playerHand.get then frame.show(CardLayoutId.ChangeColor)
+    if gameLoop.get.currentPlayer == playerHand.get then pageController.showChangeColor()
     else
       val color = gameLoop.get.currentPlayer.asInstanceOf[BotPlayer].chooseColor()
       changeColor(color)
@@ -80,7 +80,7 @@ class GameController(private val frame: Frame, private val cardFactory: CardFact
       case _              =>
 
     disposeCard(lastPlayedCard.get)
-    frame.show(CardLayoutId.Game)
+    pageController.showGame(false)
     gameLoop.get.nextTurn()
 
   def callUno(): Unit =
@@ -92,8 +92,7 @@ class GameController(private val frame: Frame, private val cardFactory: CardFact
     if !unoCalled && playerHand.get.size == 1 then
       println("You didn't call UNO!")
       drawCard(playerHand.get, 1, false)
-    else if unoCalled then
-      println("Called UNO correctly!")
+    else if unoCalled then println("Called UNO correctly!")
     unoCalled = false
     gui.get.setUnoButtonChecked(false)
 
