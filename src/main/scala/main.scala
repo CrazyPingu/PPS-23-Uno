@@ -1,4 +1,4 @@
-import controller.{Controller, GameLoop}
+import controller.{Controller, GameLoop, SettingsController}
 import model.bot.EasyBotPlayerImpl
 import model.{Deck, Hand}
 import view.CardLayoutId.Settings
@@ -14,7 +14,8 @@ object main:
     val gui = new Gui(controller)
     controller.setGui(gui)
 
-    val settingsGui = new SettingsGui()
+    val settingsController = new SettingsController()
+    val settingsGui = new SettingsGui(settingsController)
 
     val frame = new Frame()
     frame.add(gui, CardLayoutId.Game)
