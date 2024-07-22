@@ -1,6 +1,5 @@
 import controller.PageController
-import view.mainmenu.Mainmenu
-import view.{CardLayoutId, Frame}
+import view.{CardLayoutId, Frame, Mainmenu}
 
 object Main:
 

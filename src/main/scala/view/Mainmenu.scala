@@ -1,12 +1,12 @@
-package view.mainmenu
+package view
 
 import controller.PageController
 import utils.ImageHandler.{backgroundTable, gameLogo}
 import view.{Button, GridBagConstraints}
 
 import java.awt.GridBagLayout
-import javax.swing.*
 import java.awt.event.ActionListener
+import javax.swing.*
 
 class Mainmenu(private val pageController: PageController) extends JPanel:
   setLayout(new GridBagLayout())
