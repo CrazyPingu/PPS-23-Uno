@@ -21,7 +21,6 @@ class GameLoop(private val controller: GameController, private val gui: Gui, val
   private var isRunning = false
 
   def start(): Unit =
-    println("GameLoop started")
     val deck = Deck(cardFactory)
     player = Hand()
     val bots = createBotPlayers()
@@ -37,25 +36,24 @@ class GameLoop(private val controller: GameController, private val gui: Gui, val
     controller.startNewGame(player, deck)
 
     giveStartingCards(bot1, bot2, bot3, player, deck)
+    gui.updateTurnArrow(currentTurn)
 
   def nextTurn(): Unit =
     if !isRunning then return
     Future:
       currentTurn = (currentTurn + (if clockWiseDirection then 1 else -1) + turnOrder.size) % turnOrder.size
+      gui.updateTurnArrow(currentTurn)
       turnOrder(currentTurn) match
         case bot: BotPlayer =>
           Thread.sleep((1500 + Random.nextInt(1500)).toLong)
           bot.chooseCardToUse(controller.lastPlayedCard.get) match
             case Some(card) =>
-              println("Bot" + currentTurn + " chose " + card)
               controller.chooseCard(card, bot)
             case None =>
-              println("Bot" + currentTurn + " drew a card")
               controller.drawCard(bot)
         case _ =>
           controller.checkUno()
           gui.allowPlayerAction(true)
-          println("Player's turn")
 
   def reverseTurnOrder(): Unit = clockWiseDirection = !clockWiseDirection
 

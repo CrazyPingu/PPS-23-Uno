@@ -105,4 +105,4 @@ class GameController(private val pageController: PageController, private val car
   private def disposeCard(card: Card): Unit =
     lastPlayedCard = Some(card)
     gui.get.disposeCard(card)
-    gui.get.updateGui()
+//    gui.get.updateGui()
