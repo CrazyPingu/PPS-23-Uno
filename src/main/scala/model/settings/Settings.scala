@@ -2,7 +2,7 @@ package model.settings
 
 trait Settings:
 
-  def settings: GameSettings
+  def gameSettings: GameSettings
 
   def updateSettings(newSettings: GameSettings): Unit
 
