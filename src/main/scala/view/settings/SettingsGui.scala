@@ -6,113 +6,81 @@ import model.settings.{Difficulty, GameSettings}
 import utils.ImageHandler.backgroundSettings
 import view.{Button, ComboBox, GridBagConstraints, Label}
 
-import java.awt.event.{ActionEvent, ActionListener}
+import java.awt.event.ActionListener
 import java.awt.{Graphics, Graphics2D, GridBagLayout, Insets}
 import javax.swing.event.{ChangeEvent, ChangeListener}
-import javax.swing.{JButton, JComboBox, JLabel, JPanel, JSlider}
+import javax.swing.{JLabel, JPanel, JSlider}
 
 class SettingsGui(pageController: PageController, controller: SettingsController) extends JPanel:
   private val MIN_STARTING_CARDS: Int = 4
   private val MAX_STARTING_CARDS: Int = 7
   private val DIFFICULTY_LIST: Array[Difficulty] = Difficulty.values.toArray
 
-  private val layout: GridBagLayout = new GridBagLayout()
-  private val c: GridBagConstraints = GridBagConstraints()
-  setLayout(layout)
-  c.insets = new Insets(10, 10, 10, 10)
+  setLayout(new GridBagLayout())
+  private val defaultInsets: Insets = new Insets(10, 10, 10, 10)
 
-  c.gridx = 0
-  c.gridy = 0
-  c.gridwidth = 1
-  private val difficultyLabel : Label = new Label("Difficulty:")
-  add(difficultyLabel, c)
+  private val difficultyLabel: Label = new Label("Difficulty:")
+  add(difficultyLabel, new GridBagConstraints(0, 0, 1, defaultInsets))
 
-  c.gridx = 1
-  c.gridy = 0
-  c.gridwidth = 2
   private val difficultyOptions: ComboBox = new ComboBox(DIFFICULTY_LIST.map(_.toString))
-  add(difficultyOptions, c)
+  add(difficultyOptions, new GridBagConstraints(1, 0, 2, defaultInsets))
 
-  c.gridx = 0
-  c.gridy = 1
-  c.gridwidth = 1
-  private val startCardLabel : Label = new Label("Number of starting cards:")
-  add(startCardLabel, c)
+  private val startCardLabel: Label = new Label("Number of starting cards:")
+  add(startCardLabel, new GridBagConstraints(0, 1, 1, defaultInsets))
 
-  c.gridx = 1
-  c.gridy = 1
-  c.gridwidth = 1
   private val startCardSlider: JSlider = new JSlider(4, 7, 7)
-  add(startCardSlider, c)
+  add(startCardSlider, new GridBagConstraints(1, 1, 1, defaultInsets))
 
-  c.gridx = 2
-  c.gridy = 1
-  c.gridwidth = 1
   private val startCardValue: Label = new Label("7")
-  add(startCardValue, c)
+  add(startCardValue, new GridBagConstraints(2, 1, 1, defaultInsets))
 
-  c.gridx = 0
-  c.gridy = 2
-  c.gridwidth = 1
   private val handicapLabel: Label = new Label("Bot handicap:")
-  add(handicapLabel, c)
+  add(handicapLabel, new GridBagConstraints(0, 2, 1, defaultInsets))
 
-  c.gridx = 1
-  c.gridy = 2
-  c.gridwidth = 1
   private val handicapSlider: JSlider = new JSlider(-3, 3, 0)
-  add(handicapSlider, c)
+  add(handicapSlider, new GridBagConstraints(1, 2, 1, defaultInsets))
 
-  c.gridx = 2
-  c.gridy = 2
-  c.gridwidth = 1
   private val handicapValue: Label = new Label("0")
-  add(handicapValue, c)
+  add(handicapValue, new GridBagConstraints(2, 2, 1, defaultInsets))
 
-  c.gridx = 0
-  c.gridy = 3
-  c.gridwidth = 1
-  private val saveSettings : Button = new Button("Save settings")
-  add(saveSettings, c)
+  private val saveSettings: Button = new Button("Save settings")
+  add(saveSettings, new GridBagConstraints(0, 3, 1, defaultInsets))
 
-  c.gridx = 1
-  c.gridy = 3
-  c.gridwidth = 1
   private val resetSettings: Button = new Button("Reset settings")
-  add(resetSettings, c)
+  add(resetSettings, new GridBagConstraints(1, 3, 1, defaultInsets))
 
-  c.gridx = 2
-  c.gridy = 3
-  c.gridwidth = 1
   private val goBackButton: Button = new Button("Go Back to Menu")
-  add(goBackButton, c)
+  add(goBackButton, new GridBagConstraints(2, 3, 1, defaultInsets))
 
   connectSliderToLabel(startCardSlider, startCardValue)
   connectSliderToLabel(handicapSlider, handicapValue)
   updateWithSavedSettings()
 
-  saveSettings.addActionListener((e: ActionEvent) =>
-    val newSettings: GameSettings = GameSettings(
-      Difficulty.fromInt(difficultyOptions.getSelectedIndex),
-      startCardSlider.getValue,
-      handicapSlider.getValue
-    )
-    controller.saveSettings(newSettings)
+  saveSettings.addActionListener(
+    _ =>
+      val newSettings: GameSettings = GameSettings(
+        Difficulty.fromInt(difficultyOptions.getSelectedIndex),
+        startCardSlider.getValue,
+        handicapSlider.getValue
+      )
+      controller.saveSettings(newSettings)
   )
 
-  resetSettings.addActionListener((e: ActionEvent) =>
-    controller.resetSettings()
-    updateWithSavedSettings()
+  resetSettings.addActionListener(
+    _ =>
+      controller.resetSettings()
+      updateWithSavedSettings()
   )
 
-  goBackButton.addActionListener((e: ActionEvent) =>
-    pageController.showMainMenu()
+  goBackButton.addActionListener(
+    _ => pageController.showMainMenu()
   )
 
   private def connectSliderToLabel(slider: JSlider, label: JLabel): Unit =
-    slider.addChangeListener((e: ChangeEvent) =>
-      val slider: JSlider = e.getSource.asInstanceOf[JSlider]
-      label.setText(slider.getValue.toString)
+    slider.addChangeListener(
+      (e: ChangeEvent) =>
+        val slider: JSlider = e.getSource.asInstanceOf[JSlider]
+        label.setText(slider.getValue.toString)
     )
 
   private def updateWithSavedSettings(): Unit =
