@@ -4,7 +4,7 @@ import controller.{PageController, SettingsController}
 import model.settings.Difficulty.Difficulty
 import model.settings.{Difficulty, GameSettings}
 import utils.ImageHandler.backgroundSettings
-import view.{Button, GridBagConstraints, Label}
+import view.{Button, ComboBox, GridBagConstraints, Label}
 
 import java.awt.event.{ActionEvent, ActionListener}
 import java.awt.{Graphics, Graphics2D, GridBagLayout, Insets}
@@ -30,7 +30,7 @@ class SettingsGui(pageController: PageController, controller: SettingsController
   c.gridx = 1
   c.gridy = 0
   c.gridwidth = 2
-  private val difficultyOptions: JComboBox[String] = new JComboBox(DIFFICULTY_LIST.map(_.toString))
+  private val difficultyOptions: ComboBox = new ComboBox(DIFFICULTY_LIST.map(_.toString))
   add(difficultyOptions, c)
 
   c.gridx = 0
