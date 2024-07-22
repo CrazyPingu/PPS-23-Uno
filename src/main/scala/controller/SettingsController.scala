@@ -1,5 +1,6 @@
 package controller
 
+import model.settings.Difficulty.Difficulty
 import model.settings.{GameSettings, Settings, SettingsImpl}
 import view.settings.SettingsGui
 
@@ -10,4 +11,11 @@ class SettingsController:
   private var gui: Option[SettingsGui] = None
   private val settings: Settings = SettingsImpl(SETTINGS_FILEPATH)
 
-  
+  def setGui(gui: SettingsGui): Unit =
+    this.gui = Some(gui)
+
+  def updateSettings(newSettings: GameSettings): Unit =
+    this.settings.updateSettings(newSettings)
+
+  def getCurrentDifficulty: Difficulty =
+    this.settings.gameSettings.difficulty
