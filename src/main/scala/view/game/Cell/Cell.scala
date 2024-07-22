@@ -37,16 +37,16 @@ class Cell extends JButton:
       super.setIcon(null)
       super.setDisabledIcon(null)
     else if getWidth > 0 && getHeight > 0 then
-      val image: ImageIcon = new ImageIcon(
-        rotateImage(img, rotation).getScaledInstance(getWidth, getHeight, Image.SCALE_SMOOTH)
-      )
+      val rotatedImage: Image = rotateImage(img, rotation)
+      val image: ImageIcon = new ImageIcon(rotatedImage.getScaledInstance(getWidth, getHeight, Image.SCALE_SMOOTH))
       super.setIcon(image)
       super.setDisabledIcon(image)
     else
       addComponentListener(
         new ComponentAdapter:
           override def componentResized(e: java.awt.event.ComponentEvent): Unit =
-            val image: ImageIcon = new ImageIcon(img.getScaledInstance(getWidth, getHeight, Image.SCALE_SMOOTH))
+            val image: ImageIcon =
+              new ImageIcon(rotateImage(img, rotation).getScaledInstance(getWidth, getHeight, Image.SCALE_SMOOTH))
             setIcon(image)
             setDisabledIcon(image)
             removeComponentListener(this)

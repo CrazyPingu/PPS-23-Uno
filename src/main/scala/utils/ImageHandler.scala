@@ -26,6 +26,8 @@ object ImageHandler:
 
   val gameLogo: Image = loadImage("Logo.png")
 
+  val turnArrow: Image = loadImage("Arrow.png")
+
   def loadCardImage(cardName: String, color: Color): Image =
     loadImage("cards/" + color.toString + "/" + color.toString + "_" + cardName + ".png")
 
