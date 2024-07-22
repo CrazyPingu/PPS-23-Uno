@@ -1,64 +1,72 @@
 package view.settings
 
-import model.settings.{GameSettings, Settings, SettingsImpl}
-import utils.ImageHandler.{backgroundSettings, backgroundTable}
+import controller.SettingsController
+import model.settings.Difficulty.Difficulty
+import model.settings.{Difficulty, GameSettings}
+import utils.ImageHandler.backgroundSettings
 import view.game.CoordinateHandler.panelGridDimension
 
 import java.awt.event.{ActionEvent, ActionListener}
-import java.awt.{Color, FlowLayout, Graphics, Graphics2D, GridLayout}
-import javax.swing.{Box, JButton, JComboBox, JLabel, JPanel}
+import java.awt.{Color, Component, FlowLayout, Graphics, Graphics2D, GridLayout, LayoutManager}
+import javax.swing.event.{ChangeEvent, ChangeListener}
+import javax.swing.{Box, JButton, JComboBox, JLabel, JPanel, JSlider}
 
-class SettingsGui extends JPanel:
+class SettingsGui(controller: SettingsController) extends JPanel:
+  private val MIN_STARTING_CARDS: Int = 4
+  private val MAX_STARTING_CARDS: Int = 7
+  private val DIFFICULTY_LIST: Array[Difficulty] = Difficulty.values.toArray
+
   private val layout: GridLayout = new GridLayout(panelGridDimension(0), panelGridDimension(1))
   setLayout(layout)
-
-  private val projectRoot: String = System.getProperty("user.dir")
-  private val settingsFilePath: String = s"$projectRoot/config/settings.json"
-  private val settings : Settings = SettingsImpl(settingsFilePath)
-
+  
   add(Box.createVerticalGlue())
 
-  private val difficultyPanel : JPanel = new JPanel()
   private val difficultyLabel : JLabel = new JLabel("Difficulty:")
-  private val difficultyOptions: JComboBox[String] = new JComboBox(Array("Easy", "Hard"))
-  difficultyLabel.setForeground(Color.WHITE)
-  difficultyPanel.setLayout(new FlowLayout())
-  difficultyPanel.setOpaque(false)
-  difficultyPanel.add(difficultyLabel)
-  difficultyPanel.add(difficultyOptions)
-  add(difficultyPanel)
+  private val difficultyOptions: JComboBox[String] = new JComboBox(DIFFICULTY_LIST.map(_.toString))
+  add(generatePanel(List(difficultyLabel, difficultyOptions), None))
 
   add(Box.createVerticalStrut(10))
 
-  private val buttonPanel : JPanel = new JPanel()
-  private val buttonLabel : JLabel = new JLabel("Button:")
-  private val buttonOptions: JComboBox[String] = new JComboBox(Array("Option 1", "Option 2", "Option 3"))
-  buttonLabel.setForeground(Color.WHITE)
-  buttonPanel.setLayout(new FlowLayout())
-  buttonPanel.setOpaque(false)
-  buttonPanel.add(buttonLabel)
-  buttonPanel.add(buttonOptions)
-  add(buttonPanel)
+  private val startCardLabel : JLabel = new JLabel("Number of starting cards:")
+  private val startCardSlider: JSlider = new JSlider(4, 7, 7)
+  private val startCardValue: JLabel = new JLabel("7")
+  add(generatePanel(List(startCardLabel, startCardSlider, startCardValue), None))
 
   add(Box.createVerticalStrut(20))
 
-  private val endPanel : JPanel = new JPanel()
   private val saveSettings : JButton = new JButton("Save settings")
   private val goBackButton: JButton = new JButton("Go Back to Menu")
-  endPanel.setLayout(new FlowLayout())
-  endPanel.setOpaque(false)
-  endPanel.add(saveSettings)
-  endPanel.add(goBackButton)
-  add(endPanel)
+  add(generatePanel(List(saveSettings, goBackButton), Option(new FlowLayout())))
 
   add(Box.createVerticalGlue())
 
-  saveSettings.addActionListener((e: ActionEvent) => settings.updateSettings(GameSettings(
-    difficultyOptions.getSelectedItem.toString
-    )))
+  startCardSlider.addChangeListener((e: ChangeEvent) =>
+    val slider: JSlider = e.getSource.asInstanceOf[JSlider]
+    startCardValue.setText(slider.getValue.toString)
+  )
+
+  saveSettings.addActionListener((e: ActionEvent) =>
+    val newSettings: GameSettings = GameSettings(
+      Difficulty.fromInt(difficultyOptions.getSelectedIndex),
+      startCardSlider.getValue
+    )
+    
+  )
 
   goBackButton.addActionListener((e: ActionEvent) =>
-    println("Go Back to Menu button pressed"))
+    println("Go Back to Menu button pressed")
+  )
+
+  private def generatePanel(componentList: List[Component], layout: Option[LayoutManager]): JPanel =
+    val panel: JPanel = new JPanel()
+    panel.setForeground(Color.WHITE)
+    if layout.isEmpty then
+      panel.setLayout(new FlowLayout())
+    else
+      panel.setLayout(layout.get)
+    panel.setOpaque(false)
+    componentList.foreach(panel.add)
+    panel
 
   override protected def paintComponent(g: Graphics): Unit =
     super.paintComponent(g)
