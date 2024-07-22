@@ -4,7 +4,7 @@ import model.cards.factory.CardFactoryImpl
 import view.CardLayoutId.MainMenu
 import view.game.ChangeColor.ChooseColor
 import view.game.Gui
-import view.{CardLayoutId, Frame}
+import view.{CardLayoutId, Frame, LoseScreen, WinScreen}
 
 class PageController(private val frame: Frame):
 
@@ -14,6 +14,9 @@ class PageController(private val frame: Frame):
   private val gui = new Gui(controller)
   private val gameLoop = new GameLoop(controller, gui, cardFactory)
   controller.setGuiAndGameLoop(gui, gameLoop)
+
+  frame.add(new WinScreen(this), CardLayoutId.Win)
+  frame.add(new LoseScreen(this), CardLayoutId.Lose)
   frame.add(gui, CardLayoutId.Game)
   frame.add(new ChooseColor(controller), CardLayoutId.ChangeColor)
 
@@ -21,8 +24,8 @@ class PageController(private val frame: Frame):
     frame.show(MainMenu)
 
   def showGame(newGame: Boolean = true): Unit =
-    frame.show(CardLayoutId.Game)
     if newGame then gameLoop.start()
+    frame.show(CardLayoutId.Game)
 
   def showChangeColor(): Unit =
     frame.show(CardLayoutId.ChangeColor)
@@ -37,9 +40,11 @@ class PageController(private val frame: Frame):
     frame.show(CardLayoutId.Settings)
 
   def showWin(): Unit =
+    gameLoop.stop()
     frame.show(CardLayoutId.Win)
 
   def showLose(): Unit =
+    gameLoop.stop()
     frame.show(CardLayoutId.Lose)
 
   def closeWindow(): Unit =
