@@ -6,7 +6,7 @@ import view.game.ChangeColor.ChooseColor
 import view.game.Gui
 import view.{CardLayoutId, Frame}
 
-class PageController(frame: Frame):
+class PageController(private val frame: Frame):
 
   private val cardFactory: CardFactoryImpl = CardFactoryImpl()
   private val controller = new GameController(this, cardFactory)
