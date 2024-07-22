@@ -1,9 +1,10 @@
 package controller
 
 import model.cards.factory.CardFactoryImpl
-import view.CardLayoutId.MainMenu
+import view.CardLayoutId.{MainMenu, Settings}
 import view.game.ChangeColor.ChooseColor
 import view.game.Gui
+import view.settings.SettingsGui
 import view.{CardLayoutId, Frame, LoseScreen, WinScreen}
 
 class PageController(private val frame: Frame):
@@ -19,6 +20,10 @@ class PageController(private val frame: Frame):
   frame.add(new LoseScreen(this), CardLayoutId.Lose)
   frame.add(gui, CardLayoutId.Game)
   frame.add(new ChooseColor(controller), CardLayoutId.ChangeColor)
+
+  private val settingsController: SettingsController = SettingsController()
+  private val settingsGui: SettingsGui = SettingsGui(this, settingsController)
+  frame.add(settingsGui, CardLayoutId.Settings)
 
   def showMainMenu(): Unit =
     frame.show(MainMenu)
