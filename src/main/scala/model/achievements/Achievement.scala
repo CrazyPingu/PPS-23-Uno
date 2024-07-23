@@ -10,8 +10,8 @@ class Achievement(private val achID: Int, private val achDesc: String, private v
   private val threshold: Int = achThreshold
   private val comparator: ComparisonOperator = achComparator
 
-  override def update(event: Event): Unit = event.name match
-    case `description` if description.equals(event.name) =>
+  override def update(event: Event): Unit = event.id match
+    case `id` if this.id.equals(event.id) =>
       isAchieved = comparator.compare(event.data, threshold)
     case _ => // Do nothing
 
