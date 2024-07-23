@@ -9,7 +9,7 @@ class AchievementController:
   private val PROJECT_ROOT: String = System.getProperty("user.dir")
   private val ACHIEVEMENT_FILEPATH: String = s"$PROJECT_ROOT/achievement/achievement.json"
 
-  private val achievementList: List[Achievement] = JsonUtils.loadFromFile[List[Achievement]](ACHIEVEMENT_FILEPATH).getOrElse(AchievementGenerator().achievementList)
+  val achievementList: List[Achievement] = JsonUtils.loadFromFile[List[Achievement]](ACHIEVEMENT_FILEPATH).getOrElse(AchievementGenerator().achievementList)
   private val achievementObservable: AchievementObservable = AchievementObservable()
   achievementObservable.addObservers(achievementList)
 
