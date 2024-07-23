@@ -1,4 +1,4 @@
-import model.achievements.{Achievement, Event}
+import model.achievements.{Achievement, ComparisonOperator, Event}
 import org.scalatest.BeforeAndAfterAll
 import org.scalatest.funsuite.AnyFunSuite
 import utils.{ComparisonOperator, JsonUtils}
