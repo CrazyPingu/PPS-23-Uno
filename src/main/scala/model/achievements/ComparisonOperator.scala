@@ -1,4 +1,4 @@
-package utils
+package model.achievements
 
 import play.api.libs.json.{Format, JsError, JsResult, JsString, JsSuccess, JsValue}
 
