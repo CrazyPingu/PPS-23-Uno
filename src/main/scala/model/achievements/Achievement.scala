@@ -1,7 +1,33 @@
 package model.achievements
+import play.api.libs.functional.syntax.toFunctionalBuilderOps
+import play.api.libs.json.{JsPath, Reads, Writes}
+import utils.{ComparisonOperator, Event, Observer, comparisonOperatorFormat}
 
-import utils.Observer
+class Achievement(private val achID: Int, private val achDesc: String, private val achieved: Boolean, private val achThreshold: Int, private val achComparator: ComparisonOperator) extends Observer:
+  val id: Int = achID
+  val description: String = achDesc
+  var isAchieved: Boolean = achieved
+  private val threshold: Int = achThreshold
+  private val comparator: ComparisonOperator = achComparator
 
-trait Achievement extends Observer:
+  override def update(event: Event): Unit = event.name match
+    case `description` if description.equals(event.name) =>
+      isAchieved = comparator.compare(event.data, threshold)
+    case _ => // Do nothing
 
-  def checkAchievement(): Boolean
+object Achievement:
+  implicit val achievementWrites: Writes[Achievement] = (
+    (JsPath \ "id").write[Int] and
+      (JsPath \ "description").write[String] and
+      (JsPath \ "isAchieved").write[Boolean] and
+      (JsPath \ "threshold").write[Int] and
+      (JsPath \ "comparator").write[ComparisonOperator]
+    )(ach => (ach.id, ach.description, ach.isAchieved, ach.threshold, ach.comparator))
+
+  implicit val achievementReads: Reads[Achievement] = (
+    (JsPath \ "id").read[Int] and
+      (JsPath \ "description").read[String] and
+      (JsPath \ "isAchieved").read[Boolean] and
+      (JsPath \ "threshold").read[Int] and
+      (JsPath \ "comparator").read[ComparisonOperator]
+    )(new Achievement(_, _, _, _, _))
