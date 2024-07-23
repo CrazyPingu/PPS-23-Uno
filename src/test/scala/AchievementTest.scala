@@ -1,8 +1,14 @@
 import model.achievements.{Achievement, Event}
+import org.scalatest.BeforeAndAfterAll
 import org.scalatest.funsuite.AnyFunSuite
-import utils.ComparisonOperator
+import utils.{ComparisonOperator, JsonUtils}
 
-class AchievementTest extends AnyFunSuite:
+import java.nio.file.{Files, Paths}
+
+class AchievementTest extends AnyFunSuite with BeforeAndAfterAll:
+
+  private val projectRoot: String = System.getProperty("user.dir")
+  private val achievementFilePath: String = s"$projectRoot/achievementTest/achievement.json"
 
   test("Should get the achievement data."):
     val achievement = Achievement(0, "test", false, 1, ComparisonOperator.Equal)
@@ -32,5 +38,21 @@ class AchievementTest extends AnyFunSuite:
     achLess.update(Event(0, 0))
     assert(achLess.isAchieved)
 
-  test("Should save the achievement and load when already exist"):
-    assert(true)
+  test("Should save and load the achievement"):
+    val achievement = Achievement(0, "test", false, 1, ComparisonOperator.Equal)
+    JsonUtils.saveToFile(achievementFilePath, achievement)
+    val jsonData: Option[Achievement] = JsonUtils.loadFromFile[Achievement](achievementFilePath)
+    assert(jsonData.isDefined)
+
+    val jsonAchievement: Achievement = jsonData.get
+    assert(achievement.id.equals(jsonAchievement.id))
+    assert(achievement.description.equals(jsonAchievement.description))
+    assert(achievement.isAchieved.equals(jsonAchievement.isAchieved))
+
+    jsonAchievement.update(Event(0, 1))
+    assert(jsonAchievement.isAchieved)
+
+  override def afterAll(): Unit =
+    Files.delete(Paths.get(achievementFilePath))
+    Files.delete(Paths.get(achievementFilePath).getParent)
+
