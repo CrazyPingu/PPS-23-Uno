@@ -19,3 +19,6 @@ class AchievementController:
 
   def saveAchievements(): Unit =
     JsonUtils.saveToFile(ACHIEVEMENT_FILEPATH, achievementObservable.achievementList)
+  
+  def resetAchievements(): Unit =
+    JsonUtils.saveToFile(ACHIEVEMENT_FILEPATH, AchievementGenerator().achievementList)
