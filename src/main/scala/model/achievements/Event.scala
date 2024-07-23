@@ -1,3 +1,3 @@
 package model.achievements
 
-case class Event(name: String, data: Int)
+case class Event(id: Int, data: Int)
