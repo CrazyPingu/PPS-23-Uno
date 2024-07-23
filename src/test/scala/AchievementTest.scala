@@ -1,7 +1,7 @@
 import model.achievements.{Achievement, ComparisonOperator, Event}
 import org.scalatest.BeforeAndAfterAll
 import org.scalatest.funsuite.AnyFunSuite
-import utils.{ComparisonOperator, JsonUtils}
+import utils.JsonUtils
 
 import java.nio.file.{Files, Paths}
 
