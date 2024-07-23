@@ -45,9 +45,7 @@ class AchievementTest extends AnyFunSuite with BeforeAndAfterAll:
     assert(jsonData.isDefined)
 
     val jsonAchievement: Achievement = jsonData.get
-    assert(achievement.id.equals(jsonAchievement.id))
-    assert(achievement.description.equals(jsonAchievement.description))
-    assert(achievement.isAchieved.equals(jsonAchievement.isAchieved))
+    assert(equalAchievements(achievement, jsonAchievement))
 
     jsonAchievement.update(Event(0, 1))
     assert(jsonAchievement.isAchieved)
@@ -56,3 +54,9 @@ class AchievementTest extends AnyFunSuite with BeforeAndAfterAll:
     Files.delete(Paths.get(achievementFilePath))
     Files.delete(Paths.get(achievementFilePath).getParent)
 
+  def equalAchievements(ach1: Achievement, ach2: Achievement): Boolean =
+    if ach1.id.equals(ach2.id) && 
+      ach1.description.equals(ach2.description) && 
+      ach1.isAchieved.equals(ach2.isAchieved) then true
+    else false
+    
