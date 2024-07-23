@@ -1,7 +1,7 @@
 package model.achievements
 import play.api.libs.functional.syntax.toFunctionalBuilderOps
 import play.api.libs.json.{JsPath, Reads, Writes}
-import utils.{ComparisonOperator, Event, Observer, comparisonOperatorFormat}
+import utils.{ComparisonOperator, comparisonOperatorFormat}
 
 class Achievement(private val achID: Int, private val achDesc: String, private val achieved: Boolean, private val achThreshold: Int, private val achComparator: ComparisonOperator) extends Observer:
   val id: Int = achID
