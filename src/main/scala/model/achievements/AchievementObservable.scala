@@ -1,7 +1,7 @@
 package model.achievements;
 
-class AchievementObservable(private val filePath: String) extends Observable:
-  private var achievementList: List[Achievement] = List()
+class AchievementObservable extends Observable:
+  var achievementList: List[Achievement] = List()
 
   override def addObserver(observer: Observer): Unit = observer match
     case observer: Achievement => achievementList = observer :: achievementList
