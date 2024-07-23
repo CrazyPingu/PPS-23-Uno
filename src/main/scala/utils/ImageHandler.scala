@@ -71,7 +71,10 @@ object ImageHandler:
         bimage
 
   private def loadImage(path: String): Image =
-    try ImageIO.read(new File("src/main/resources/" + path))
+    try
+      val stream = getClass.getClassLoader.getResourceAsStream(path)
+      if stream == null then throw new IOException(s"Resource not found: $path")
+      ImageIO.read(stream)
     catch
       case e: IOException =>
         System.err.println(s"Error loading image: $path")
