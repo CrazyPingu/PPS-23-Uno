@@ -17,6 +17,11 @@ class GridBagConstraints extends java.awt.GridBagConstraints:
     this(gridx, gridy)
     this.gridwidth = gridwidth
 
+  def this(gridx: Int, gridy: Int, gridwidth: Int, gridheight: Int, insets: Insets) =
+    this(gridx, gridy)
+    this.gridwidth = gridwidth  
+    this.gridheight = gridheight
+
   def this(gridx: Int, gridy: Int, gridwidth: Int, insets: Insets) =
     this(gridx, gridy, gridwidth)
     this.insets = insets
