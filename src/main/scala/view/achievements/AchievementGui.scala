@@ -6,8 +6,7 @@ import view.settings.Table
 import view.{Button, GridBagConstraints, Label}
 
 import java.awt.{Color, Graphics, Graphics2D, GridBagLayout, Insets}
-import javax.swing.table.{DefaultTableModel, TableColumn}
-import javax.swing.{JList, JPanel, JTable}
+import javax.swing.{JPanel, JTable}
 
 class AchievementGui(pageController: PageController, achievementController: AchievementController) extends JPanel:
   setLayout(new GridBagLayout())
@@ -18,7 +17,7 @@ class AchievementGui(pageController: PageController, achievementController: Achi
   add(title, new GridBagConstraints(0, 0, 2, defaultInsets))
 
   private val columnNames: Array[AnyRef] = Array("Description", "Is achieved")
-  private val achievementTable: JTable = new Table(getDataOnArray, columnNames, Array(400, 200))
+  private var achievementTable: Table = new Table(getDataOnArray, columnNames, Array(400, 200))
   add(achievementTable, new GridBagConstraints(0, 1, 2, defaultInsets))
 
   private val resetAchievementsButton: Button = new Button("Reset achievements")
@@ -36,6 +35,11 @@ class AchievementGui(pageController: PageController, achievementController: Achi
   goBackButton.addActionListener(
     _ => pageController.showMainMenu()
   )
+
+  def updateGui(): Unit =
+    remove(achievementTable)
+    achievementTable = new Table(getDataOnArray, columnNames, Array(400, 200))
+    add(achievementTable, new GridBagConstraints(0, 1, 2, defaultInsets))
 
   private def getDataOnArray: Array[Array[AnyRef]] =
     var stringArray: Array[Array[AnyRef]] = Array[Array[AnyRef]]()
