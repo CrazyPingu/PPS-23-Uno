@@ -43,6 +43,7 @@ class PageController(private val frame: Frame):
     frame.show(CardLayoutId.Tutorial)
 
   def showAchievements(): Unit =
+    achievementGui.updateGui()
     frame.show(CardLayoutId.Achievement)
 
   def showSettings(): Unit =
