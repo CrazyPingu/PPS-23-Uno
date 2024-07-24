@@ -1,7 +1,6 @@
 package controller
 
 import model.cards.factory.CardFactoryImpl
-import view.CardLayoutId
 import view.achievements.AchievementGui
 import view.game.ChangeColor.ChooseColor
 import view.game.Gui
