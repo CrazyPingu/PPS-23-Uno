@@ -36,7 +36,7 @@ class GameLoop(private val controller: GameController, private val gui: Gui, val
     gui.setEntity(bot1, bot2, bot3, player)
     controller.startNewGame(player, deck)
 
-    giveStartingCards(bot1, bot2, bot3, player, deck)
+    giveStartingCards(bot1, bot2, bot3, player, deck, gameSettings.startCardValue)
     gui.updateTurnArrow(currentTurn)
 
   def nextTurn(): Unit =
@@ -74,7 +74,7 @@ class GameLoop(private val controller: GameController, private val gui: Gui, val
     case Difficulty.Easy => (new EasyBotPlayerImpl, new EasyBotPlayerImpl, new EasyBotPlayerImpl)
     case Difficulty.Hard => (new HardBotPlayerImpl, new HardBotPlayerImpl, new HardBotPlayerImpl)
     case _ => throw new IllegalArgumentException("Unsupported difficulty level")
-  
+
   /**
    * Give starting cards to all players
    */
