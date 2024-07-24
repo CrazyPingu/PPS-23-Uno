@@ -20,3 +20,5 @@ class AchievementController:
   
   def resetAchievements(): Unit =
     JsonUtils.saveToFile(ACHIEVEMENT_FILEPATH, AchievementGenerator().achievementList)
+
+  def achievementList: List[Achievement] = achievementObservable.achievementList
