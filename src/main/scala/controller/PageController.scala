@@ -16,7 +16,7 @@ class PageController(private val frame: Frame):
   private val achievementGui: AchievementGui = AchievementGui(this, achievementController)
   
   private val cardFactory: CardFactoryImpl = CardFactoryImpl()
-  private val controller = new GameController(this, cardFactory)
+  private val controller = new GameController(this, achievementController, cardFactory)
   cardFactory.attachController(controller)
   private val gui = new Gui(controller)
   private val gameLoop = new GameLoop(controller, settingsController, gui, cardFactory)

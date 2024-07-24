@@ -1,5 +1,6 @@
 package controller
 
+import model.achievements.{AchievementId, Event}
 import model.bot.BotPlayer
 import model.cards.factory.CardFactory
 import model.cards.special.{ChangeColor, DrawCard}
@@ -7,10 +8,9 @@ import model.cards.{Card, SpecialCard}
 import model.{Deck, Hand}
 import utils.Color
 import utils.Compatibility.isCompatible
-import view.{CardLayoutId, Frame}
 import view.game.Gui
 
-class GameController(private val pageController: PageController, private val cardFactory: CardFactory):
+class GameController(private val pageController: PageController, private val achievementController: AchievementController, val cardFactory: CardFactory):
   private var gui: Option[Gui] = None
   private var gameLoop: Option[GameLoop] = None
   private var deck: Option[Deck] = None
@@ -21,6 +21,7 @@ class GameController(private val pageController: PageController, private val car
   def drawCard(hand: Hand = playerHand.get, num: Int = 1, skipTurn: Boolean = true): Unit =
     gui.get.allowPlayerAction(false)
     for _ <- 0 until num do hand.addCard(deck.get.draw())
+    achievementController.notifyAchievements(Event(AchievementId.hold2CardsAchievement.value, deck.get.length))
     gui.get.updateGui()
     if skipTurn then gameLoop.get.nextTurn()
 
@@ -41,10 +42,18 @@ class GameController(private val pageController: PageController, private val car
       gui.get.allowPlayerAction(false)
       disposeCard(card)
       hand.removeCard(card)
-      checkIfSpecialCard(card)
+      if hand == playerHand.get then
+        achievementController.notifyAchievements(Event(AchievementId.firstCardAchievement.value, 1))
+      checkIfSpecialCard(card, hand == playerHand.get)
 
-      if playerHand.get.isEmpty then pageController.showWin()
-      else if hand.isEmpty then pageController.showLose()
+      if playerHand.get.isEmpty then
+        achievementController.notifyAchievements(Event(AchievementId.firstWinAchievement.value, 1))
+        achievementController.saveAchievements()
+        pageController.showWin()
+      else if hand.isEmpty then
+        achievementController.notifyAchievements(Event(AchievementId.firstLoseAchievement.value, 1))
+        achievementController.saveAchievements()
+        pageController.showLose()
 
       if card.color != Color.Black then
         gui.get.updateGui()
@@ -97,8 +106,14 @@ class GameController(private val pageController: PageController, private val car
     unoCalled = false
     gui.get.setUnoButtonChecked(false)
 
-  private def checkIfSpecialCard(card: Card): Unit =
+  private def checkIfSpecialCard(card: Card, isPlayer: Boolean = false): Unit =
     card match
+      case c: DrawCard if c.numberToDraw == 4 && c.color == Color.Black && isPlayer =>
+        achievementController.notifyAchievements(Event(AchievementId.firstPlus4Achievement.value, 1))
+        c.execute()
+      case c: ChangeColor if c.color == Color.Black && isPlayer=>
+        achievementController.notifyAchievements(Event(AchievementId.firstColorChangeAchievement.value, 1))
+        c.execute()
       case c: SpecialCard => c.execute()
       case _              => ()
 
