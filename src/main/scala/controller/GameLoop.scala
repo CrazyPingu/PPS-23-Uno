@@ -1,8 +1,9 @@
 package controller
 
-import model.bot.{BotPlayer, EasyBotPlayerImpl}
+import model.bot.{BotPlayer, EasyBotPlayerImpl, HardBotPlayerImpl}
 import model.cards.Card
 import model.cards.factory.CardFactoryImpl
+import model.settings.{Difficulty, GameSettings}
 import model.{Deck, Hand}
 import view.game.Gui
 
@@ -10,7 +11,7 @@ import scala.concurrent.Future
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.util.Random
 
-class GameLoop(private val controller: GameController, private val gui: Gui, val cardFactory: CardFactoryImpl):
+class GameLoop(private val controller: GameController, private val gui: Gui, val cardFactory: CardFactoryImpl, private val gameSettings: GameSettings):
   private var player: Hand = _
   private var bot1: BotPlayer = _
   private var bot2: BotPlayer = _
@@ -69,9 +70,11 @@ class GameLoop(private val controller: GameController, private val gui: Gui, val
 
   def stop(): Unit = isRunning = false
 
-  private def createBotPlayers(): (BotPlayer, BotPlayer, BotPlayer) =
-    (new EasyBotPlayerImpl, new EasyBotPlayerImpl, new EasyBotPlayerImpl)
-
+  private def createBotPlayers(): (BotPlayer, BotPlayer, BotPlayer) = gameSettings.difficulty match
+    case Difficulty.Easy => (new EasyBotPlayerImpl, new EasyBotPlayerImpl, new EasyBotPlayerImpl)
+    case Difficulty.Hard => (new HardBotPlayerImpl, new HardBotPlayerImpl, new HardBotPlayerImpl)
+    case _ => throw new IllegalArgumentException("Unsupported difficulty level")
+  
   /**
    * Give starting cards to all players
    */
