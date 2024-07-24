@@ -1,4 +1,4 @@
-package controller
+package model.achievements
 
 import model.achievements.{Achievement, AchievementId, ComparisonOperator}
 

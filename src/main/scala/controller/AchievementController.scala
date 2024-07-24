@@ -1,6 +1,6 @@
 package controller
 
-import model.achievements.{Achievement, AchievementObservable, Event}
+import model.achievements.{Achievement, AchievementGenerator, AchievementObservable, Event}
 import utils.JsonUtils
 
 import java.nio.file.{Files, Paths}
