@@ -15,4 +15,5 @@ project/*
 
 .idea/
 
+achievement.json
 settings.json

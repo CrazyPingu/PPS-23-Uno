@@ -12,7 +12,12 @@ import scala.concurrent.Future
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.util.Random
 
-class GameLoop(private val controller: GameController, private val settingsController: SettingsController, private val gui: Gui, val cardFactory: CardFactoryImpl):
+class GameLoop(
+  private val controller: GameController,
+  private val settingsController: SettingsController,
+  private val gui: Gui,
+  val cardFactory: CardFactoryImpl
+):
   private var player: Hand = _
   private var bot1: BotPlayer = _
   private var bot2: BotPlayer = _
@@ -35,7 +40,7 @@ class GameLoop(private val controller: GameController, private val settingsContr
     clockWiseDirection = true
     isRunning = true
     turnOrder = List(player, bot1, bot2, bot3)
-    
+
     gui.setEntity(bot1, bot2, bot3, player)
     controller.startNewGame(player, deck)
 
@@ -76,7 +81,7 @@ class GameLoop(private val controller: GameController, private val settingsContr
   private def createBotPlayers(difficulty: Difficulty): (BotPlayer, BotPlayer, BotPlayer) = difficulty match
     case Difficulty.Easy => (new EasyBotPlayerImpl, new EasyBotPlayerImpl, new EasyBotPlayerImpl)
     case Difficulty.Hard => (new HardBotPlayerImpl, new HardBotPlayerImpl, new HardBotPlayerImpl)
-    case _ => throw new IllegalArgumentException("Unsupported difficulty level")
+    case _               => throw new IllegalArgumentException("Unsupported difficulty level")
 
   /**
    * Give starting cards to all players
@@ -95,7 +100,6 @@ class GameLoop(private val controller: GameController, private val settingsContr
       bot2.addCard(deck.draw())
       bot3.addCard(deck.draw())
 
-    for _ <- 0 until numToDraw do
-      player.addCard(deck.draw())
+    for _ <- 0 until numToDraw do player.addCard(deck.draw())
 
     gui.updateGui()

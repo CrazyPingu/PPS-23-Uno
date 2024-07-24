@@ -1,6 +1,6 @@
 package model.bot
 
-import model.cards.{Card, SimpleCard, SpecialCard}
+import model.cards.Card
 import utils.{Color, Compatibility}
 
 import scala.collection.mutable
@@ -20,5 +20,5 @@ abstract class BotPlayerImpl extends BotPlayer:
     val sortedColors = colorCounts.toSeq.sortBy(-_(1))
     val mostFrequent = sortedColors.head(0)
 
-    if mostFrequent == Color.Black && sortedColors.size > 1 then sortedColors(1)(0)
+    if mostFrequent == Color.Black then Random.shuffle(Color.values.filterNot(_ == Color.Black)).toList.head
     else mostFrequent

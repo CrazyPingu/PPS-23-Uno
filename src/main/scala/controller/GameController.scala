@@ -10,7 +10,11 @@ import utils.Color
 import utils.Compatibility.isCompatible
 import view.game.Gui
 
-class GameController(private val pageController: PageController, private val achievementController: AchievementController, val cardFactory: CardFactory):
+class GameController(
+  private val pageController: PageController,
+  private val achievementController: AchievementController,
+  val cardFactory: CardFactory
+):
   private var gui: Option[Gui] = None
   private var gameLoop: Option[GameLoop] = None
   private var deck: Option[Deck] = None
@@ -19,6 +23,7 @@ class GameController(private val pageController: PageController, private val ach
   private var unoCalled = false
 
   def drawCard(hand: Hand = playerHand.get, num: Int = 1, skipTurn: Boolean = true): Unit =
+    if deck.get.isEmpty then deck = Some(Deck(cardFactory))
     gui.get.allowPlayerAction(false)
     for _ <- 0 until num do hand.addCard(deck.get.draw())
     achievementController.notifyAchievements(Event(AchievementId.hold2CardsAchievement.value, deck.get.length))
@@ -111,7 +116,7 @@ class GameController(private val pageController: PageController, private val ach
       case c: DrawCard if c.numberToDraw == 4 && c.color == Color.Black && isPlayer =>
         achievementController.notifyAchievements(Event(AchievementId.firstPlus4Achievement.value, 1))
         c.execute()
-      case c: ChangeColor if c.color == Color.Black && isPlayer=>
+      case c: ChangeColor if c.color == Color.Black && isPlayer =>
         achievementController.notifyAchievements(Event(AchievementId.firstColorChangeAchievement.value, 1))
         c.execute()
       case c: SpecialCard => c.execute()
