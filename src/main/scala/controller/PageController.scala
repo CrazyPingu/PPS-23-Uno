@@ -16,7 +16,7 @@ class PageController(private val frame: Frame):
   private val controller = new GameController(this, cardFactory)
   cardFactory.attachController(controller)
   private val gui = new Gui(controller)
-  private val gameLoop = new GameLoop(controller, gui, cardFactory, settingsController.settings.gameSettings)
+  private val gameLoop = new GameLoop(controller, settingsController, gui, cardFactory)
   controller.setGuiAndGameLoop(gui, gameLoop)
   
   frame.add(new WinScreen(this), CardLayoutId.Win)
