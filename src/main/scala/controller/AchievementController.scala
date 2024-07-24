@@ -7,7 +7,7 @@ class AchievementController:
   private val PROJECT_ROOT: String = System.getProperty("user.dir")
   private val ACHIEVEMENT_FILEPATH: String = s"$PROJECT_ROOT/achievement/achievement.json"
 
-  private val achievementObservable: AchievementObservable = AchievementObservable()
+  private var achievementObservable: AchievementObservable = AchievementObservable()
   achievementObservable.addObservers(
     JsonUtils.loadFromFile[List[Achievement]](ACHIEVEMENT_FILEPATH).getOrElse(AchievementGenerator().achievementList)
   )
@@ -19,6 +19,8 @@ class AchievementController:
     JsonUtils.saveToFile(ACHIEVEMENT_FILEPATH, achievementObservable.achievementList)
   
   def resetAchievements(): Unit =
+    achievementObservable = AchievementObservable()
+    achievementObservable.addObservers(AchievementGenerator().achievementList)
     JsonUtils.saveToFile(ACHIEVEMENT_FILEPATH, AchievementGenerator().achievementList)
 
   def achievementList: List[Achievement] = achievementObservable.achievementList
