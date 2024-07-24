@@ -1,4 +1,4 @@
-package model.achievements;
+package model.achievements
 
 class AchievementObservable extends Observable:
   var achievementList: List[Achievement] = List()

@@ -6,4 +6,4 @@ enum AchievementId(val value: Int):
   case firstColorChangeAchievement extends AchievementId(2)
   case firstWinAchievement extends AchievementId(3)
   case firstLoseAchievement extends AchievementId(4)
-  case play5CardsAchievement extends AchievementId(5)
+  case hold2CardsAchievement extends AchievementId(5)

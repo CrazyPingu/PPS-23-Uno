@@ -1,9 +1,7 @@
 package controller
 
-import model.achievements.{Achievement, AchievementObservable, Event}
+import model.achievements.{Achievement, AchievementGenerator, AchievementObservable, Event}
 import utils.JsonUtils
-
-import java.nio.file.{Files, Paths}
 
 class AchievementController:
   private val PROJECT_ROOT: String = System.getProperty("user.dir")
@@ -22,3 +20,5 @@ class AchievementController:
   
   def resetAchievements(): Unit =
     JsonUtils.saveToFile(ACHIEVEMENT_FILEPATH, AchievementGenerator().achievementList)
+
+  def achievementList: List[Achievement] = achievementObservable.achievementList

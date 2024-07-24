@@ -1,4 +1,4 @@
-package controller
+package model.achievements
 
 import model.achievements.{Achievement, AchievementId, ComparisonOperator}
 
@@ -9,5 +9,5 @@ class AchievementGenerator:
     Achievement(AchievementId.firstColorChangeAchievement.value, "Play the first color change card.", false, 1, ComparisonOperator.Equal),
     Achievement(AchievementId.firstWinAchievement.value, "Win your game for the first time.", false, 1, ComparisonOperator.Equal),
     Achievement(AchievementId.firstLoseAchievement.value, "Lose your game for the first time.", false, 1, ComparisonOperator.Equal),
-    Achievement(AchievementId.play5CardsAchievement.value, "Play 5 cards in a game.", false, 4, ComparisonOperator.Greater)
+    Achievement(AchievementId.hold2CardsAchievement.value, "Hold 2 cards in your hand.", false, 3, ComparisonOperator.Less)
   )

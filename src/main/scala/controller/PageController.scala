@@ -1,7 +1,7 @@
 package controller
 
 import model.cards.factory.CardFactoryImpl
-import view.CardLayoutId.{MainMenu, Settings}
+import view.achievements.AchievementGui
 import view.game.ChangeColor.ChooseColor
 import view.game.Gui
 import view.settings.SettingsGui
@@ -11,9 +11,12 @@ class PageController(private val frame: Frame):
 
   private val settingsController: SettingsController = SettingsController()
   private val settingsGui: SettingsGui = SettingsGui(this, settingsController)
+
+  private val achievementController: AchievementController = AchievementController()
+  private val achievementGui: AchievementGui = AchievementGui(this, achievementController)
   
   private val cardFactory: CardFactoryImpl = CardFactoryImpl()
-  private val controller = new GameController(this, cardFactory)
+  private val controller = new GameController(this, achievementController, cardFactory)
   cardFactory.attachController(controller)
   private val gui = new Gui(controller)
   private val gameLoop = new GameLoop(controller, settingsController, gui, cardFactory)
@@ -24,9 +27,10 @@ class PageController(private val frame: Frame):
   frame.add(gui, CardLayoutId.Game)
   frame.add(new ChooseColor(controller), CardLayoutId.ChangeColor)
   frame.add(settingsGui, CardLayoutId.Settings)
+  frame.add(achievementGui, CardLayoutId.Achievement)
 
   def showMainMenu(): Unit =
-    frame.show(MainMenu)
+    frame.show(CardLayoutId.MainMenu)
 
   def showGame(newGame: Boolean = true): Unit =
     if newGame then gameLoop.start()
