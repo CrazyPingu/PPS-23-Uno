@@ -26,7 +26,7 @@ class GameController(
     if deck.get.isEmpty then deck = Some(Deck(cardFactory))
     gui.get.allowPlayerAction(false)
     for _ <- 0 until num do hand.addCard(deck.get.draw())
-    achievementController.notifyAchievements(Event(AchievementId.hold2CardsAchievement.value, deck.get.length))
+    achievementController.notifyAchievements(Event(AchievementId.hold2CardsAchievement.value, playerHand.get.length))
     gui.get.updateGui()
     if skipTurn then gameLoop.get.nextTurn()
 
