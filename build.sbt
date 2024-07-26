@@ -12,7 +12,6 @@ lazy val root = project
       "org.scalatest" %% "scalatest" % "3.2.18" % Test,
       "org.playframework" %% "play-json" % "3.0.4"
     ),
-    coverageEnabled := true,
     assembly / assemblyJarName := "Uno.jar",
     assembly / assemblyMergeStrategy := {
       case PathList("META-INF", _*) => MergeStrategy.discard

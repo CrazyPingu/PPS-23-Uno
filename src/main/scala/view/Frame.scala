@@ -1,9 +1,10 @@
 package view
 
+import utils.ImageHandler
 import view.CardLayoutId.Base
 
 import java.awt.CardLayout
-import javax.swing.{JFrame, JPanel, WindowConstants}
+import javax.swing.{JFrame, JPanel, UIManager, WindowConstants}
 
 /**
  * Enum to handle the different layouts of the frame using CardLayout
@@ -24,6 +25,10 @@ class Frame extends JFrame:
   setSize(1280, 720)
   setResizable(false)
   setLocationRelativeTo(null)
+  try
+    for info <- UIManager.getInstalledLookAndFeels do
+      if "Nimbus" == info.getName then UIManager.setLookAndFeel(info.getClassName)
+  catch case _: Exception => ()
   add(cardPanel)
   add(new JPanel(), Base)
   show(Base)
