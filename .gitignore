@@ -6,9 +6,14 @@ hs_err_pid*
 
 target/
 
-project
+project/*
+!project/plugins.sbt
+!project/build.properties
 
 .DS_Store
 .bsp/
 
 .idea/
+
+achievement.json
+settings.json
