@@ -22,4 +22,4 @@ Il gioco è progettato per essere giocato da un giocatore contro tre avversari c
 
 ---
 
-[Indice](../index.md) | [Capitolo Successivo](./prossimo.md)
+[Indice](../index.md) | [Capitolo Successivo](./2-Processo.md)
