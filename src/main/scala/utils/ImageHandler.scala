@@ -33,6 +33,18 @@ object ImageHandler:
 
   val turnArrow: Image = loadImage("Arrow.png")
 
+  val chooseCard: Image = loadImage("tutorial/ChooseCard.png")
+
+  val drawCard: Image = loadImage("tutorial/DrawCard.png")
+
+  val UnoPress: Image = loadImage("tutorial/UnoPress.png")
+
+  val cardCompatibility: Image = loadImage("tutorial/CompatibilityCard.png")
+
+  val specialCards: Image = loadImage("tutorial/SpecialCards.png")
+
+  val tutorialWin: Image = loadImage("tutorial/Win.png")
+
   def loadCardImage(cardName: String, color: Color): Image =
     loadImage("cards/" + color.toString + "/" + color.toString + "_" + cardName + ".png")
 
