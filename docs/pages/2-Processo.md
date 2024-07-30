@@ -1,5 +1,7 @@
 # Processo di sviluppo
 
+Il processo di sviluppo del progetto è stato guidato da principi di agilità e collaborazione, seguendo la metodologia _Scrum_ e 
+utilizzando strumenti e tecniche come _Test Driven Development (TDD)_, _Continuous Integration (CI)_, _Build Automation_ e _Quality Assurance_.
 ## Scrum
 
 Scrum è un framework di gestione dei progetti e sviluppo del software che si basa su principi di agilità e collaborazione (Metodologia _Agile_). 
@@ -18,6 +20,17 @@ Al termine di ogni _sprint_ si esegue una revisione, che consente al team di ada
 - **Sprint Review:** Questo incontro ha lo scopo di dimostrare i risultati ottenuti, raccogliere feedback e discutere eventuali modifiche necessarie.
 
 - **Sprint Retrospective:** Durante questa attività, il team riflette sulle esperienze dello sprint appena concluso, analizzando le pratiche adottate e i risultati ottenuti. L’obiettivo principale è identificare le aree di miglioramento e discutere modifiche ai processi e alle metodologie di lavoro.
+
+### Suddivisone del lavoro
+
+Nel nostro progetto si sono presentati tre ruoli principali:
+
+- Product Owner: il cui compito é di verificare l'adeguatezza del sistema che si sta sviluppando, ruolo svolto da Pablo Sebastian Vargas Grateron.
+- Scrum Master: il cui ruolo e quello di mediare tra il Product Owner e il Development Team, ruolo svolto da Nicola Montanari.
+- Development Team: team che si occupa dello sviluppo del progetto e del testing, composto da:
+  - Samuele De Tuglie
+  - Pablo Sebastian Vargas Grateron
+  - Nicola Montanari
 
 
 
