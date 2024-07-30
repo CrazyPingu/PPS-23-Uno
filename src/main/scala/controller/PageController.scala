@@ -5,6 +5,7 @@ import view.achievements.AchievementGui
 import view.game.ChangeColor.ChooseColor
 import view.game.Gui
 import view.settings.SettingsGui
+import view.tutorial.TutorialGui
 import view.{CardLayoutId, Frame, LoseScreen, WinScreen}
 
 class PageController(private val frame: Frame):
@@ -14,6 +15,8 @@ class PageController(private val frame: Frame):
 
   private val achievementController: AchievementController = AchievementController()
   private val achievementGui: AchievementGui = AchievementGui(this, achievementController)
+
+  private val tutorialGui: TutorialGui = TutorialGui(this)
   
   private val cardFactory: CardFactoryImpl = CardFactoryImpl()
   private val controller = new GameController(this, achievementController, cardFactory)
@@ -28,6 +31,7 @@ class PageController(private val frame: Frame):
   frame.add(new ChooseColor(controller), CardLayoutId.ChangeColor)
   frame.add(settingsGui, CardLayoutId.Settings)
   frame.add(achievementGui, CardLayoutId.Achievement)
+  frame.add(tutorialGui, CardLayoutId.Tutorial)
 
   def showMainMenu(): Unit =
     frame.show(CardLayoutId.MainMenu)
