@@ -9,19 +9,28 @@ import javax.swing.border.EmptyBorder
 import view.{Button, GridBagConstraints}
 
 class TutorialGui(pageController: PageController) extends JPanel :
-  private val slides = new TutorialSlideFactory().createSlides()
+
+  private val SlideFactory = new TutorialSlideFactory()
+  private val slides = Array(
+    SlideFactory.createCompatibilitySlide(),
+    SlideFactory.createSpecialCardSlide(),
+    SlideFactory.createCardSlide(),
+    SlideFactory.createDeckSlide(),
+    SlideFactory.createUnoSlide(),
+    SlideFactory.createWinLoseSlide()
+  )
+  
   this.setBackground(new Color(10,10,10))
   private var currentSlideIndex = 0
 
   private val imageLabel = new JLabel("", SwingConstants.CENTER)
 
-  private val prevButton = new Button("Previous Page")
-  private val nextButton = new Button("Next Page")
-  private val mainMenuButton = new Button("Main Menu")
+  private val prevButton = new Button("Previous Page", (200, 50))
+  private val nextButton = new Button("Next Page", (200, 50))
+  private val mainMenuButton = new Button("Main Menu", (410, 50))
   private val defaultInsets: Insets = new Insets(5, 5, 5, 5)
-  private val buttonPanel = new JPanel()
+  private val buttonPanel = new JPanel(new GridBagLayout())
   buttonPanel.setBackground(new Color(10,10,10))
-  buttonPanel.setLayout(new GridBagLayout())
   buttonPanel.add(prevButton, new GridBagConstraints(0, 0, 1, defaultInsets))
   buttonPanel.add(mainMenuButton, new GridBagConstraints(0, 1, 2, defaultInsets))
   buttonPanel.add(nextButton, new GridBagConstraints(1, 0, 1, defaultInsets))
@@ -34,9 +43,8 @@ class TutorialGui(pageController: PageController) extends JPanel :
   descriptionLabel.setFont(new Font("Arial", Font.PLAIN, 25))
   descriptionLabel.setForeground(Color.WHITE)
   
-  private val textPanel = new JPanel()
+  private val textPanel = new JPanel(new GridLayout(2, 1))
   textPanel.setBackground(new Color(10,10,10))
-  textPanel.setLayout(new GridLayout(2, 1))
   textPanel.add(titleLabel)
   textPanel.add(descriptionLabel)
 
