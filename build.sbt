@@ -1,8 +1,11 @@
+import org.scalafmt.sbt.ScalafmtPlugin.autoImport.*
+
 val scala3Version = "3.3.1"
 
 lazy val root = project
   .in(file("."))
   .settings(
+    scalafmtOnCompile := true,
     name := "PPS-23-Uno",
     version := "0.1.0-SNAPSHOT",
     scalaVersion := scala3Version,
@@ -16,5 +19,5 @@ lazy val root = project
     assembly / assemblyMergeStrategy := {
       case PathList("META-INF", _*) => MergeStrategy.discard
       case _                        => MergeStrategy.first
-    }
+    },
   )
