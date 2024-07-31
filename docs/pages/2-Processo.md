@@ -2,6 +2,7 @@
 
 Il processo di sviluppo del progetto è stato guidato da principi di agilità e collaborazione, seguendo la metodologia _Scrum_ e 
 utilizzando strumenti e tecniche come _Test Driven Development (TDD)_, _Continuous Integration (CI)_, _Build Automation_ e _Quality Assurance_.
+
 ## Scrum
 
 Scrum è un framework di gestione dei progetti e sviluppo del software che si basa su principi di agilità e collaborazione (Metodologia _Agile_). 
@@ -32,8 +33,6 @@ Nel nostro progetto si sono presentati tre ruoli principali:
   - Pablo Sebastian Vargas Grateron
   - Nicola Montanari
 
-
-
 ## Test Driven Development (TDD)
 
 Per questo progetto abbiamo scelto di seguire il metodo di sviluppo Test Driven Development (TDD). I benefici del TDD includono una maggiore qualità del codice grazie a una progettazione più modulare e meno dipendente. I test automatizzati forniscono un feedback immediato, aiutano a identificare e correggere rapidamente gli errori e fungono da documentazione vivente del sistema. Inoltre, permettono di apportare modifiche al codice con maggiore fiducia, sapendo che eventuali regressioni verranno rilevate rapidamente.
@@ -58,4 +57,4 @@ Per garantire la coerenza e l'uniformità nel codice, è stato implementato un f
 
 ---
 
-[Indice](../index.md) | [Capitolo Precedente](./1-Introduzione.md) | [Capitolo Successivo](./prossimo.md)
+[Indice](../index.md) | [Capitolo Precedente](./1-Introduzione.md) | [Capitolo Successivo](./3-Requisiti.md)
