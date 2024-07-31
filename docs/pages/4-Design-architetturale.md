@@ -1,3 +1,10 @@
+# Design architetturale
+
+## Architettura complessiva
+
+## Pattern architetturali
+
+## Scelte tecnologiche
 
 ---
 
