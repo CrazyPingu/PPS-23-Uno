@@ -1,9 +1,8 @@
 package model
 
-import controller.GameController
 import model.cards.Card
-import model.cards.factory.{CardFactory, CardFactoryImpl}
-import utils.Color
+import model.cards.factory.CardFactory
+import utils.{CardNumber, Color}
 
 import scala.collection.mutable.ArrayBuffer
 import scala.util.Random
@@ -15,15 +14,15 @@ import scala.util.Random
  * 4 wild draw 4 cards, 4 wild cards.
  */
 class Deck(private val factory: CardFactory) extends ArrayBuffer[Card]:
-
+  
   // Add colored cards to the deck
   for color <- Color.values if color != Color.Black do
-    this += factory.createSimpleCard(0, color)
+    this += factory.createSimpleCard(CardNumber.Zero, color)
     for _ <- 0 to 1 do
       this += factory.createSkipCard(1, color)
       this += factory.createReverseCard(color)
       this += factory.createDrawCard(2, color)
-    for number <- 0 to 17 do this += factory.createSimpleCard(number / 2 + 1, color)
+    for number <- 0 to 17 do this += factory.createSimpleCard(CardNumber.values(number / 2), color)
 
   // Add wild cards to the deck
   for _ <- 0 to 3 do

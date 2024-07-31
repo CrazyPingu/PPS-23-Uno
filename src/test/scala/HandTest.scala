@@ -2,7 +2,8 @@ import model.Hand
 import model.cards.SimpleCardImpl
 import model.cards.special.ChangeColor
 import org.scalatest.funsuite.AnyFunSuite
-import utils.Color
+import utils.CardNumber.Five
+import utils.{CardNumber, Color}
 import utils.ImageHandler.loadCardImage
 
 /**
@@ -19,7 +20,7 @@ class HandTest extends AnyFunSuite:
   test("Should be able to add a SimpleCard"):
     val hand = new Hand()
     assert(hand.isEmpty)
-    val simpleCard = new SimpleCardImpl(5, Color.Red, loadCardImage("5", Color.Red))
+    val simpleCard = new SimpleCardImpl(Five, Color.Red, loadCardImage("5", Color.Red))
     hand.addCard(simpleCard)
     assert(hand.size == 1)
 
@@ -27,7 +28,7 @@ class HandTest extends AnyFunSuite:
     val hand = new Hand()
     assert(hand.isEmpty)
     for num <- 0 to N_CARDS do
-      val simpleCard = new SimpleCardImpl(num, Color.Red, loadCardImage(num.toString, Color.Red))
+      val simpleCard = new SimpleCardImpl(CardNumber.values(num), Color.Red, loadCardImage(num.toString, Color.Red))
       hand.addCard(simpleCard)
       assert(hand.size == num + 1)
 
@@ -49,7 +50,7 @@ class HandTest extends AnyFunSuite:
   test("Should be able to remove a SimpleCard"):
     val hand = new Hand()
     assert(hand.isEmpty)
-    val simpleCard = new SimpleCardImpl(5, Color.Red, loadCardImage("5", Color.Red))
+    val simpleCard = new SimpleCardImpl(Five, Color.Red, loadCardImage("5", Color.Red))
     hand.addCard(simpleCard)
     assert(hand.size == 1)
     hand.removeCard(simpleCard)
@@ -86,7 +87,7 @@ class HandTest extends AnyFunSuite:
   test("Check if the Hand has a precise SimpleCard"):
     val hand = new Hand()
     assert(hand.isEmpty)
-    val simpleCard = new SimpleCardImpl(5, Color.Red, loadCardImage("5", Color.Red))
+    val simpleCard = new SimpleCardImpl(Five, Color.Red, loadCardImage("5", Color.Red))
     hand.addCard(simpleCard)
     assert(hand.hasCard(simpleCard))
 
@@ -100,7 +101,7 @@ class HandTest extends AnyFunSuite:
   test("Check if the Hand has a precise SpecialCard and a precise SimpleCard"):
     val hand = new Hand()
     assert(hand.isEmpty)
-    val simpleCard = new SimpleCardImpl(5, Color.Red, loadCardImage("5", Color.Red))
+    val simpleCard = new SimpleCardImpl(Five, Color.Red, loadCardImage("5", Color.Red))
     val specialCard = new ChangeColor(null)
     hand.addCard(specialCard)
     hand.addCard(simpleCard)
