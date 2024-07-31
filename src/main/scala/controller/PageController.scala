@@ -1,6 +1,6 @@
 package controller
 
-import model.cards.factory.CardFactoryImpl
+import view.Mainmenu
 import view.achievements.AchievementGui
 import view.game.ChangeColor.ChooseColor
 import view.game.Gui
@@ -8,58 +8,44 @@ import view.settings.SettingsGui
 import view.tutorial.TutorialGui
 import view.{CardLayoutId, Frame, LoseScreen, WinScreen}
 
-class PageController(private val frame: Frame):
+object PageController:
 
-  private val settingsController: SettingsController = SettingsController()
-  private val settingsGui: SettingsGui = SettingsGui(this, settingsController)
-
-  private val achievementController: AchievementController = AchievementController()
-  private val achievementGui: AchievementGui = AchievementGui(this, achievementController)
-
-  private val tutorialGui: TutorialGui = TutorialGui(this)
-  
-  private val cardFactory: CardFactoryImpl = CardFactoryImpl()
-  private val controller = new GameController(this, achievementController, cardFactory)
-  cardFactory.attachController(controller)
-  private val gui = new Gui(controller)
-  private val gameLoop = new GameLoop(controller, settingsController, gui, cardFactory)
-  controller.setGuiAndGameLoop(gui, gameLoop)
-  
-  frame.add(new WinScreen(this), CardLayoutId.Win)
-  frame.add(new LoseScreen(this), CardLayoutId.Lose)
-  frame.add(gui, CardLayoutId.Game)
-  frame.add(new ChooseColor(controller), CardLayoutId.ChangeColor)
-  frame.add(settingsGui, CardLayoutId.Settings)
-  frame.add(achievementGui, CardLayoutId.Achievement)
-  frame.add(tutorialGui, CardLayoutId.Tutorial)
+  Frame.add(Mainmenu, CardLayoutId.MainMenu)
+  Frame.add(WinScreen, CardLayoutId.Win)
+  Frame.add(LoseScreen, CardLayoutId.Lose)
+  Frame.add(Gui, CardLayoutId.Game)
+  Frame.add(ChooseColor, CardLayoutId.ChangeColor)
+  Frame.add(SettingsGui, CardLayoutId.Settings)
+  Frame.add(AchievementGui, CardLayoutId.Achievement)
+  Frame.add(TutorialGui, CardLayoutId.Tutorial)
 
   def showMainMenu(): Unit =
-    frame.show(CardLayoutId.MainMenu)
+    Frame.show(CardLayoutId.MainMenu)
 
   def showGame(newGame: Boolean = true): Unit =
-    if newGame then gameLoop.start()
-    frame.show(CardLayoutId.Game)
+    if newGame then GameLoop.start()
+    Frame.show(CardLayoutId.Game)
 
   def showChangeColor(): Unit =
-    frame.show(CardLayoutId.ChangeColor)
+    Frame.show(CardLayoutId.ChangeColor)
 
   def showTutorial(): Unit =
-    frame.show(CardLayoutId.Tutorial)
+    Frame.show(CardLayoutId.Tutorial)
 
   def showAchievements(): Unit =
-    achievementGui.updateGui()
-    frame.show(CardLayoutId.Achievement)
+    AchievementGui.updateGui()
+    Frame.show(CardLayoutId.Achievement)
 
   def showSettings(): Unit =
-    frame.show(CardLayoutId.Settings)
+    Frame.show(CardLayoutId.Settings)
 
   def showWin(): Unit =
-    gameLoop.stop()
-    frame.show(CardLayoutId.Win)
+    GameLoop.stop()
+    Frame.show(CardLayoutId.Win)
 
   def showLose(): Unit =
-    gameLoop.stop()
-    frame.show(CardLayoutId.Lose)
+    GameLoop.stop()
+    Frame.show(CardLayoutId.Lose)
 
   def closeWindow(): Unit =
-    frame.dispose()
+    Frame.dispose()

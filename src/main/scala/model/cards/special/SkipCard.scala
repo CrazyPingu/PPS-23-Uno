@@ -11,8 +11,8 @@ import utils.ImageHandler.loadCardImage
  * @param cardColor    The color of the card
  * @param numberToSkip The number of players to skip
  */
-class SkipCard(private val cardColor: Color, private val numberToSkip: Int, private val controller: GameController)
-    extends SpecialCard(cardColor, loadCardImage("Skip", cardColor), controller):
+class SkipCard(private val cardColor: Color, private val numberToSkip: Int)
+    extends SpecialCard(cardColor, loadCardImage("Skip", cardColor)):
 
   override def toString: String = "Skip " + color.toString
 
@@ -24,4 +24,4 @@ class SkipCard(private val cardColor: Color, private val numberToSkip: Int, priv
   /**
    * The next player has to skip a certain number of turns.
    */
-  override def execute(): Unit = controller.skipNextTurn(numberToSkip)
+  override def execute(): Unit = GameController.skipNextTurn(numberToSkip)

@@ -10,5 +10,4 @@ class EasyBotPlayerImpl extends BotPlayerImpl:
     if compatibleCards.nonEmpty then
       val card = compatibleCards.head
       Some(card)
-    else
-      None
+    else None

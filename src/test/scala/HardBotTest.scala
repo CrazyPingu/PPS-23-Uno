@@ -4,7 +4,7 @@ import model.cards.special.ChangeColor
 import model.cards.{SimpleCard, SimpleCardImpl, SpecialCard}
 import utils.Color
 import utils.ImageHandler.loadCardImage
-import utils.CardNumber.{Five, Six, Seven}
+import utils.CardNumber.{Five, Seven, Six}
 
 class HardBotTest extends AnyFunSuite:
 

@@ -2,7 +2,6 @@ package controller
 
 import model.bot.{BotPlayer, EasyBotPlayerImpl, HardBotPlayerImpl}
 import model.cards.Card
-import model.cards.factory.CardFactoryImpl
 import model.settings.Difficulty.Difficulty
 import model.settings.{Difficulty, GameSettings}
 import model.{Deck, Hand}
@@ -12,12 +11,7 @@ import scala.concurrent.Future
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.util.Random
 
-class GameLoop(
-  private val controller: GameController,
-  private val settingsController: SettingsController,
-  private val gui: Gui,
-  val cardFactory: CardFactoryImpl
-):
+object GameLoop:
   private var player: Hand = _
   private var bot1: BotPlayer = _
   private var bot2: BotPlayer = _
@@ -28,9 +22,9 @@ class GameLoop(
   private var isRunning = false
 
   def start(): Unit =
-    val currentSettings: GameSettings = settingsController.settings.gameSettings
+    val currentSettings: GameSettings = SettingsController.settings.gameSettings
 
-    val deck = Deck(cardFactory)
+    val deck = Deck()
     player = Hand()
     val bots = createBotPlayers(currentSettings.difficulty)
     bot1 = bots(0)
@@ -41,28 +35,28 @@ class GameLoop(
     isRunning = true
     turnOrder = List(player, bot1, bot2, bot3)
 
-    gui.setEntity(bot1, bot2, bot3, player)
-    controller.startNewGame(player, deck)
+    Gui.setEntity(bot1, bot2, bot3, player)
+    GameController.startNewGame(player, deck)
 
     giveStartingCards(bot1, bot2, bot3, player, deck, currentSettings.startCardValue, currentSettings.handicap)
-    gui.updateTurnArrow(currentTurn)
+    Gui.updateTurnArrow(currentTurn)
 
   def nextTurn(): Unit =
     if !isRunning then return
     Future:
       currentTurn = (currentTurn + (if clockWiseDirection then 1 else -1) + turnOrder.size) % turnOrder.size
-      gui.updateTurnArrow(currentTurn)
+      Gui.updateTurnArrow(currentTurn)
       turnOrder(currentTurn) match
         case bot: BotPlayer =>
           Thread.sleep((1500 + Random.nextInt(1500)).toLong)
-          bot.chooseCardToUse(controller.lastPlayedCard.get) match
+          bot.chooseCardToUse(GameController.lastPlayedCard.get) match
             case Some(card) =>
-              controller.chooseCard(card, bot)
+              GameController.chooseCard(card, bot)
             case None =>
-              controller.drawCard(bot)
+              GameController.drawCard(bot)
         case _ =>
-          controller.checkUno()
-          gui.allowPlayerAction(true)
+          GameController.checkUno()
+          Gui.allowPlayerAction(true)
 
   def reverseTurnOrder(): Unit = clockWiseDirection = !clockWiseDirection
 
@@ -70,7 +64,7 @@ class GameLoop(
 
   def nextDrawCard(numberToDraw: Int): Unit =
     val nextPlayer = turnOrder((currentTurn + (if clockWiseDirection then 1 else -1) + turnOrder.size) % turnOrder.size)
-    controller.drawCard(nextPlayer, numberToDraw, false)
+    GameController.drawCard(nextPlayer, numberToDraw, false)
 
   def skipNextTurn(numberToSkip: Int): Unit =
     if clockWiseDirection then currentTurn = (currentTurn + numberToSkip + turnOrder.size) % turnOrder.size
@@ -102,4 +96,4 @@ class GameLoop(
 
     for _ <- 0 until numToDraw do player.addCard(deck.draw())
 
-    gui.updateGui()
+    Gui.updateGui()

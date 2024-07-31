@@ -2,7 +2,7 @@ import model.bot.EasyBotPlayerImpl
 import model.cards.special.ChangeColor
 import model.cards.SimpleCardImpl
 import org.scalatest.funsuite.AnyFunSuite
-import utils.CardNumber.{Five, Six, Seven}
+import utils.CardNumber.{Five, Seven, Six}
 import utils.Color
 import utils.ImageHandler.loadCardImage
 

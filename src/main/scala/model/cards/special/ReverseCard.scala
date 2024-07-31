@@ -10,12 +10,11 @@ import utils.ImageHandler.loadCardImage
  *
  * @param cardColor The color of the card
  */
-class ReverseCard(private val cardColor: Color, private val controller: GameController)
-    extends SpecialCard(cardColor, loadCardImage("Reverse", cardColor), controller):
+class ReverseCard(private val cardColor: Color) extends SpecialCard(cardColor, loadCardImage("Reverse", cardColor)):
 
   override def toString: String = "Reverse " + color.toString
 
   /**
    * Reverses the turn order.
    */
-  override def execute(): Unit = controller.reverseDirection()
+  override def execute(): Unit = GameController.reverseDirection()

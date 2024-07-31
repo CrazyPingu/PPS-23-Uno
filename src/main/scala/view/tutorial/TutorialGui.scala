@@ -8,7 +8,7 @@ import javax.swing.*
 import javax.swing.border.EmptyBorder
 import view.{Button, GridBagConstraints}
 
-class TutorialGui(pageController: PageController) extends JPanel :
+object TutorialGui extends JPanel:
 
   private val SlideFactory = new TutorialSlideFactory()
   private val slides = Array(
@@ -19,8 +19,8 @@ class TutorialGui(pageController: PageController) extends JPanel :
     SlideFactory.createUnoSlide(),
     SlideFactory.createWinLoseSlide()
   )
-  
-  this.setBackground(new Color(10,10,10))
+
+  this.setBackground(new Color(10, 10, 10))
   private var currentSlideIndex = 0
 
   private val imageLabel = new JLabel("", SwingConstants.CENTER)
@@ -30,7 +30,7 @@ class TutorialGui(pageController: PageController) extends JPanel :
   private val mainMenuButton = new Button("Main Menu", (410, 50))
   private val defaultInsets: Insets = new Insets(5, 5, 5, 5)
   private val buttonPanel = new JPanel(new GridBagLayout())
-  buttonPanel.setBackground(new Color(10,10,10))
+  buttonPanel.setBackground(new Color(10, 10, 10))
   buttonPanel.add(prevButton, new GridBagConstraints(0, 0, 1, defaultInsets))
   buttonPanel.add(mainMenuButton, new GridBagConstraints(0, 1, 2, defaultInsets))
   buttonPanel.add(nextButton, new GridBagConstraints(1, 0, 1, defaultInsets))
@@ -38,13 +38,13 @@ class TutorialGui(pageController: PageController) extends JPanel :
   private val titleLabel = new JLabel("", SwingConstants.CENTER)
   titleLabel.setFont(new Font("Arial", Font.BOLD, 40))
   titleLabel.setForeground(Color.WHITE)
-  
+
   private val descriptionLabel = new JLabel("", SwingConstants.CENTER)
   descriptionLabel.setFont(new Font("Arial", Font.PLAIN, 25))
   descriptionLabel.setForeground(Color.WHITE)
-  
+
   private val textPanel = new JPanel(new GridLayout(2, 1))
-  textPanel.setBackground(new Color(10,10,10))
+  textPanel.setBackground(new Color(10, 10, 10))
   textPanel.add(titleLabel)
   textPanel.add(descriptionLabel)
 
@@ -55,7 +55,7 @@ class TutorialGui(pageController: PageController) extends JPanel :
   this.add(buttonPanel, BorderLayout.SOUTH)
 
   private def showSlide(index: Int): Unit =
-    if (index >= 0 && index < slides.length)
+    if index >= 0 && index < slides.length then
       prevButton.setEnabled(index != 0)
       nextButton.setEnabled(index != slides.length - 1)
       currentSlideIndex = index
@@ -64,10 +64,16 @@ class TutorialGui(pageController: PageController) extends JPanel :
       imageLabel.setIcon(new ImageIcon(slide.image))
       descriptionLabel.setText(slide.description)
 
-  prevButton.addActionListener(_ => showSlide(currentSlideIndex - 1))
-  nextButton.addActionListener(_ => showSlide(currentSlideIndex + 1))
-  mainMenuButton.addActionListener(_ =>
-    pageController.showMainMenu()
-    showSlide(0))
+  prevButton.addActionListener(
+    _ => showSlide(currentSlideIndex - 1)
+  )
+  nextButton.addActionListener(
+    _ => showSlide(currentSlideIndex + 1)
+  )
+  mainMenuButton.addActionListener(
+    _ =>
+      PageController.showMainMenu()
+      showSlide(0)
+  )
 
   showSlide(0)

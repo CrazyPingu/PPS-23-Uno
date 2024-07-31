@@ -11,7 +11,7 @@ import java.awt.{Graphics, Graphics2D, GridBagLayout, Insets}
 import javax.swing.event.{ChangeEvent, ChangeListener}
 import javax.swing.{JLabel, JPanel, JSlider}
 
-class SettingsGui(pageController: PageController, controller: SettingsController) extends JPanel:
+object SettingsGui extends JPanel:
   private val MIN_STARTING_CARDS: Int = 4
   private val MAX_STARTING_CARDS: Int = 7
   private val DIFFICULTY_LIST: Array[Difficulty] = Difficulty.values.toArray
@@ -63,17 +63,17 @@ class SettingsGui(pageController: PageController, controller: SettingsController
         startCardSlider.getValue,
         handicapSlider.getValue
       )
-      controller.saveSettings(newSettings)
+      SettingsController.saveSettings(newSettings)
   )
 
   resetSettings.addActionListener(
     _ =>
-      controller.resetSettings()
+      SettingsController.resetSettings()
       updateWithSavedSettings()
   )
 
   goBackButton.addActionListener(
-    _ => pageController.showMainMenu()
+    _ => PageController.showMainMenu()
   )
 
   private def connectSliderToLabel(slider: JSlider, label: JLabel): Unit =
@@ -84,7 +84,7 @@ class SettingsGui(pageController: PageController, controller: SettingsController
     )
 
   private def updateWithSavedSettings(): Unit =
-    val currentSettings: GameSettings = controller.settings.gameSettings
+    val currentSettings: GameSettings = SettingsController.settings.gameSettings
     difficultyOptions.setSelectedIndex(Difficulty.toInt(currentSettings.difficulty))
     startCardSlider.setValue(currentSettings.startCardValue)
     handicapSlider.setValue(currentSettings.handicap)

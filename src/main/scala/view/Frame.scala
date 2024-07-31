@@ -16,7 +16,7 @@ enum CardLayoutId:
  * The frame of the application, that contains all the panels.
  * It uses a CardLayout to switch between the different panels.
  */
-class Frame extends JFrame:
+object Frame extends JFrame:
   private val cardLayout: CardLayout = new CardLayout
   private val cardPanel: JPanel = new JPanel(cardLayout)
   private var currentLayout: CardLayoutId = _

@@ -6,7 +6,8 @@ import java.awt.{Color, Dimension}
 import javax.swing.{JTable, SwingConstants}
 import javax.swing.table.{DefaultTableCellRenderer, DefaultTableModel, TableColumn}
 
-class Table(data: Array[Array[AnyRef]], columnNames: Array[AnyRef], columnSize: Array[Int]) extends JTable(new DefaultTableModel(data, columnNames)):
+class Table(data: Array[Array[AnyRef]], columnNames: Array[AnyRef], columnSize: Array[Int])
+    extends JTable(new DefaultTableModel(data, columnNames)):
 
   for i <- columnSize.indices do
     val column: TableColumn = this.getColumnModel.getColumn(i)
@@ -22,7 +23,14 @@ class Table(data: Array[Array[AnyRef]], columnNames: Array[AnyRef], columnSize: 
   private def applyPadding(): Unit =
     val renderer = new DefaultTableCellRenderer:
 
-      override def getTableCellRendererComponent(table: JTable, value: Any, isSelected: Boolean, hasFocus: Boolean, row: Int, column: Int): java.awt.Component =
+      override def getTableCellRendererComponent(
+        table: JTable,
+        value: Any,
+        isSelected: Boolean,
+        hasFocus: Boolean,
+        row: Int,
+        column: Int
+      ): java.awt.Component =
         val component = new Label(value.toString)
         value match
           case "Achieved" =>
@@ -35,6 +43,4 @@ class Table(data: Array[Array[AnyRef]], columnNames: Array[AnyRef], columnSize: 
         component.setHorizontalAlignment(SwingConstants.CENTER)
         component
 
-    for (i <- 0 until getColumnCount)do
-      getColumnModel.getColumn(i).setCellRenderer(renderer)
-
+    for i <- 0 until getColumnCount do getColumnModel.getColumn(i).setCellRenderer(renderer)

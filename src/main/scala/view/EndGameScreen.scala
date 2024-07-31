@@ -6,8 +6,7 @@ import java.awt.{GridBagLayout, Image, Insets}
 import javax.swing.JPanel
 import utils.ImageHandler.{defeatBackground, winBackground}
 
-abstract class EndGameScreen(private val backgroundImage: Image, private val pageController: PageController)
-    extends JPanel:
+abstract class EndGameScreen(private val backgroundImage: Image) extends JPanel:
 
   this.setLayout(new GridBagLayout())
   private val gbc = new java.awt.GridBagConstraints()
@@ -17,13 +16,13 @@ abstract class EndGameScreen(private val backgroundImage: Image, private val pag
   this.add(button, gbc)
 
   button.addActionListener(
-    _ => pageController.showMainMenu()
+    _ => PageController.showMainMenu()
   )
 
   override def paintComponent(g: java.awt.Graphics): Unit =
     super.paintComponent(g)
     g.drawImage(backgroundImage, 0, 0, this.getWidth, this.getHeight, this)
 
-class WinScreen(private val pageController: PageController) extends EndGameScreen(winBackground, pageController)
+object WinScreen extends EndGameScreen(winBackground)
 
-class LoseScreen(private val pageController: PageController) extends EndGameScreen(defeatBackground, pageController)
+object LoseScreen extends EndGameScreen(defeatBackground)

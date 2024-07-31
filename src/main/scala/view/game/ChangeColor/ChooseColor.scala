@@ -6,10 +6,10 @@ import utils.Color
 import java.awt.GridLayout
 import javax.swing.JPanel
 
-class ChooseColor(controller: GameController) extends JPanel:
+object ChooseColor extends JPanel:
   this.setLayout(new GridLayout(2, 2))
 
-  this.add(new ColorButton(Color.Red, controller))
-  this.add(new ColorButton(Color.Blue, controller))
-  this.add(new ColorButton(Color.Green, controller))
-  this.add(new ColorButton(Color.Yellow, controller))
+  this.add(new ColorButton(Color.Red))
+  this.add(new ColorButton(Color.Blue))
+  this.add(new ColorButton(Color.Green))
+  this.add(new ColorButton(Color.Yellow))

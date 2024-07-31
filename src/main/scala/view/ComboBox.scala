@@ -16,4 +16,3 @@ class ComboBox(items: Array[String]) extends JComboBox:
   setFont(getFont.deriveFont(20f))
   setBackground(Color.WHITE)
   setForeground(Color.BLACK)
-

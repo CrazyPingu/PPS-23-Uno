@@ -1,8 +1,10 @@
 package model.cards.factory
 
-import model.cards.Card
+import controller.GameController
+import model.cards.special.{ChangeColor, DrawCard, ReverseCard, SkipCard}
+import model.cards.{Card, SimpleCardImpl}
 import utils.{CardNumber, Color}
-
+import utils.ImageHandler.loadCardImage
 
 /**
  * Factory for creating cards.
@@ -43,7 +45,23 @@ trait CardFactory:
    * Creates a skip card with the given color.
    *
    * @param turnToSkip The number of turns to skip.
-   * @param color The color of the card.
+   * @param color      The color of the card.
    * @return The created skip card.
    */
   def createSkipCard(turnToSkip: Int, color: Color): Card
+
+/**
+ * Factory for creating cards.
+ */
+object CardFactory:
+
+  def createSimpleCard(num: CardNumber, color: Color): Card =
+    new SimpleCardImpl(num, color, loadCardImage(num.value.toString, color))
+
+  def createChangeColor(color: Color = Color.Black): Card = new ChangeColor(color)
+
+  def createDrawCard(numToDraw: Int, color: Color): Card = new DrawCard(color, numToDraw)
+
+  def createReverseCard(color: Color): Card = new ReverseCard(color)
+
+  def createSkipCard(turnToSkip: Int, color: Color): Card = new SkipCard(color, turnToSkip)

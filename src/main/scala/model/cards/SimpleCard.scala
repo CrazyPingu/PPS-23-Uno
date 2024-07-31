@@ -11,4 +11,3 @@ trait SimpleCard extends Card:
    * @return The number of the card
    */
   def num: CardNumber
-

@@ -1,8 +1,7 @@
 package view.game
 
-import controller.GameController
 import model.Hand
-import model.bot.{BotPlayer, EasyBotPlayerImpl}
+import model.bot.BotPlayer
 import model.cards.Card
 import utils.ImageHandler.{backgroundTable, retroCards, rotateImage, turnArrow}
 import utils.Rotation.{FLIP_HORIZONTAL, FLIP_VERTICAL, NONE, ROTATE_LEFT, ROTATE_RIGHT}
@@ -15,12 +14,10 @@ import javax.swing.JPanel
 
 /**
  * The graphical user interface of the game
- *
- * @param controller the controller of the game
  */
-class Gui(controller: GameController) extends JPanel:
+object Gui extends JPanel:
   private val layout: GridLayout = new GridLayout(panelGridDimension(1), panelGridDimension(0))
-  private val unoButton = new UnoCell(controller)
+  private val unoButton = new UnoCell()
   private val directionCell = new DirectionCell
   private val usedCardCell = new UsedCardCell
   setLayout(layout)
@@ -62,12 +59,12 @@ class Gui(controller: GameController) extends JPanel:
 
     for row <- 0 until layout.getRows; col <- 0 until layout.getColumns do
       val cell = (row, col) match
-        case (r, c) if r == deckCoordinate(1) && c == deckCoordinate(0)                   => new DeckCell(controller)
+        case (r, c) if r == deckCoordinate(1) && c == deckCoordinate(0)                   => new DeckCell()
         case (r, c) if r == usedCardCoordinate(1) && c == usedCardCoordinate(0)           => usedCardCell
         case (r, c) if r == unoCallCoordinate(1) && c == unoCallCoordinate(0)             => unoButton
         case (r, c) if r == directionCellCoordinate(1) && c == directionCellCoordinate(0) => directionCell
         case (r, c) if arrowCoordinate.contains((r, c))                                   => turnCells((r, c))
-        case (`lastRow`, c)                                                               => new CardCell(controller)
+        case (`lastRow`, c)                                                               => new CardCell()
         case _                                                                            => new Cell()
       this.add(cell)
 

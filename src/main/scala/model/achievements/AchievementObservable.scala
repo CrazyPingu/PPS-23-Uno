@@ -7,11 +7,11 @@ class AchievementObservable extends Observable:
     case observer: Achievement => achievementList = observer :: achievementList
     case _ => throw new IllegalArgumentException("Invalid observer type. It must be an Achievement.")
 
-  override def addObservers(observers: List[Observer]): Unit = 
+  override def addObservers(observers: List[Observer]): Unit =
     observers.foreach(addObserver)
-  
-  override def removeObserver(observer: Observer) : Unit =
+
+  override def removeObserver(observer: Observer): Unit =
     achievementList = achievementList.filterNot(_ == observer)
-  
-  override def notifyObserver(event: Event) : Unit =
+
+  override def notifyObserver(event: Event): Unit =
     achievementList.foreach(_.update(event))

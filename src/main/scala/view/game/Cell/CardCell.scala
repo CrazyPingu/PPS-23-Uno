@@ -6,7 +6,7 @@ import model.cards.Card
 /**
  * A cell that contains a card
  */
-class CardCell(controller: GameController) extends Cell:
+class CardCell extends Cell:
   private var card: Option[Card] = None
 
   /**
@@ -26,5 +26,5 @@ class CardCell(controller: GameController) extends Cell:
     setIcon(null)
 
   addActionListener(
-    _ => if card.isDefined then controller.chooseCard(card.get)
+    _ => if card.isDefined then GameController.chooseCard(card.get)
   )

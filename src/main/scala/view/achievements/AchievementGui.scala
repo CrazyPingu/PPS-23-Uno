@@ -8,7 +8,7 @@ import view.{Button, GridBagConstraints, Label}
 import java.awt.{Color, Graphics, Graphics2D, GridBagLayout, Insets}
 import javax.swing.{JPanel, JTable}
 
-class AchievementGui(pageController: PageController, achievementController: AchievementController) extends JPanel:
+object AchievementGui extends JPanel:
   setLayout(new GridBagLayout())
   private val defaultInsets: Insets = new Insets(10, 10, 10, 10)
 
@@ -28,12 +28,12 @@ class AchievementGui(pageController: PageController, achievementController: Achi
 
   resetAchievementsButton.addActionListener(
     _ =>
-      achievementController.resetAchievements()
-      pageController.showMainMenu()
+      AchievementController.resetAchievements()
+      PageController.showMainMenu()
   )
 
   goBackButton.addActionListener(
-    _ => pageController.showMainMenu()
+    _ => PageController.showMainMenu()
   )
 
   def updateGui(): Unit =
@@ -44,9 +44,10 @@ class AchievementGui(pageController: PageController, achievementController: Achi
   private def getDataOnArray: Array[Array[AnyRef]] =
     var stringArray: Array[Array[AnyRef]] = Array[Array[AnyRef]]()
 
-    achievementController.achievementList.foreach( ach =>
-      val string: Array[AnyRef] = Array(ach.description, prettyBoolean(ach.isAchieved))
-      stringArray = string +: stringArray
+    AchievementController.achievementList.foreach(
+      ach =>
+        val string: Array[AnyRef] = Array(ach.description, prettyBoolean(ach.isAchieved))
+        stringArray = string +: stringArray
     )
     stringArray
 

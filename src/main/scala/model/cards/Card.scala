@@ -18,4 +18,4 @@ trait Card:
   /**
    * @return The image of the card
    */
-  def image : Image
+  def image: Image

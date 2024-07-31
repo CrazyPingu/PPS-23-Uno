@@ -13,21 +13,21 @@ import scala.util.Random
  * 19 number cards (1 zero and 2 of each number up to 9), 2 reverse cards, 2 skip cards, 2 draw 2 cards,
  * 4 wild draw 4 cards, 4 wild cards.
  */
-class Deck(private val factory: CardFactory) extends ArrayBuffer[Card]:
-  
+class Deck extends ArrayBuffer[Card]:
+
   // Add colored cards to the deck
   for color <- Color.values if color != Color.Black do
-    this += factory.createSimpleCard(CardNumber.Zero, color)
+    this += CardFactory.createSimpleCard(CardNumber.Zero, color)
     for _ <- 0 to 1 do
-      this += factory.createSkipCard(1, color)
-      this += factory.createReverseCard(color)
-      this += factory.createDrawCard(2, color)
-    for number <- 0 to 17 do this += factory.createSimpleCard(CardNumber.values(number / 2), color)
+      this += CardFactory.createSkipCard(1, color)
+      this += CardFactory.createReverseCard(color)
+      this += CardFactory.createDrawCard(2, color)
+    for number <- 0 to 17 do this += CardFactory.createSimpleCard(CardNumber.values(number / 2), color)
 
   // Add wild cards to the deck
   for _ <- 0 to 3 do
-    this += factory.createChangeColor()
-    this += factory.createDrawCard(4, Color.Black)
+    this += CardFactory.createChangeColor()
+    this += CardFactory.createDrawCard(4, Color.Black)
 
   this.shuffle()
 

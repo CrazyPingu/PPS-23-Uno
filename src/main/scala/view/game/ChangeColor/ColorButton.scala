@@ -5,7 +5,7 @@ import utils.Color
 
 import javax.swing.JButton
 
-class ColorButton(color: Color, controller: GameController) extends JButton:
+class ColorButton(color: Color) extends JButton:
   setBorderPainted(false)
 
   color match
@@ -16,5 +16,5 @@ class ColorButton(color: Color, controller: GameController) extends JButton:
     case _            => ()
 
   addActionListener(
-    _ => controller.changeColor(color)
+    _ => GameController.changeColor(color)
   )

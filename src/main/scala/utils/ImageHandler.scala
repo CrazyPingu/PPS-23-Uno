@@ -16,7 +16,7 @@ object ImageHandler:
   val backgroundTable: Image = loadImage("Table.png")
 
   val backgroundSettings: Image = loadImage("Settings.png")
-  
+
   val backgroundAchievements: Image = loadImage("Achievements.png")
 
   val unoButton: Image = loadImage("cards/UnoButton.png")
@@ -24,7 +24,7 @@ object ImageHandler:
   val direction: Image = loadImage("Direction.png")
 
   val winBackground: Image = loadImage("Win.png")
-  
+
   val defeatBackground: Image = loadImage("Defeat.png")
 
   val check: Image = loadImage("cards/Check.png")

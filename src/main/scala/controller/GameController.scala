@@ -10,76 +10,66 @@ import utils.Color
 import utils.Compatibility.isCompatible
 import view.game.Gui
 
-class GameController(
-  private val pageController: PageController,
-  private val achievementController: AchievementController,
-  val cardFactory: CardFactory
-):
-  private var gui: Option[Gui] = None
-  private var gameLoop: Option[GameLoop] = None
+object GameController:
   private var deck: Option[Deck] = None
   private var playerHand: Option[Hand] = None
   var lastPlayedCard: Option[Card] = None
   private var unoCalled = false
 
   def drawCard(hand: Hand = playerHand.get, num: Int = 1, skipTurn: Boolean = true): Unit =
-    if deck.get.isEmpty then deck = Some(Deck(cardFactory))
-    gui.get.allowPlayerAction(false)
+    if deck.get.isEmpty then deck = Some(Deck())
+    Gui.allowPlayerAction(false)
     for _ <- 0 until num do hand.addCard(deck.get.draw())
-    achievementController.notifyAchievements(Event(AchievementId.hold2CardsAchievement.value, playerHand.get.length))
-    gui.get.updateGui()
-    if skipTurn then gameLoop.get.nextTurn()
-
-  def setGuiAndGameLoop(gui: Gui, gameLoop: GameLoop): Unit =
-    this.gui = Some(gui)
-    this.gameLoop = Some(gameLoop)
+    AchievementController.notifyAchievements(Event(AchievementId.hold2CardsAchievement.value, playerHand.get.length))
+    Gui.updateGui()
+    if skipTurn then GameLoop.nextTurn()
 
   def startNewGame(playerHand: Hand, deck: Deck): Unit =
     this.playerHand = Some(playerHand)
     this.deck = Some(deck)
     lastPlayedCard = Some(deck.draw())
-    this.gui.get.disposeCard(this.lastPlayedCard.get)
+    Gui.disposeCard(this.lastPlayedCard.get)
     this.unoCalled = false
-    gui.get.setUnoButtonChecked(false)
+    Gui.setUnoButtonChecked(false)
 
   def chooseCard(card: Card, hand: Hand = playerHand.get): Unit =
     if isCompatible(card, lastPlayedCard.get) then
-      gui.get.allowPlayerAction(false)
+      Gui.allowPlayerAction(false)
       disposeCard(card)
       hand.removeCard(card)
       if hand == playerHand.get then
-        achievementController.notifyAchievements(Event(AchievementId.firstCardAchievement.value, 1))
+        AchievementController.notifyAchievements(Event(AchievementId.firstCardAchievement.value, 1))
       checkIfSpecialCard(card, hand == playerHand.get)
 
       if playerHand.get.isEmpty then
-        achievementController.notifyAchievements(Event(AchievementId.firstWinAchievement.value, 1))
-        achievementController.saveAchievements()
-        pageController.showWin()
+        AchievementController.notifyAchievements(Event(AchievementId.firstWinAchievement.value, 1))
+        AchievementController.saveAchievements()
+        PageController.showWin()
       else if hand.isEmpty then
-        achievementController.notifyAchievements(Event(AchievementId.firstLoseAchievement.value, 1))
-        achievementController.saveAchievements()
-        pageController.showLose()
+        AchievementController.notifyAchievements(Event(AchievementId.firstLoseAchievement.value, 1))
+        AchievementController.saveAchievements()
+        PageController.showLose()
 
       if card.color != Color.Black then
-        gui.get.updateGui()
-        gameLoop.get.nextTurn()
+        Gui.updateGui()
+        GameLoop.nextTurn()
     else println("Card not compatible " + card + "\nLast played card " + lastPlayedCard.get)
 
   def reverseDirection(): Unit =
-    gameLoop.get.reverseTurnOrder()
-    gui.get.reverseDirection()
+    GameLoop.reverseTurnOrder()
+    Gui.reverseDirection()
 
   def nextDrawCard(numberToDraw: Int): Unit =
-    gameLoop.get.nextDrawCard(numberToDraw)
+    GameLoop.nextDrawCard(numberToDraw)
     if lastPlayedCard.get.color == Color.Black then showChangeColor()
 
   def skipNextTurn(numberToSkip: Int): Unit =
-    gameLoop.get.skipNextTurn(numberToSkip)
+    GameLoop.skipNextTurn(numberToSkip)
 
   def showChangeColor(): Unit =
-    if gameLoop.get.currentPlayer == playerHand.get then pageController.showChangeColor()
+    if GameLoop.currentPlayer == playerHand.get then PageController.showChangeColor()
     else
-      val color = gameLoop.get.currentPlayer.asInstanceOf[BotPlayer].chooseColor()
+      val color = GameLoop.currentPlayer.asInstanceOf[BotPlayer].chooseColor()
       changeColor(color)
 
   /**
@@ -90,18 +80,18 @@ class GameController(
    */
   def changeColor(color: Color): Unit =
     lastPlayedCard.get match
-      case _: ChangeColor => lastPlayedCard = Some(cardFactory.createChangeColor(color))
-      case _: DrawCard    => lastPlayedCard = Some(cardFactory.createDrawCard(4, color))
+      case _: ChangeColor => lastPlayedCard = Some(CardFactory.createChangeColor(color))
+      case _: DrawCard    => lastPlayedCard = Some(CardFactory.createDrawCard(4, color))
       case _              =>
 
     disposeCard(lastPlayedCard.get)
-    pageController.showGame(false)
-    gameLoop.get.nextTurn()
+    PageController.showGame(false)
+    GameLoop.nextTurn()
 
   def callUno(): Unit =
     if playerHand.get.size == 1 then
       unoCalled = true
-      gui.get.setUnoButtonChecked(true)
+      Gui.setUnoButtonChecked(true)
 
   def checkUno(): Unit =
     if !unoCalled && playerHand.get.size == 1 then
@@ -109,20 +99,20 @@ class GameController(
       drawCard(playerHand.get, 1, false)
     else if unoCalled then println("Called UNO correctly!")
     unoCalled = false
-    gui.get.setUnoButtonChecked(false)
+    Gui.setUnoButtonChecked(false)
 
   private def checkIfSpecialCard(card: Card, isPlayer: Boolean = false): Unit =
     card match
       case c: DrawCard if c.numberToDraw == 4 && c.color == Color.Black && isPlayer =>
-        achievementController.notifyAchievements(Event(AchievementId.firstPlus4Achievement.value, 1))
+        AchievementController.notifyAchievements(Event(AchievementId.firstPlus4Achievement.value, 1))
         c.execute()
       case c: ChangeColor if c.color == Color.Black && isPlayer =>
-        achievementController.notifyAchievements(Event(AchievementId.firstColorChangeAchievement.value, 1))
+        AchievementController.notifyAchievements(Event(AchievementId.firstColorChangeAchievement.value, 1))
         c.execute()
       case c: SpecialCard => c.execute()
       case _              => ()
 
   private def disposeCard(card: Card): Unit =
     lastPlayedCard = Some(card)
-    gui.get.disposeCard(card)
-//    gui.get.updateGui()
+    Gui.disposeCard(card)
+//    Gui.updateGui()

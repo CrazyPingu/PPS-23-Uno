@@ -22,4 +22,3 @@ object Difficulty extends Enumeration:
   def toInt(difficulty: Difficulty): Int = difficulty match
     case Easy => 0
     case Hard => 1
-

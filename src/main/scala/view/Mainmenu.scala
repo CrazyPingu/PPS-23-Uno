@@ -8,7 +8,7 @@ import java.awt.GridBagLayout
 import java.awt.event.ActionListener
 import javax.swing.*
 
-class Mainmenu(private val pageController: PageController) extends JPanel:
+object Mainmenu extends JPanel:
   setLayout(new GridBagLayout())
 
   this.add(
@@ -32,23 +32,23 @@ class Mainmenu(private val pageController: PageController) extends JPanel:
   this.add(exitButton, new GridBagConstraints(0, 5, 10, 10))
 
   startButton.addActionListener(
-    _ => pageController.showGame()
+    _ => PageController.showGame()
   )
 
   tutorialButton.addActionListener(
-    _ => pageController.showTutorial()
+    _ => PageController.showTutorial()
   )
 
   achievementButton.addActionListener(
-    _ => pageController.showAchievements()
+    _ => PageController.showAchievements()
   )
 
   settingsButton.addActionListener(
-    _ => pageController.showSettings()
+    _ => PageController.showSettings()
   )
 
   exitButton.addActionListener(
-    _ => pageController.closeWindow()
+    _ => PageController.closeWindow()
   )
 
   override def paintComponent(g: java.awt.Graphics): Unit =

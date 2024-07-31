@@ -55,8 +55,8 @@ class AchievementTest extends AnyFunSuite with BeforeAndAfterAll:
     Files.delete(Paths.get(achievementFilePath).getParent)
 
   def equalAchievements(ach1: Achievement, ach2: Achievement): Boolean =
-    if ach1.id.equals(ach2.id) && 
-      ach1.description.equals(ach2.description) && 
-      ach1.isAchieved.equals(ach2.isAchieved) then true
+    if ach1.id.equals(ach2.id) &&
+      ach1.description.equals(ach2.description) &&
+      ach1.isAchieved.equals(ach2.isAchieved)
+    then true
     else false
-    

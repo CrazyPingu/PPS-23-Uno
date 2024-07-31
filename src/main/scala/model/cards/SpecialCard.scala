@@ -13,7 +13,7 @@ import javax.imageio.ImageIO
  * @param color The color of the card
  * @param image The image of the card
  */
-abstract class SpecialCard(val color: Color, val image: Image, private val controller: GameController) extends Card:
+abstract class SpecialCard(val color: Color, val image: Image) extends Card:
 
   override def toString: String = s"${color.toString} Special"
 
