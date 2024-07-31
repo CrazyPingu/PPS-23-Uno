@@ -14,4 +14,4 @@ import java.awt.Image
  */
 class SimpleCardImpl(var num: CardNumber, var color: Color, var image: Image) extends SimpleCard:
 
-  override def toString: String = s"${color.toString} $num"
+  override def toString: String = s"${color.toString} ${num.value}"
