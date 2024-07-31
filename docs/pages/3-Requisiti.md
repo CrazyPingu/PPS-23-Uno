@@ -2,9 +2,10 @@
 
 ## Business
 
-- Creare una versione digitale del gioco di carte "Uno" per fornire un'esperienza di gioco divertente e coinvolgente.
-- Offrire diverse opzioni di gioco contro bot, con diverse difficoltà.
-- Fornire un'interfaccia utente intuitiva per migliorare l'esperienza di gioco.
+L'obbiettivo del progetto è quello di creare una versione digitale del gioco di carte "Uno"
+fornendo all'utente un'esperienza di gioco divertente e coinvolgente, offrendo diverse opzioni di gioco
+contro dei bot a cui è possibile assegnare diverse difficoltà, grazie a un'interfaccia utente intuitiva
+per migliorare ulteriormente l'esperienza di gioco.
 
 ## Modello di dominio
 
@@ -26,22 +27,49 @@ esaurire tutte le carte vince la partita. Se un giocatore rimane con una sola ca
 
 ### Utente
 
-- Iniziare una nuova partita selezionando l'opzione dal menù principale.
-- Giocare una carta dalla propria mano durante il proprio turno.
-- Accedere al tutorial per apprendere le regole del gioco.
-- Impostare i bot con diversi livelli di handicap prima di iniziare la partita.
-- Modificare le regole custom vincolate (es. numero di carte iniziali, difficoltà dei bot).
+- Gli utenti dovranno interagire con il sistema tramite un'interfaccia grafica (GUI).
+- Gli utenti possono interagire col sistema effettuando diverse azioni:
+  - Accedere al tutorial per apprendere le regole del gioco.
+  - Modificare le regole personalizzate del gioco:
+    - Impostare il numero di carte iniziali di ogni giocatore.
+    - Impostare la difficoltà dei bot.
+    - Impostare il livello di Handicap rispetto ai bot.
+  - Visualizzare tutti gli achievement disponibili.
+  - Individuare gli achievement sbloccati o da sbloccare.
+  - Resettare gli achievement di gioco.
+  - Iniziare una nuova partita selezionando l'opzione dal menù principale.
+    - Durante una partita, è possibile effettuare le seguenti azioni:
+      - Giocare una carta dalla propria mano durante il proprio turno.
+      - Pescare una carta dal mazzo.
+      - Dichiarare "UNO" quando si rimane con una sola carta in mano.
+- Gli utenti possono visualizzare i diversi fattori che rappresentano lo stato attuale della partita:
+    - Numero di carte in mano per ogni giocatore.
+    - Il giocatore di turno.
+    - La carta giocata più recentemente.
+    - L'ordine dei turni.
+    - Lo status del pulsante UNO.
+    - Lo stato finale della partita.
+
 
 ### Di sistema
 
-- Gestire il game loop, determinando l'ordine dei turni e applicando le regole di gioco ad ogni mossa.
-- Gestire il comportamento dei bot, determinando la loro strategia di gioco in base agli handicap assegnati.
-- Mantenere lo stato corrente del mazzo e della pila di scarto, aggiornando le mani dei giocatori ad ogni turno.
+Il sistema software deve essere in grado di gestire correttamente l'intero game loop del gioco,
+determinando lo stato della partita,
+l'ordine dei turni e l'applicazione e il rispetto delle regole di gioco ad ogni mossa sia 
+da parte del giocatore che da 
+parte dei bot.
+Inoltre è necessario che il sistema sia in grado di gestire la presenza di bot,
+determinando la loro strategia di gioco in base
+alle impostazioni di gioco e allo stato attuale della partita.
+Mantenere lo stato corrente di ogni mano del giocatore, aggiornando le mani dei giocatori,
+gestendo il mazzo e lo stato 
+dell'ultima carta giocata in modo da garantire l'integrità della partita ad ogni turno.
 
 ## Non funzionali
-
-- L'interfaccia deve essere intuitiva e facilmente navigabile, con chiare indicazioni su come eseguire le azioni di gioco.
-- Il codice deve essere strutturato in modo modulare per facilitare l'aggiunta di nuove funzionalità (es. nuove regole custom, skin, ecc.).
+L'interfaccia deve essere intuitiva e facilmente navigabile,
+con chiare indicazioni su come eseguire le azioni di gioco. 
+Il codice deve essere strutturato in modo modulare per facilitare 
+l'aggiunta di nuove funzionalità, cambio di regole o aggiornamenti.
 
 ## Di implementazione
 
@@ -50,7 +78,9 @@ esaurire tutte le carte vince la partita. Se un giocatore rimane con una sola ca
 
 ## Opzionali
 
-
+ - Ulteriori regole personalizzate vincolate
+   - Livello di Difficoltà dei Bot
+   - Numero di carte iniziali per ogni giocatore
 
 ---
 
