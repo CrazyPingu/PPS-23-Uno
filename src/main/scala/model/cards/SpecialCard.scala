@@ -1,11 +1,10 @@
 package model.cards
 
-import controller.GameController
+import model.cards.special.{ChangeColor, DrawCard, ReverseCard, SkipCard}
 import utils.Color
+import utils.Color.Black
 
 import java.awt.Image
-import java.io.{File, IOException}
-import javax.imageio.ImageIO
 
 /**
  * Represents a special card in the game.
@@ -21,3 +20,4 @@ abstract class SpecialCard(val color: Color, val image: Image) extends Card:
    * Executes the effect of the card.
    */
   def execute(): Unit
+  
