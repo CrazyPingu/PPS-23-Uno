@@ -22,7 +22,7 @@ esaurire tutte le carte vince la partita. Se un giocatore rimane con una sola ca
 
 ## Funzionali
 
-
+TODO
 
 ### Utente
 
@@ -50,7 +50,7 @@ esaurire tutte le carte vince la partita. Se un giocatore rimane con una sola ca
 
 ## Opzionali
 
-
+TODO
 
 ---
 
