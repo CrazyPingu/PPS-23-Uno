@@ -1,17 +1,23 @@
 package model.achievements
 
-class AchievementObservable extends Observable:
-  var achievementList: List[Achievement] = List()
+trait Observable[A <: Observer]:
+  private var observers: List[A] = List()
 
-  override def addObserver(observer: Observer): Unit = observer match
-    case observer: Achievement => achievementList = observer :: achievementList
-    case _ => throw new IllegalArgumentException("Invalid observer type. It must be an Achievement.")
+  def addObserver(observer: A): Unit =
+    observers = observer :: observers
 
-  override def addObservers(observers: List[Observer]): Unit =
-    observers.foreach(addObserver)
+  def addObservers(newObservers: List[A]): Unit =
+    observers = newObservers ++ observers
 
-  override def removeObserver(observer: Observer): Unit =
-    achievementList = achievementList.filterNot(_ == observer)
+  def notifyObservers(event: Event): Unit =
+    observers.foreach(_.update(event))
 
-  override def notifyObserver(event: Event): Unit =
-    achievementList.foreach(_.update(event))
+  def removeObserver(observer: A): Unit =
+    observers = observers.filterNot(_ == observer)
+
+  def clearObservers(): Unit =
+    observers = List()
+
+  def getObservers: List[A] = observers
+
+object AchievementObservable extends Observable[Achievement]

@@ -7,20 +7,19 @@ object AchievementController:
   private val PROJECT_ROOT: String = System.getProperty("user.dir")
   private val ACHIEVEMENT_FILEPATH: String = s"$PROJECT_ROOT/achievement/achievement.json"
 
-  private var achievementObservable: AchievementObservable = AchievementObservable()
-  achievementObservable.addObservers(
+  AchievementObservable.addObservers(
     JsonUtils.loadFromFile[List[Achievement]](ACHIEVEMENT_FILEPATH).getOrElse(AchievementGenerator().achievementList)
   )
 
   def notifyAchievements(event: Event): Unit =
-    achievementObservable.notifyObserver(event)
+    AchievementObservable.notifyObservers(event)
 
   def saveAchievements(): Unit =
-    JsonUtils.saveToFile(ACHIEVEMENT_FILEPATH, achievementObservable.achievementList)
+    JsonUtils.saveToFile(ACHIEVEMENT_FILEPATH, AchievementObservable.getObservers)
 
   def resetAchievements(): Unit =
-    achievementObservable = AchievementObservable()
-    achievementObservable.addObservers(AchievementGenerator().achievementList)
+    AchievementObservable.clearObservers()
+    AchievementObservable.addObservers(AchievementGenerator().achievementList)
     JsonUtils.saveToFile(ACHIEVEMENT_FILEPATH, AchievementGenerator().achievementList)
 
-  def achievementList: List[Achievement] = achievementObservable.achievementList
+  def achievementList: List[Achievement] = AchievementObservable.getObservers
