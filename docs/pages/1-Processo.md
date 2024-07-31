@@ -57,4 +57,4 @@ Per garantire la coerenza e l'uniformità nel codice, è stato implementato un f
 
 ---
 
-[Indice](../index.md) | [Capitolo Precedente](./1-Introduzione.md) | [Capitolo Successivo](./3-Requisiti.md)
+[Indice](../index.md) | [Capitolo Precedente](./0-Introduzione) | [Capitolo Successivo](./2-Requisiti)
