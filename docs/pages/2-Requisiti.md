@@ -81,4 +81,4 @@ l'aggiunta di nuove funzionalità, cambio di regole o aggiornamenti.
 
 ---
 
-[Indice](../index.md) | [Capitolo Precedente](./2-Processo.md) | [Capitolo Successivo](./4-Design-architetturale.md)
+[Indice](../index.md) | [Capitolo Precedente](./1-Processo) | [Capitolo Successivo](./3-Design-architetturale)
