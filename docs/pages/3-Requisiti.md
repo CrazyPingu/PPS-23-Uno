@@ -23,8 +23,6 @@ esaurire tutte le carte vince la partita. Se un giocatore rimane con una sola ca
 
 ## Funzionali
 
-
-
 ### Utente
 
 - Gli utenti dovranno interagire con il sistema tramite un'interfaccia grafica (GUI).
@@ -77,7 +75,6 @@ l'aggiunta di nuove funzionalità, cambio di regole o aggiornamenti.
 - Utilizzo di JDK 21
 
 ## Opzionali
-
  - Ulteriori regole personalizzate vincolate
    - Livello di Difficoltà dei Bot
    - Numero di carte iniziali per ogni giocatore
