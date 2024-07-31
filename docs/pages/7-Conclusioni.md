@@ -2,4 +2,4 @@
 
 ---
 
-[Indice](../index.md) | [Capitolo Precedente](./6-Implementazione.md)
+[Indice](../index.md) | [Capitolo Precedente](./5-Implementazione)
