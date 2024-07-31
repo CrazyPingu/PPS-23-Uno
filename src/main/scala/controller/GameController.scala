@@ -8,7 +8,7 @@ import model.cards.{Card, SpecialCard}
 import model.{Deck, Hand, Player}
 import utils.Color
 import utils.Compatibility.isCompatible
-import view.game.Gui
+import view.game.GameGui
 
 object GameController:
   private var unoCalled = false
@@ -18,21 +18,21 @@ object GameController:
 
   def startNewGame(): Unit =
     lastPlayedCard = Deck.draw()
-    Gui.disposeCard(this.lastPlayedCard)
+    GameGui.disposeCard(this.lastPlayedCard)
     this.unoCalled = false
-    Gui.setUnoButtonChecked(false)
+    GameGui.setUnoButtonChecked(false)
 
   def drawCard(hand: Hand = Player, num: Int = 1, skipTurn: Boolean = true): Unit =
     if Deck.isEmpty then Deck.initialize()
-    Gui.allowPlayerAction(false)
+    GameGui.allowPlayerAction(false)
     for _ <- 0 until num do hand.addCard(Deck.draw())
     AchievementController.notifyAchievements(Event(AchievementId.hold2CardsAchievement.value, Player.getCardCount))
-    Gui.updateGui()
+    GameGui.updateGui()
     if skipTurn then GameLoop.nextTurn()
 
   def chooseCard(card: Card, hand: Hand = Player): Unit =
     if isCompatible(card, lastPlayedCard) then
-      Gui.allowPlayerAction(false)
+      GameGui.allowPlayerAction(false)
       disposeCard(card)
       hand.removeCard(card)
       if hand == Player then
@@ -49,12 +49,12 @@ object GameController:
         PageController.showLose()
 
       if card.color != Color.Black then
-        Gui.updateGui()
+        GameGui.updateGui()
         GameLoop.nextTurn()
 
   def reverseDirection(): Unit =
     GameLoop.reverseTurnOrder()
-    Gui.reverseDirection()
+    GameGui.reverseDirection()
 
   def nextDrawCard(numberToDraw: Int): Unit =
     GameLoop.nextDrawCard(numberToDraw)
@@ -88,7 +88,7 @@ object GameController:
   def callUno(): Unit =
     if Player.getCardCount == 1 then
       unoCalled = true
-      Gui.setUnoButtonChecked(true)
+      GameGui.setUnoButtonChecked(true)
 
   def checkUno(): Unit =
     if !unoCalled && Player.getCardCount == 1 then
@@ -96,7 +96,7 @@ object GameController:
       drawCard(Player, 1, false)
     else if unoCalled then println("Called UNO correctly!")
     unoCalled = false
-    Gui.setUnoButtonChecked(false)
+    GameGui.setUnoButtonChecked(false)
 
   private def checkIfSpecialCard(card: Card, isPlayer: Boolean = false): Unit =
     card match
@@ -111,4 +111,4 @@ object GameController:
 
   private def disposeCard(card: Card): Unit =
     lastPlayedCard = card
-    Gui.disposeCard(card)
+    GameGui.disposeCard(card)

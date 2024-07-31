@@ -5,7 +5,7 @@ import model.cards.Card
 import model.settings.Difficulty.Difficulty
 import model.settings.{Difficulty, GameSettings}
 import model.{Deck, Hand, Player}
-import view.game.Gui
+import view.game.GameGui
 
 import scala.concurrent.Future
 import scala.concurrent.ExecutionContext.Implicits.global
@@ -33,17 +33,17 @@ object GameLoop:
     isRunning = true
     turnOrder = List(Player, bot1, bot2, bot3)
 
-    Gui.setEntity(bot1, bot2, bot3)
+    GameGui.setEntity(bot1, bot2, bot3)
     GameController.startNewGame()
 
     giveStartingCards(bot1, bot2, bot3, currentSettings.startCardValue, currentSettings.handicap)
-    Gui.updateTurnArrow(currentTurn)
+    GameGui.updateTurnArrow(currentTurn)
 
   def nextTurn(): Unit =
     if !isRunning then return
     Future:
       currentTurn = (currentTurn + (if clockWiseDirection then 1 else -1) + turnOrder.size) % turnOrder.size
-      Gui.updateTurnArrow(currentTurn)
+      GameGui.updateTurnArrow(currentTurn)
       turnOrder(currentTurn) match
         case bot: BotPlayer =>
           Thread.sleep((1500 + Random.nextInt(1500)).toLong)
@@ -54,7 +54,7 @@ object GameLoop:
               GameController.drawCard(bot)
         case _ =>
           GameController.checkUno()
-          Gui.allowPlayerAction(true)
+          GameGui.allowPlayerAction(true)
 
   def reverseTurnOrder(): Unit = clockWiseDirection = !clockWiseDirection
 
@@ -92,4 +92,4 @@ object GameLoop:
 
     for _ <- 0 until numToDraw do Player.addCard(Deck.draw())
 
-    Gui.updateGui()
+    GameGui.updateGui()

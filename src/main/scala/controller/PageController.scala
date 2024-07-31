@@ -3,7 +3,7 @@ package controller
 import view.Mainmenu
 import view.achievements.AchievementGui
 import view.game.ChangeColor.ChooseColor
-import view.game.Gui
+import view.game.GameGui
 import view.settings.SettingsGui
 import view.tutorial.TutorialGui
 import view.{CardLayoutId, Frame, LoseScreen, WinScreen}
@@ -13,7 +13,7 @@ object PageController:
   Frame.add(Mainmenu, CardLayoutId.MainMenu)
   Frame.add(WinScreen, CardLayoutId.Win)
   Frame.add(LoseScreen, CardLayoutId.Lose)
-  Frame.add(Gui, CardLayoutId.Game)
+  Frame.add(GameGui, CardLayoutId.Game)
   Frame.add(ChooseColor, CardLayoutId.ChangeColor)
   Frame.add(SettingsGui, CardLayoutId.Settings)
   Frame.add(AchievementGui, CardLayoutId.Achievement)

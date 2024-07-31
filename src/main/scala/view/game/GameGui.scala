@@ -15,7 +15,7 @@ import javax.swing.JPanel
 /**
  * The graphical user interface of the game
  */
-object Gui extends JPanel:
+object GameGui extends JPanel:
   private val layout: GridLayout = new GridLayout(panelGridDimension(1), panelGridDimension(0))
   private val unoButton = new UnoCell()
   private val directionCell = new DirectionCell
