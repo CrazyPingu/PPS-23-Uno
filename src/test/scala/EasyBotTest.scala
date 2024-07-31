@@ -41,7 +41,7 @@ class EasyBotTest extends AnyFunSuite:
 
   test("The BOT should choose the Valid Special Card"):
     val Bot = new EasyBotPlayerImpl()
-    Bot.addCard(new ChangeColor(null))
+    Bot.addCard(new ChangeColor())
     Bot.addCard(new SimpleCardImpl(Five, Color.Blue, loadCardImage("6", Color.Blue)))
     val middleCard = new SimpleCardImpl(Seven, Color.Red, loadCardImage("7", Color.Red))
     val card = Bot.chooseCardToUse(middleCard)
