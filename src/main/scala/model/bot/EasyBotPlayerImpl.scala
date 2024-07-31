@@ -1,6 +1,6 @@
 package model.bot
 
-import model.cards.{Card, SimpleCard, SimpleCardImpl, SpecialCard}
+import model.cards.Card
 
 class EasyBotPlayerImpl extends BotPlayerImpl:
   override def chooseCardToUse(centerCard: Card): Option[Card] =

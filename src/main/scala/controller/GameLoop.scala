@@ -4,7 +4,7 @@ import model.bot.{BotPlayer, EasyBotPlayerImpl, HardBotPlayerImpl}
 import model.cards.Card
 import model.settings.Difficulty.Difficulty
 import model.settings.{Difficulty, GameSettings}
-import model.{Deck, Hand}
+import model.{Deck, Hand, Player}
 import view.game.Gui
 
 import scala.concurrent.Future
@@ -12,20 +12,18 @@ import scala.concurrent.ExecutionContext.Implicits.global
 import scala.util.Random
 
 object GameLoop:
-  private var player: Hand = _
   private var bot1: BotPlayer = _
   private var bot2: BotPlayer = _
   private var bot3: BotPlayer = _
   private var turnOrder: List[Hand] = _
-  private var currentTurn = 0
-  private var clockWiseDirection = true
-  private var isRunning = false
+  private var currentTurn: Int = 0
+  private var clockWiseDirection: Boolean = true
+  private var isRunning: Boolean = false
 
   def start(): Unit =
     val currentSettings: GameSettings = SettingsController.settings.gameSettings
+    Player.clearHand()
 
-    val deck = Deck()
-    player = Hand()
     val bots = createBotPlayers(currentSettings.difficulty)
     bot1 = bots(0)
     bot2 = bots(1)
@@ -33,12 +31,12 @@ object GameLoop:
     currentTurn = 0
     clockWiseDirection = true
     isRunning = true
-    turnOrder = List(player, bot1, bot2, bot3)
+    turnOrder = List(Player, bot1, bot2, bot3)
 
-    Gui.setEntity(bot1, bot2, bot3, player)
-    GameController.startNewGame(player, deck)
+    Gui.setEntity(bot1, bot2, bot3)
+    GameController.startNewGame()
 
-    giveStartingCards(bot1, bot2, bot3, player, deck, currentSettings.startCardValue, currentSettings.handicap)
+    giveStartingCards(bot1, bot2, bot3, currentSettings.startCardValue, currentSettings.handicap)
     Gui.updateTurnArrow(currentTurn)
 
   def nextTurn(): Unit =
@@ -49,7 +47,7 @@ object GameLoop:
       turnOrder(currentTurn) match
         case bot: BotPlayer =>
           Thread.sleep((1500 + Random.nextInt(1500)).toLong)
-          bot.chooseCardToUse(GameController.lastPlayedCard.get) match
+          bot.chooseCardToUse(GameController.lastPlayedCard) match
             case Some(card) =>
               GameController.chooseCard(card, bot)
             case None =>
@@ -84,16 +82,14 @@ object GameLoop:
     bot1: BotPlayer,
     bot2: BotPlayer,
     bot3: BotPlayer,
-    player: Hand,
-    deck: Deck,
     numToDraw: Int = 7,
     handicap: Int = 0
   ): Unit =
     for _ <- 0 until numToDraw + handicap do
-      bot1.addCard(deck.draw())
-      bot2.addCard(deck.draw())
-      bot3.addCard(deck.draw())
+      bot1.addCard(Deck.draw())
+      bot2.addCard(Deck.draw())
+      bot3.addCard(Deck.draw())
 
-    for _ <- 0 until numToDraw do player.addCard(deck.draw())
+    for _ <- 0 until numToDraw do Player.addCard(Deck.draw())
 
     Gui.updateGui()

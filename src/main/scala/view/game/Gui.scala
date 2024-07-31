@@ -1,6 +1,6 @@
 package view.game
 
-import model.Hand
+import model.Player
 import model.bot.BotPlayer
 import model.cards.Card
 import utils.ImageHandler.{backgroundTable, retroCards, rotateImage, turnArrow}
@@ -25,7 +25,6 @@ object Gui extends JPanel:
   private var bot1 = Option.empty[BotPlayer]
   private var bot2 = Option.empty[BotPlayer]
   private var bot3 = Option.empty[BotPlayer]
-  private var player = Option.empty[Hand]
 
   private val turnCells: Map[(Int, Int), TurnIndicatorCell] = Map(
     (arrowCoordinate.head, new TurnIndicatorCell(ROTATE_RIGHT)), // Player
@@ -40,13 +39,11 @@ object Gui extends JPanel:
    * @param bot1 the first bot
    * @param bot2 the second bot
    * @param bot3 the third bot
-   * @param player the player
    */
-  def setEntity(bot1: BotPlayer, bot2: BotPlayer, bot3: BotPlayer, player: Hand): Unit =
+  def setEntity(bot1: BotPlayer, bot2: BotPlayer, bot3: BotPlayer): Unit =
     this.bot1 = Option(bot1)
     this.bot2 = Option(bot2)
     this.bot3 = Option(bot3)
-    this.player = Option(player)
     createGui()
 
   /**
@@ -93,7 +90,7 @@ object Gui extends JPanel:
           )
 
 //        Player hand bottom row
-        case (r, c) if r == lastRow => applyIcon(component, c - (layout.getColumns - player.get.size) / 2)
+        case (r, c) if r == lastRow => applyIcon(component, c - (layout.getColumns - Player.size) / 2)
 
 //        Bot1 hand left column
         case (r, 0) => applyIconToColumns(component, bot1.get.size, r)
@@ -139,7 +136,7 @@ object Gui extends JPanel:
     def applyIcon(component: Component, indexInHand: Int, action: Boolean = true, rotation: Rotation = NONE): Unit =
       component match
         case cell: CardCell =>
-          player.get
+          Player
             .lift(indexInHand) match
             case Some(card) => cell.applyCard(card)
             case None       => cell.removeCard()

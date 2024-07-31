@@ -6,7 +6,7 @@ import scala.collection.mutable.ArrayBuffer
 /**
  * A class representing a hand of cards.
  */
-class Hand extends ArrayBuffer[Card]:
+trait Hand extends ArrayBuffer[Card]:
 
   /**
    * Adds a card to the hand.
@@ -44,3 +44,5 @@ class Hand extends ArrayBuffer[Card]:
    * Clears all cards from the hand.
    */
   def clearHand(): Unit = this.clear
+
+object Player extends Hand
