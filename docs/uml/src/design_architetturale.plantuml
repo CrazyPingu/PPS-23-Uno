@@ -1,0 +1,47 @@
+@startuml
+
+package model {
+    interface Card
+
+    Class SimpleCard extends Card
+
+    Class SpecialCard extends Card
+
+    Class Deck
+
+    interface Hand
+
+    Class Player extends Hand
+
+    interface BotPlayer extends Hand
+
+    class EasyBotPlayer extends BotPlayer
+
+    class HardBotPlayer extends BotPlayer
+}
+
+package controller {
+    class GameLoop
+
+    class GameController
+}
+
+package view {
+    class Gui
+}
+
+model.Deck *-- model.Card
+model.Hand *-- model.Card
+
+controller.GameLoop *--* controller.GameController
+
+view.Gui *-left-* controller.GameController
+
+'controller.GameController *-u- model.Deck
+'model.Player *-u-* controller.GameController
+'model.BotPlayer *-u-* controller.GameController
+
+model *-u-* controller.GameController
+
+
+@enduml
