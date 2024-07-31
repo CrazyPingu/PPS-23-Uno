@@ -1,7 +1,7 @@
 import org.scalatest.funsuite.AnyFunSuite
 import model.bot.HardBotPlayerImpl
 import model.cards.special.ChangeColor
-import model.cards.{SimpleCard, SimpleCardImpl, SpecialCard}
+import model.cards.SimpleCardImpl
 import utils.Color
 import utils.ImageHandler.loadCardImage
 import utils.CardNumber.{Five, Seven, Six}

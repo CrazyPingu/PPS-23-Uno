@@ -20,4 +20,3 @@ abstract class SpecialCard(val color: Color, val image: Image) extends Card:
    * Executes the effect of the card.
    */
   def execute(): Unit
-  

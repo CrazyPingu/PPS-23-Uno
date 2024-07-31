@@ -20,21 +20,21 @@ trait Achievement extends Observer:
 object Achievement:
 
   def apply(
-             id: Int,
-             description: String,
-             isAchieved: Boolean,
-             threshold: Int,
-             comparator: ComparisonOperator
-           ): Achievement =
+    id: Int,
+    description: String,
+    isAchieved: Boolean,
+    threshold: Int,
+    comparator: ComparisonOperator
+  ): Achievement =
     AchievementImpl(id, description, isAchieved, threshold, comparator)
 
   private case class AchievementImpl(
-                                      private val achID: Int,
-                                      private val achDesc: String,
-                                      private var achieved: Boolean,
-                                      private val achThreshold: Int,
-                                      private val achComparator: ComparisonOperator
-                                    ) extends Achievement:
+    private val achID: Int,
+    private val achDesc: String,
+    private var achieved: Boolean,
+    private val achThreshold: Int,
+    private val achComparator: ComparisonOperator
+  ) extends Achievement:
     override def id: Int = achID
 
     override def description: String = achDesc
@@ -54,7 +54,7 @@ object Achievement:
       (JsPath \ "isAchieved").write[Boolean] and
       (JsPath \ "threshold").write[Int] and
       (JsPath \ "comparator").write[ComparisonOperator]
-    )(
+  )(
     ach => (ach.id, ach.description, ach.isAchieved, ach.threshold, ach.comparator)
   )
 
@@ -64,4 +64,4 @@ object Achievement:
       (JsPath \ "isAchieved").read[Boolean] and
       (JsPath \ "threshold").read[Int] and
       (JsPath \ "comparator").read[ComparisonOperator]
-    )(Achievement(_, _, _, _, _))
+  )(Achievement(_, _, _, _, _))

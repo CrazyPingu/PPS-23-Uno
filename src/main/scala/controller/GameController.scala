@@ -91,8 +91,7 @@ object GameController:
       GameGui.setUnoButtonChecked(true)
 
   def checkUno(): Unit =
-    if !unoCalled && Player.getCardCount == 1 then
-      drawCard(Player, 1, false)
+    if !unoCalled && Player.getCardCount == 1 then drawCard(Player, 1, false)
     unoCalled = false
     GameGui.setUnoButtonChecked(false)
 
