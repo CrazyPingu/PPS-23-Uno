@@ -1,6 +1,6 @@
 package model.cards
 
-import utils.Color
+import utils.{CardNumber, Color}
 
 import java.awt.Image
 
@@ -12,6 +12,6 @@ import java.awt.Image
  * @param color The color of the card
  * @param image image of the card
  */
-class SimpleCardImpl(var num: Int, var color: Color, var image: Image) extends SimpleCard:
+class SimpleCardImpl(var num: CardNumber, var color: Color, var image: Image) extends SimpleCard:
 
   override def toString: String = s"${color.toString} $num"

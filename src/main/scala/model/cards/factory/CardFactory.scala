@@ -1,10 +1,8 @@
 package model.cards.factory
 
-import controller.GameController
 import model.cards.Card
-import utils.Color
+import utils.{CardNumber, Color}
 
-import java.lang.ModuleLayer.Controller
 
 /**
  * Factory for creating cards.
@@ -18,7 +16,7 @@ trait CardFactory:
    * @param color The color of the card.
    * @return The created card.
    */
-  def createSimpleCard(num: Int, color: Color): Card
+  def createSimpleCard(num: CardNumber, color: Color): Card
 
   /**
    * @return The created change color card.
