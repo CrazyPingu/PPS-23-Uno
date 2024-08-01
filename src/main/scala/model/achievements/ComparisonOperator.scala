@@ -4,23 +4,23 @@ import model.achievements.ComparisonOperator.{Equal, GreaterThan, GreaterThanOrE
 import play.api.libs.json.{Format, JsError, JsResult, JsString, JsSuccess, JsValue}
 
 sealed trait ComparisonOperator:
-  def compare(x: Int, y: Int): Boolean
+  def compare: (Int, Int) => Boolean
 
 object ComparisonOperator:
   case object LessThan extends ComparisonOperator:
-    override def compare(x: Int, y: Int): Boolean = x < y
+    val compare: (Int, Int) => Boolean = _ < _
 
   case object LessThanOrEqual extends ComparisonOperator:
-    override def compare(x: Int, y: Int): Boolean = x <= y
+    val compare: (Int, Int) => Boolean = _ <= _
 
   case object Equal extends ComparisonOperator:
-    override def compare(x: Int, y: Int): Boolean = x == y
+    val compare: (Int, Int) => Boolean = _ == _
 
   case object GreaterThanOrEqual extends ComparisonOperator:
-    override def compare(x: Int, y: Int): Boolean = x >= y
+    val compare: (Int, Int) => Boolean = _ >= _
 
   case object GreaterThan extends ComparisonOperator:
-    override def compare(x: Int, y: Int): Boolean = x > y
+    val compare: (Int, Int) => Boolean = _ > _
 
 implicit val comparisonOperatorFormat: Format[ComparisonOperator] = new Format[ComparisonOperator]:
   def reads(json: JsValue): JsResult[ComparisonOperator] = json match
