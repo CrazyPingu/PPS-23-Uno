@@ -1,25 +1,10 @@
 package controller
 
-import controller.GameLoop.{
-  bot1,
-  bot2,
-  bot3,
-  clockWiseDirection,
-  createBotPlayers,
-  currentPlayer,
-  currentTurn,
-  deck,
-  giveStartingCards,
-  isRunning,
-  lastPlayedCard,
-  pageController,
-  turnOrder,
-  unoCalled
-}
+import controller.GameLoop.{bot1, bot2, bot3, clockWiseDirection, createBotPlayers, currentPlayer, currentTurn, deck, giveStartingCards, isRunning, lastPlayedCard, pageController, turnOrder, unoCalled}
 import model.achievements.{AchievementId, Event}
 import model.bot.{BotPlayer, EasyBotPlayerImpl, HardBotPlayerImpl}
 import model.cards.SpecialCard.{ChangeColor, WildDrawFourCard}
-import model.cards.{Card, SpecialCard}
+import model.cards.{Card, SimpleCard, SpecialCard}
 import model.settings.Difficulty.Difficulty
 import model.settings.{Difficulty, GameSettings}
 import model.{Deck, Hand, Player}
@@ -58,7 +43,7 @@ class GameLoop private (player: Player, gameGui: GameGui):
     gameGui.updateTurnArrow(currentTurn)
     gameGui.updateGui()
 
-  def nextTurn(): Unit =
+  private def nextTurn(): Unit =
     if !isRunning then return
     Future:
       currentTurn = (currentTurn + (if clockWiseDirection then 1 else -1) + turnOrder.size) % turnOrder.size
@@ -71,6 +56,7 @@ class GameLoop private (player: Player, gameGui: GameGui):
             case Some(card) => chooseCard(card, bot)
             case None       => drawCard(bot)
         case _ =>
+          AchievementController.notifyAchievements(Event(AchievementId.hold2CardsAchievement.value, player.getCardCount))
           checkUno()
           gameGui.allowPlayerAction(true)
 
@@ -91,9 +77,7 @@ class GameLoop private (player: Player, gameGui: GameGui):
 
   def drawCard(hand: Hand = player, num: Int = 1, skipTurn: Boolean = true): Unit =
     if deck.isEmpty then deck = new Deck
-    gameGui.allowPlayerAction(false)
     for _ <- 0 until num do hand.addCard(deck.draw())
-    AchievementController.notifyAchievements(Event(AchievementId.hold2CardsAchievement.value, player.getCardCount))
     gameGui.updateGui()
     if skipTurn then nextTurn()
 
@@ -119,11 +103,14 @@ class GameLoop private (player: Player, gameGui: GameGui):
         gameGui.updateGui()
         nextTurn()
 
+  /**
+   * Show the change color screen to the player.
+   * If the current player is a bot, the bot will choose a color automatically
+   */
   def showChangeColor(): Unit =
-    if currentPlayer == player then pageController.showChangeColor()
-    else
-      val color = currentPlayer.asInstanceOf[BotPlayer].chooseColor()
-      changeColor(color)
+    currentPlayer match
+      case _: BotPlayer => changeColor(currentPlayer.asInstanceOf[BotPlayer].chooseColor())
+      case _            => pageController.showChangeColor()
 
   /**
    * Change the color of the last played card
@@ -135,6 +122,7 @@ class GameLoop private (player: Player, gameGui: GameGui):
     lastPlayedCard match
       case _: ChangeColor      => lastPlayedCard = ChangeColor(color)
       case _: WildDrawFourCard => lastPlayedCard = WildDrawFourCard(color)
+      case c: SimpleCard       => lastPlayedCard = SimpleCard(c.num, color)
       case _                   =>
 
     disposeCard(lastPlayedCard)
@@ -146,7 +134,7 @@ class GameLoop private (player: Player, gameGui: GameGui):
       unoCalled = true
       gameGui.setUnoButtonChecked(true)
 
-  def checkUno(): Unit =
+  private def checkUno(): Unit =
     if !unoCalled && player.getCardCount == 1 then unoNotCalled()
     unoCalled = false
     gameGui.setUnoButtonChecked(false)
@@ -154,6 +142,7 @@ class GameLoop private (player: Player, gameGui: GameGui):
   private def unoNotCalled(): Unit = drawCard(player, 1, false)
 
   private def checkIfSpecialCard(card: Card, isPlayer: Boolean = false): Unit =
+    gameGui.updateGui()
     card match
       case c: WildDrawFourCard if c.color == Color.Black && isPlayer =>
         AchievementController.notifyAchievements(Event(AchievementId.firstPlus4Achievement.value, 1))
