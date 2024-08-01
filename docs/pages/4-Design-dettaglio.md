@@ -191,36 +191,29 @@ La verifica avviene in base a tutti i criteri possibili:
 
 
 ## GameLoop
-Per gestire il loop di gioco, è stato sviluppato un GameLoop che si occupa della 
-gestione del gioco in generale, delle fasi di gioco e delle interazioni tra i vari giocatori.
-I metodi principali del GameLoop sono i seguenti raffigurati nel diagramma UML:
+Il GameLoop è il cuore della logica del gioco, responsabile della gestione delle dinamiche di gioco, 
+delle diverse fasi e delle interazioni tra i giocatori. I suoi metodi principali includono:
 
-![Game Loop](../uml/gameLoop.png)
+- start: Avvia il gioco, occupandosi dell'inizializzazione del mazzo di carte, della distribuzione delle mani ai giocatori e della preparazione del tavolo di gioco.
+- stop: Termina il gioco e gestisce le operazioni di chiusura necessarie.
+- reverseTurnOrder: Inverte l'ordine dei turni dei giocatori.
+- nextDrawCard: Fa pescare un numero specifico di carte al giocatore successivo.
+- skipNextTurn: Salta il turno del prossimo giocatore.
+- chooseCard: Gioca una carta dalla mano del giocatore, se valida, e la rimuove dalla mano del giocatore.
+- drawCard: Fa pescare una carta al giocatore di turno.
+- showChangeColor: Mostra un'interfaccia per permettere al giocatore di selezionare un nuovo colore di gioco.
+- changeColor: Cambia il colore attivo nel gioco in base alla scelta del giocatore.
+- callUno: Gestisce la dichiarazione di "UNO" da parte del giocatore.
+- nextTurn: Passa il turno al giocatore successivo.
 
-Questi metodi sono:
-- `start` che inizia il gioco, inizializzando il mazzo di carte, le mani dei giocatori e il tavolo di gioco.
-- `stop` che termina il gioco.
-- `reverseTurnOrder` che inverte l'ordine di gioco.
-- `nextDrawCard` che fa pescare al giocatore successivo un numero di carte definito.
-- `skipNextTurn` che fa saltare il turno al giocatore successivo.
-- `chooseCard` che data una carta, se giocabile, la gioca e la rimuove dalla mano del giocatore.
-- `drawCard` che fa pescare una carta al giocatore attuale.
-- `showChangeColor` che mostra la finestra di dialogo per la scelta del colore da parte del giocatore.
-- `changeColor` che cambia il colore in gioco.
-- `callUno` che notifica la chiamata di UNO da parte del giocatore.
-- `nextTurn` che passa al turno successivo.
+## PageController
+La PageController è una classe fondamentale per la gestione della navigazione e della visualizzazione delle 
+diverse schermate all'interno dell'applicazione di gioco. Essa centralizza il controllo delle interfacce grafiche, 
+rendendo fluide le transizioni tra le varie schermate e coordinando le operazioni connesse al ciclo di gioco. 
+Grazie a questa struttura modulare, l'applicazione può essere facilmente estesa con nuove schermate
+senza compromettere il flusso complessivo del programma.
 
-
-## GUI Generale che è gestita da un PageController che si occupa di gestire e switchare le varie cards
-
-### PageController
-La classe PageController è stata sviluppata per gestire la logica di navigazione e visualizzazione delle diverse schermate all'interno 
-dell'applicazione di gioco. Questa classe svolge un ruolo cruciale nell'organizzazione delle varie interfacce grafiche, 
-facilitando la transizione tra di esse e mantenendo un controllo centralizzato sulle operazioni relative al ciclo di gioco.
-Grazie a questa struttura, è possibile estendere facilmente l'applicazione aggiungendo nuove schermate o modificando il 
-comportamento di quelle esistenti senza alterare il flusso generale del programma.
-
-### GameGui
+## GameGui
 
 La gui del gioco è stata sviluppata in modo da essere il più possibile intuitiva e semplice da utilizzare.
 Si basa su una griglia di bottoni, di cui:
@@ -228,16 +221,6 @@ Si basa su una griglia di bottoni, di cui:
 - Vicino al centro é presente il mazzo di carte, l'ultima carta giocata e il bottone per chiamare uno.
 - In alto a destra é presente un'immagine che rappresenta la direzione del gioco.
 - Sopra ogni giocatore é presente una freccia che si rende visibile quando é il turno di quel giocatore.
-
-Esistono questi tipi di celle:
-- `CardCell` : cella che contiene una carta e permette di giocarla.
-- `DeckCell` : cella che contiene il mazzo di carte e permette di pescare.
-- `UnoCell` : cella che permette di chiamare uno.
-- `DirectionCell` : cella che contiene l'immagine che rappresenta la direzione del gioco.
-- `UsedCardCell` : cella che contiene l'ultima carta giocata.
-
-Tutte queste celle sono contenute in un `GridLayout` che permette di visualizzarle in modo ordinato e di gestirne la posizione.
-
 
 ---
 

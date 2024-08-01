@@ -458,15 +458,103 @@ object PageController:
     new PageController(player, gameGui, gameLoop)
   ```
 
-L'intero controller si basa sul `Frame` che contiene tutte le schermate del gioco che, 
-basandosi sui `CardLayout`, permette di cambiare dinamicamente la schermata visualizzata.
+### Frame
+L'intera interfaccia grafica si basa sul `Frame`, un'implementazione di `JFrame` che permette di gestire
+le varie schermate del gioco aggiungendo la possibilità di scambiare tra le varie schermate in modo semplice e veloce
+attraverso l'utilizzo di un `CardLayout`.
+
+```scala 3
+class Frame extends JFrame:
+  setTitle("PPS-23-UNO")
+  setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE)
+  setSize(1280, 720)
+  setResizable(false)
+  setLocationRelativeTo(null)
+  try
+    for info <- UIManager.getInstalledLookAndFeels do
+      if "Nimbus" == info.getName then UIManager.setLookAndFeel(info.getClassName)
+  catch case _: Exception => ()
+  add(Frame.cardPanel)
+  add(new JPanel(), Base)
+  show(Base)
+  setVisible(true)
+  
+  def add(panel: JPanel, layoutId: CardLayoutId): Unit = Frame.cardPanel.add(panel, layoutId.toString)
+  
+  def show(layoutId: CardLayoutId): Unit =
+    Frame.cardLayout.show(Frame.cardPanel, layoutId.toString)
+    Frame.currentLayout = layoutId
+  
+  def isShowing(layoutId: CardLayoutId): Boolean = Frame.currentLayout == layoutId
+
+object Frame:
+  private val cardLayout: CardLayout = new CardLayout
+  private val cardPanel: JPanel = new JPanel(cardLayout)
+  private var currentLayout: CardLayoutId = _
+  def apply(): Frame = new Frame()
+```
+
+Come _look and feel_ é stato scelto Nimbus, in modo da assicurarsi che l'interfaccia grafica sia coerente su tutti i sistemi operativi.
+Per la gestione dei pannelli si utilizza un enum `CardLayoutId` che permette di identificare in modo univoco ogni schermata.
+```scala 3
+enum CardLayoutId:
+  case Game, MainMenu, Settings, Tutorial, Achievement, Win, Lose, ChangeColor, Base
+```
 
 ### Main Menu
-  - Main Menu
-  - Game Board
-    - Cells
-  - ChangeColorGui
-  - Frame
+
+Il `MainMenu` é la schermata iniziale del gioco, che permette di accedere a varie funzionalità.
+Queste sono:
+- Iniziare una nuova partita
+- Visualizzare il tutorial
+- Visualizzare gli obiettivi
+- Modificare le impostazioni
+- Uscire dal gioco
+
+### Game Gui
+La `GameGui` é la schermata principale del gioco, che permette di visualizzare il tavolo di gioco e le carte in mano al giocatore.
+La schermata é formata da una griglia di bottoni (chiamate `Cells`).
+
+Ci sono varie tipologie di celle:
+- `CardCell` : cella che contiene una carta e permette di giocarla.
+- `DeckCell` : cella che contiene il mazzo di carte e permette di pescare.
+- `UnoCell` : cella che permette di chiamare uno.
+- `DirectionCell` : cella che contiene l'immagine che rappresenta la direzione del gioco.
+- `UsedCardCell` : cella che contiene l'ultima carta giocata.
+
+### ChangeColorGui
+La `ChangeColorGui` é la schermata che permette al giocatore di scegliere il colore dell'ultima carta giocata,
+solitamente una carta `ChangeColor` o `WildDrawFourCard`. Questa schermata presenta 
+quattro bottoni, uno per ogni colore possibile.
+
+### WinScreen e LoseScreen
+Queste due schermate sono schermate di fine partita, che vengono visualizzate quando un giocatore vince o perde.
+Data la loro somiglianza, é stato scelto di creare una classe astratta `EndGameScreen` che contiene la logica comune
+tra le due schermate, e due classi `WinScreen` e `LoseScreen` che estendono `EndGameScreen` e implementano la logica specifica
+per la vittoria e la sconfitta.
+```scala 3
+abstract class EndGameScreen(private val backgroundImage: Image, private val pageController: PageController)
+    extends JPanel:
+
+  this.setLayout(new GridBagLayout())
+  private val gbc = new java.awt.GridBagConstraints()
+  gbc.insets = new Insets(200, 0, 0, 0)
+
+  private val button = new Button("Return to Main Menu", (300, 50))
+  this.add(button, gbc)
+
+  button.addActionListener(
+    _ => pageController.showMainMenu()
+  )
+
+  override def paintComponent(g: java.awt.Graphics): Unit =
+    super.paintComponent(g)
+    g.drawImage(backgroundImage, 0, 0, this.getWidth, this.getHeight, this)
+
+class WinScreen(private val pageController: PageController) extends EndGameScreen(winBackground, pageController)
+
+class LoseScreen(private val pageController: PageController) extends EndGameScreen(defeatBackground, pageController)
+```
 
 
 ## Pablo Sebastian Vargas Grateron
