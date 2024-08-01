@@ -16,7 +16,7 @@ import scala.concurrent.Future
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.util.Random
 
-class GameLoop private (player: Player, gameGui: GameGui):
+case class GameLoop private (player: Player, gameGui: GameGui):
 
   def start(): Unit =
     player.clearHand()

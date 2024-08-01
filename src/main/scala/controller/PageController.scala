@@ -10,7 +10,7 @@ import view.settings.SettingsGui
 import view.tutorial.TutorialGui
 import view.{CardLayoutId, Frame, LoseScreen, WinScreen}
 
-class PageController private (player: Player, gameGui: GameGui, gameLoop: GameLoop):
+case class PageController private (player: Player, gameGui: GameGui, gameLoop: GameLoop):
 
   private val achievementGui: AchievementGui = AchievementGui(this)
   frame.add(Mainmenu(this), CardLayoutId.MainMenu)
