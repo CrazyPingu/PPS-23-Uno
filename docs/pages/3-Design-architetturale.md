@@ -9,7 +9,7 @@ corredato da pochi ma efficaci diagrammi)
 ## Architettura complessiva
 L'architettura complessiva è mostrata e riepilogata nel successivo diagramma UML:
 
-//TODO UML diagram
+![Diagramma UML](../uml/design_high_level.png)
 
 Di seguito una breve descrizione per ogni componente illustrato:
 
@@ -64,4 +64,4 @@ utilizzare per il completamento del progetto è quella per l'implementazione di 
 
 ---
 
-[Indice](../index.md) | [Capitolo Precedente](./2-Requisiti) | [Capitolo Successivo](./4-Design-dettaglio)
+[Indice](../index.md) | [Capitolo Precedente](./2-Requisiti.md) | [Capitolo Successivo](./4-Design-dettaglio.md)
