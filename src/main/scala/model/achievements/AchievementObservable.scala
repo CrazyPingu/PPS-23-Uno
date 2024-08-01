@@ -9,7 +9,7 @@ trait Observable[A <: Observer]:
   def addObservers(newObservers: List[A]): Unit =
     observers = newObservers ++ observers
 
-  def notifyObservers(event: Event): Unit =
+  def notifyObservers(event: Event[?]): Unit =
     observers.foreach(_.update(event))
 
   def removeObserver(observer: A): Unit =
@@ -20,4 +20,19 @@ trait Observable[A <: Observer]:
 
   def getObservers: List[A] = observers
 
-object AchievementObservable extends Observable[Achievement]
+trait AchievementObservable extends Observable[Achievement]:
+  def generateAchievementData(): List[AchievementData] =
+    getObservers.map(
+      achievement => AchievementData(achievement.id, achievement.isAchieved)
+    )
+
+  def loadDataFromAchievementData(achievementData: List[AchievementData]): Unit =
+    getObservers.foreach(
+      achievement =>
+        val data = achievementData.find(_.id == achievement.id)
+        if data.isDefined then achievement.isAchieved = data.get.isAchieved
+    )
+
+object AchievementObservable:
+  def apply(): AchievementObservable = new AchievementObservableImpl
+  private class AchievementObservableImpl extends AchievementObservable
