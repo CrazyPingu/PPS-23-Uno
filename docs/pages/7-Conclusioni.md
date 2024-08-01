@@ -47,4 +47,4 @@ l'aspetto del gioco.
 
 ---
 
-[Indice](../index.md) | [Capitolo Precedente](./5-Implementazione)
+[Indice](../index.md) | [Capitolo Precedente](./6-Testing.md)

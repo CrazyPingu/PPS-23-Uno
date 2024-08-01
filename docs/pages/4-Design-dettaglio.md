@@ -6,4 +6,4 @@ organizzazione del codice -- corredato da pochi ma efficaci diagrammi)
 
 ---
 
-[Indice](../index.md) | [Capitolo Precedente](./3-Design-architetturale) | [Capitolo Successivo](./5-Implementazione)
+[Indice](../index.md) | [Capitolo Precedente](./3-Design-architetturale.md) | [Capitolo Successivo](./5-Implementazione.md)

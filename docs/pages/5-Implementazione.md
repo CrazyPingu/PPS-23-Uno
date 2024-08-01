@@ -50,4 +50,4 @@ Il seguente contenuto è da dividere in sottosezioni:
 
 ---
 
-[Indice](../index.md) | [Capitolo Precedente](./4-Design-dettaglio) | [Capitolo Successivo](./7-Conclusioni.md)
+[Indice](../index.md) | [Capitolo Precedente](./4-Design-dettaglio.md) | [Capitolo Successivo](./6-Testing.md)
