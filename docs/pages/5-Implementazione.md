@@ -266,10 +266,39 @@ Insert code here
 - Interfaccia Grafica
   - Tutorial
 
-### Componenti Sviluppati insieme a Samuele De Tuglie
+## Componenti Sviluppati da Nicola Montanari e Samuele De Tuglie
 
-- GameLoop
-- GameController
+### GameLoop
+
+Il `GameLoop` è il componente principale del gioco; si occupa di gestire il flusso di gioco e le interazioni tra 
+i vari componenti. Questo include la gestione dei turni, la gestione delle carte in mano ai giocatori
+e alle interazioni che avvengono tra i giocatori.
+
+Il suo metodo principale è `nextTurn` che si occupa di gestire il turno successivo, controllando il tipo di giocatore
+che deve giocare e gestendo le azioni di gioco.
+
+```scala 3
+  private def nextTurn(): Unit =
+      if !isRunning then return
+      Future:
+        currentTurn = (currentTurn + (if clockWiseDirection then 1 else -1) + turnOrder.size) % turnOrder.size
+        gameGui.updateTurnArrow(currentTurn)
+        turnOrder(currentTurn) match
+          case bot: BotPlayer =>
+            gameGui.allowPlayerAction(false)
+            Thread.sleep((1500 + Random.nextInt(1500)).toLong)
+            bot.chooseCardToUse(lastPlayedCard) match
+              case Some(card) => chooseCard(card, bot)
+              case None       => drawCard(bot)
+          case _ => gameGui.allowPlayerAction(true)
+```
+
+Sostanzialmente, una volta che si assicura che il gioco sia in corso, controllando la variabile `isRunning`,
+il metodo procede a calcolare il prossimo turno, mostrando sul tavolo di gioco la freccia che indica il giocatore corrente.
+Successivamente, controlla il tipo di giocatore che deve giocare:
+- Se è un bot, il gioco disabilita le azioni del giocatore e attende un tempo casuale (compreso tra 1,5 e 3 sec) prima di far giocare il bot.
+Nel caso in cui il bot abbia scelto una carta da giocare, il bot la gioca, altrimenti pesca una carta.
+- Se è un giocatore umano, il gioco abilita le azioni del giocatore.
 
 ## Samuele De Tuglie
 
