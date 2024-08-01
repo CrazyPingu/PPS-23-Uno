@@ -1,22 +1,34 @@
 package model.achievements
 
+import model.achievements.ComparisonOperator.{Equal, GreaterThan, GreaterThanOrEqual, LessThan, LessThanOrEqual}
 import play.api.libs.json.{Format, JsError, JsResult, JsString, JsSuccess, JsValue}
 
-enum ComparisonOperator:
-  case Greater
-  case Less
-  case Equal
+sealed trait ComparisonOperator:
+  def compare(x: Int, y: Int): Boolean
 
-  def compare(x: Int, y: Int): Boolean = this match
-    case Greater => x > y
-    case Less    => x < y
-    case Equal   => x == y
+object ComparisonOperator:
+  case object LessThan extends ComparisonOperator:
+    override def compare(x: Int, y: Int): Boolean = x < y
+
+  case object LessThanOrEqual extends ComparisonOperator:
+    override def compare(x: Int, y: Int): Boolean = x <= y
+
+  case object Equal extends ComparisonOperator:
+    override def compare(x: Int, y: Int): Boolean = x == y
+
+  case object GreaterThanOrEqual extends ComparisonOperator:
+    override def compare(x: Int, y: Int): Boolean = x >= y
+
+  case object GreaterThan extends ComparisonOperator:
+    override def compare(x: Int, y: Int): Boolean = x > y
 
 implicit val comparisonOperatorFormat: Format[ComparisonOperator] = new Format[ComparisonOperator]:
-  override def reads(json: JsValue): JsResult[ComparisonOperator] = json.as[String] match
-    case "Greater" => JsSuccess(ComparisonOperator.Greater)
-    case "Less"    => JsSuccess(ComparisonOperator.Less)
-    case "Equal"   => JsSuccess(ComparisonOperator.Equal)
-    case _         => JsError("Unknown comparison operator")
+  def reads(json: JsValue): JsResult[ComparisonOperator] = json match
+    case JsString("LessThan")           => JsSuccess(LessThan)
+    case JsString("LessThanOrEqual")    => JsSuccess(LessThanOrEqual)
+    case JsString("Equal")              => JsSuccess(Equal)
+    case JsString("GreaterThanOrEqual") => JsSuccess(GreaterThanOrEqual)
+    case JsString("GreaterThan")        => JsSuccess(GreaterThan)
+    case _                              => JsError("Unknown ComparisonOperator")
 
-  override def writes(comparator: ComparisonOperator): JsValue = JsString(comparator.toString)
+  def writes(op: ComparisonOperator): JsValue = JsString(op.toString)
