@@ -11,7 +11,7 @@ trait Achievement extends Observer:
 
   def description: String
 
-  def isAchieved: Boolean
+  var isAchieved: Boolean
 
 trait BooleanAchievement extends Achievement
 
