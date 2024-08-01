@@ -1,5 +1,15 @@
-import controller.AchievementController.{ACHIEVEMENT_FILEPATH, achievementObservable}
-import model.achievements.{Achievement, AchievementData, AchievementGenerator, AchievementId, AchievementObservable, BooleanAchievement, ComparisonOperator, Event, NumericAchievement}
+import controller.AchievementController.{achievementObservable, ACHIEVEMENT_FILEPATH}
+import model.achievements.{
+  Achievement,
+  AchievementData,
+  AchievementGenerator,
+  AchievementId,
+  AchievementObservable,
+  BooleanAchievement,
+  ComparisonOperator,
+  Event,
+  NumericAchievement
+}
 import org.scalatest.BeforeAndAfterAll
 import org.scalatest.funsuite.AnyFunSuite
 import utils.JsonUtils
@@ -49,7 +59,7 @@ class AchievementTest extends AnyFunSuite with BeforeAndAfterAll:
   test("Should save and load the achievements data"):
     val achievementObservable: AchievementObservable = AchievementObservable()
     achievementObservable.addObservers(AchievementGenerator().achievementList)
-    achievementObservable.notifyObservers(Event(AchievementId.firstCardAchievement.value, true))
+    achievementObservable.notifyObservers(Event(AchievementId.FirstCardAchievement.id, true))
     JsonUtils.saveToFile(achievementTestPath, achievementObservable.generateAchievementData())
 
     val jsonData: Option[List[AchievementData]] = JsonUtils.loadFromFile[List[AchievementData]](achievementTestPath)
@@ -57,7 +67,7 @@ class AchievementTest extends AnyFunSuite with BeforeAndAfterAll:
 
     val jsonAchievementData: List[AchievementData] = jsonData.get
     assert(achievementObservable.generateAchievementData() == jsonAchievementData)
-  
+
   override def afterAll(): Unit =
     Files.delete(Paths.get(achievementTestPath))
     Files.delete(Paths.get(achievementTestPath).getParent)

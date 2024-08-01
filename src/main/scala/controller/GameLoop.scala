@@ -1,6 +1,21 @@
 package controller
 
-import controller.GameLoop.{bot1, bot2, bot3, clockWiseDirection, createBotPlayers, currentPlayer, currentTurn, deck, giveStartingCards, isRunning, lastPlayedCard, pageController, turnOrder, unoCalled}
+import controller.GameLoop.{
+  bot1,
+  bot2,
+  bot3,
+  clockWiseDirection,
+  createBotPlayers,
+  currentPlayer,
+  currentTurn,
+  deck,
+  giveStartingCards,
+  isRunning,
+  lastPlayedCard,
+  pageController,
+  turnOrder,
+  unoCalled
+}
 import model.achievements.{AchievementId, Event}
 import model.bot.{BotPlayer, EasyBotPlayerImpl, HardBotPlayerImpl}
 import model.cards.SpecialCard.{ChangeColor, WildDrawFourCard}
@@ -56,7 +71,7 @@ case class GameLoop private (player: Player, gameGui: GameGui):
             case Some(card) => chooseCard(card, bot)
             case None       => drawCard(bot)
         case _ =>
-          AchievementController.notifyAchievements(Event(AchievementId.hold2CardsAchievement.value, player.getCardCount))
+          AchievementController.notifyAchievements(Event(AchievementId.Hold2CardsAchievement.id, player.getCardCount))
           checkUno()
           gameGui.allowPlayerAction(true)
 
@@ -86,16 +101,16 @@ case class GameLoop private (player: Player, gameGui: GameGui):
       disposeCard(card)
       hand.removeCard(card)
       if hand == player then
-        AchievementController.notifyAchievements(Event(AchievementId.firstCardAchievement.value, 1))
+        AchievementController.notifyAchievements(Event(AchievementId.FirstCardAchievement.id, true))
 
       checkIfSpecialCard(card, hand == player)
 
       if player.isEmpty then
-        AchievementController.notifyAchievements(Event(AchievementId.firstWinAchievement.value, 1))
+        AchievementController.notifyAchievements(Event(AchievementId.FirstWinAchievement.id, true))
         AchievementController.saveAchievements()
         pageController.showWin()
       else if hand.isEmpty && hand != player then
-        AchievementController.notifyAchievements(Event(AchievementId.firstLoseAchievement.value, 1))
+        AchievementController.notifyAchievements(Event(AchievementId.FirstLoseAchievement.id, true))
         AchievementController.saveAchievements()
         pageController.showLose()
 
@@ -145,10 +160,10 @@ case class GameLoop private (player: Player, gameGui: GameGui):
     gameGui.updateGui()
     card match
       case c: WildDrawFourCard if c.color == Color.Black && isPlayer =>
-        AchievementController.notifyAchievements(Event(AchievementId.firstPlus4Achievement.value, 1))
+        AchievementController.notifyAchievements(Event(AchievementId.FirstPlus4Achievement.id, true))
         c.execute()
       case c: ChangeColor if c.color == Color.Black && isPlayer =>
-        AchievementController.notifyAchievements(Event(AchievementId.firstColorChangeAchievement.value, 1))
+        AchievementController.notifyAchievements(Event(AchievementId.FirstColorChangeAchievement.id, true))
         c.execute()
       case c: SpecialCard => c.execute()
       case _              => ()

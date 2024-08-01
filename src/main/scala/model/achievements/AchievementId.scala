@@ -1,9 +1,11 @@
 package model.achievements
 
-enum AchievementId(val value: Int):
-  case firstCardAchievement extends AchievementId(0)
-  case firstPlus4Achievement extends AchievementId(1)
-  case firstColorChangeAchievement extends AchievementId(2)
-  case firstWinAchievement extends AchievementId(3)
-  case firstLoseAchievement extends AchievementId(4)
-  case hold2CardsAchievement extends AchievementId(5)
+object AchievementId extends Enumeration:
+  type AchievementId = Value
+
+  val FirstCardAchievement: Value = Value(0, "FirstCardAchievement")
+  val FirstPlus4Achievement: Value = Value(1, "FirstPlus4Achievement")
+  val FirstColorChangeAchievement: Value = Value(2, "FirstColorChangeAchievement")
+  val FirstWinAchievement: Value = Value(3, "FirstWinAchievement")
+  val FirstLoseAchievement: Value = Value(4, "FirstLoseAchievement")
+  val Hold2CardsAchievement: Value = Value(5, "Hold2CardsAchievement")
