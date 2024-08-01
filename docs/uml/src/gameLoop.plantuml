@@ -1,0 +1,17 @@
+@startuml
+
+class GameLoop {
+    +start()
+    +reverseTurnOrder()
+    +nextDrawCard(numToDraw)
+    +skipNextTurn(numberToSkip)
+    +stop()
+    +chooseCard(card, hand)
+    +drawCard(hand)
+    +showChangeColor()
+    +changeColor()
+    +callUno()
+    -nextTurn()
+}
+
+@enduml
