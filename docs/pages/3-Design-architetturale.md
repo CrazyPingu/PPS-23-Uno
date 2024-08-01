@@ -26,8 +26,6 @@ base di ogni giocatore e bot, in quanto rappresenta la mano di carte che ogni gi
 delle regole durante lo svolgimento di ogni partita.
 - `GameGui` &rarr; Interfaccia grafica in grado di mostrare le numerose interfacce
   presenti all'interno del programma quando viene richiesto.
-- `GameController` &rarr; Intermediario controller tra la GUI e il GameLoop, si occupa di gestire e sincronizzare gli eventi,
-le azioni e le interazioni con l'utente che avvengono nel tempo.
 
 
 ## Pattern architetturali
