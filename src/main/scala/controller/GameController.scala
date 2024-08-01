@@ -39,11 +39,11 @@ object GameController:
         AchievementController.notifyAchievements(Event(AchievementId.firstCardAchievement.value, 1))
       checkIfSpecialCard(card, hand == Player)
 
-      if Player.isEmpty && unoCalled then
+      if Player.isEmpty then
         AchievementController.notifyAchievements(Event(AchievementId.firstWinAchievement.value, 1))
         AchievementController.saveAchievements()
         PageController.showWin()
-      else if hand.isEmpty then
+      else if hand.isEmpty && hand != Player then
         AchievementController.notifyAchievements(Event(AchievementId.firstLoseAchievement.value, 1))
         AchievementController.saveAchievements()
         PageController.showLose()
@@ -91,9 +91,11 @@ object GameController:
       GameGui.setUnoButtonChecked(true)
 
   def checkUno(): Unit =
-    if !unoCalled && Player.getCardCount == 1 then drawCard(Player, 1, false)
+    if !unoCalled && Player.getCardCount == 1 then unoNotCalled()
     unoCalled = false
     GameGui.setUnoButtonChecked(false)
+
+  private def unoNotCalled(): Unit = drawCard(Player, 1, false)
 
   private def checkIfSpecialCard(card: Card, isPlayer: Boolean = false): Unit =
     card match

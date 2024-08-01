@@ -2,6 +2,7 @@ package controller
 
 import model.bot.{BotPlayer, EasyBotPlayerImpl, HardBotPlayerImpl}
 import model.cards.Card
+import model.cards.factory.CardFactory
 import model.settings.Difficulty.Difficulty
 import model.settings.{Difficulty, GameSettings}
 import model.{Deck, Hand, Player}
@@ -90,6 +91,7 @@ object GameLoop:
       bot2.addCard(Deck.draw())
       bot3.addCard(Deck.draw())
 
-    for _ <- 0 until numToDraw do Player.addCard(Deck.draw())
+//    for _ <- 0 until numToDraw do Player.addCard(Deck.draw())
 
+    Player.addCard(CardFactory.createChangeColor())
     GameGui.updateGui()

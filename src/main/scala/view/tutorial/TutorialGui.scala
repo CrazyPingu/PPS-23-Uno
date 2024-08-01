@@ -8,8 +8,46 @@ import javax.swing.*
 import javax.swing.border.EmptyBorder
 import view.{Button, GridBagConstraints}
 
-object TutorialGui extends JPanel:
+class TutorialGui private extends JPanel:
 
+  this.setBackground(new Color(10, 10, 10))
+
+  TutorialGui.buttonPanel.setBackground(new Color(10, 10, 10))
+  TutorialGui.buttonPanel.add(TutorialGui.prevButton, new GridBagConstraints(0, 0, 1, TutorialGui.defaultInsets))
+  TutorialGui.buttonPanel.add(TutorialGui.mainMenuButton, new GridBagConstraints(0, 1, 2, TutorialGui.defaultInsets))
+  TutorialGui.buttonPanel.add(TutorialGui.nextButton, new GridBagConstraints(1, 0, 1, TutorialGui.defaultInsets))
+
+  TutorialGui.titleLabel.setFont(new Font("Arial", Font.BOLD, 40))
+  TutorialGui.titleLabel.setForeground(Color.WHITE)
+
+  TutorialGui.descriptionLabel.setFont(new Font("Arial", Font.PLAIN, 25))
+  TutorialGui.descriptionLabel.setForeground(Color.WHITE)
+
+  TutorialGui.textPanel.setBackground(new Color(10, 10, 10))
+  TutorialGui.textPanel.add(TutorialGui.titleLabel)
+  TutorialGui.textPanel.add(TutorialGui.descriptionLabel)
+
+  this.setLayout(new BorderLayout())
+  this.setBorder(new EmptyBorder(25, 25, 25, 25))
+  this.add(TutorialGui.textPanel, BorderLayout.NORTH)
+  this.add(TutorialGui.imageLabel, BorderLayout.CENTER)
+  this.add(TutorialGui.buttonPanel, BorderLayout.SOUTH)
+
+  TutorialGui.prevButton.addActionListener(
+    _ => TutorialGui.showSlide(TutorialGui.currentSlideIndex - 1)
+  )
+  TutorialGui.nextButton.addActionListener(
+    _ => TutorialGui.showSlide(TutorialGui.currentSlideIndex + 1)
+  )
+  TutorialGui.mainMenuButton.addActionListener(
+    _ =>
+      PageController.showMainMenu()
+      TutorialGui.showSlide(0)
+  )
+  TutorialGui.showSlide(0)
+
+object TutorialGui:
+  private var currentSlideIndex = 0
   private val SlideFactory = new TutorialSlideFactory()
   private val slides = Array(
     SlideFactory.createCompatibilitySlide(),
@@ -19,40 +57,16 @@ object TutorialGui extends JPanel:
     SlideFactory.createUnoSlide(),
     SlideFactory.createWinLoseSlide()
   )
-
-  this.setBackground(new Color(10, 10, 10))
-  private var currentSlideIndex = 0
-
   private val imageLabel = new JLabel("", SwingConstants.CENTER)
+  private val titleLabel = new JLabel("", SwingConstants.CENTER)
 
   private val prevButton = new Button("Previous Page", (200, 50))
   private val nextButton = new Button("Next Page", (200, 50))
   private val mainMenuButton = new Button("Main Menu", (410, 50))
   private val defaultInsets: Insets = new Insets(5, 5, 5, 5)
   private val buttonPanel = new JPanel(new GridBagLayout())
-  buttonPanel.setBackground(new Color(10, 10, 10))
-  buttonPanel.add(prevButton, new GridBagConstraints(0, 0, 1, defaultInsets))
-  buttonPanel.add(mainMenuButton, new GridBagConstraints(0, 1, 2, defaultInsets))
-  buttonPanel.add(nextButton, new GridBagConstraints(1, 0, 1, defaultInsets))
-
-  private val titleLabel = new JLabel("", SwingConstants.CENTER)
-  titleLabel.setFont(new Font("Arial", Font.BOLD, 40))
-  titleLabel.setForeground(Color.WHITE)
-
   private val descriptionLabel = new JLabel("", SwingConstants.CENTER)
-  descriptionLabel.setFont(new Font("Arial", Font.PLAIN, 25))
-  descriptionLabel.setForeground(Color.WHITE)
-
   private val textPanel = new JPanel(new GridLayout(2, 1))
-  textPanel.setBackground(new Color(10, 10, 10))
-  textPanel.add(titleLabel)
-  textPanel.add(descriptionLabel)
-
-  this.setLayout(new BorderLayout())
-  this.setBorder(new EmptyBorder(25, 25, 25, 25))
-  this.add(textPanel, BorderLayout.NORTH)
-  this.add(imageLabel, BorderLayout.CENTER)
-  this.add(buttonPanel, BorderLayout.SOUTH)
 
   private def showSlide(index: Int): Unit =
     if index >= 0 && index < slides.length then
@@ -64,16 +78,4 @@ object TutorialGui extends JPanel:
       imageLabel.setIcon(new ImageIcon(slide.image))
       descriptionLabel.setText(slide.description)
 
-  prevButton.addActionListener(
-    _ => showSlide(currentSlideIndex - 1)
-  )
-  nextButton.addActionListener(
-    _ => showSlide(currentSlideIndex + 1)
-  )
-  mainMenuButton.addActionListener(
-    _ =>
-      PageController.showMainMenu()
-      showSlide(0)
-  )
-
-  showSlide(0)
+  def apply(): TutorialGui = new TutorialGui

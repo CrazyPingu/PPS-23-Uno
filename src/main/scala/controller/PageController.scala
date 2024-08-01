@@ -10,42 +10,45 @@ import view.{CardLayoutId, Frame, LoseScreen, WinScreen}
 
 object PageController:
 
-  Frame.add(Mainmenu, CardLayoutId.MainMenu)
-  Frame.add(WinScreen, CardLayoutId.Win)
-  Frame.add(LoseScreen, CardLayoutId.Lose)
-  Frame.add(GameGui, CardLayoutId.Game)
-  Frame.add(ChooseColor, CardLayoutId.ChangeColor)
-  Frame.add(SettingsGui, CardLayoutId.Settings)
-  Frame.add(AchievementGui, CardLayoutId.Achievement)
-  Frame.add(TutorialGui, CardLayoutId.Tutorial)
+  private val frame: Frame = Frame()
+  private val achievementGui: AchievementGui = AchievementGui()
+
+  frame.add(Mainmenu(), CardLayoutId.MainMenu)
+  frame.add(WinScreen(), CardLayoutId.Win)
+  frame.add(LoseScreen(), CardLayoutId.Lose)
+  frame.add(GameGui, CardLayoutId.Game)
+  frame.add(ChooseColor(), CardLayoutId.ChangeColor)
+  frame.add(SettingsGui(), CardLayoutId.Settings)
+  frame.add(achievementGui, CardLayoutId.Achievement)
+  frame.add(TutorialGui(), CardLayoutId.Tutorial)
 
   def showMainMenu(): Unit =
-    Frame.show(CardLayoutId.MainMenu)
+    frame.show(CardLayoutId.MainMenu)
 
   def showGame(newGame: Boolean = true): Unit =
     if newGame then GameLoop.start()
-    Frame.show(CardLayoutId.Game)
+    frame.show(CardLayoutId.Game)
 
   def showChangeColor(): Unit =
-    Frame.show(CardLayoutId.ChangeColor)
+    frame.show(CardLayoutId.ChangeColor)
 
   def showTutorial(): Unit =
-    Frame.show(CardLayoutId.Tutorial)
+    frame.show(CardLayoutId.Tutorial)
 
   def showAchievements(): Unit =
-    AchievementGui.updateGui()
-    Frame.show(CardLayoutId.Achievement)
+    achievementGui.updateGui()
+    frame.show(CardLayoutId.Achievement)
 
   def showSettings(): Unit =
-    Frame.show(CardLayoutId.Settings)
+    frame.show(CardLayoutId.Settings)
 
   def showWin(): Unit =
     GameLoop.stop()
-    Frame.show(CardLayoutId.Win)
+    frame.show(CardLayoutId.Win)
 
   def showLose(): Unit =
     GameLoop.stop()
-    Frame.show(CardLayoutId.Lose)
+    frame.show(CardLayoutId.Lose)
 
   def closeWindow(): Unit =
-    Frame.dispose()
+    frame.dispose()

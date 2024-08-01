@@ -23,6 +23,6 @@ abstract class EndGameScreen(private val backgroundImage: Image) extends JPanel:
     super.paintComponent(g)
     g.drawImage(backgroundImage, 0, 0, this.getWidth, this.getHeight, this)
 
-object WinScreen extends EndGameScreen(winBackground)
+class WinScreen extends EndGameScreen(winBackground)
 
-object LoseScreen extends EndGameScreen(defeatBackground)
+class LoseScreen extends EndGameScreen(defeatBackground)
