@@ -18,7 +18,7 @@ Per la sua implementazione è stato definito un nuovo `trait` che estende `Array
 così da garantire e gestire i metodi necessari per la gestione degli elementi al suo interno.
 
 Questo componente è strutturato per garantire le funzionalità fondamentali per la gestione delle carte in gioco.
-E' stata implementata una metodologia di sviluppo che minimizzasse la complessità affinche il codice possa essere
+È stata implementata una metodologia di sviluppo che minimizzasse la complessità affinché il codice possa essere
 il più chiaro e leggibile possibile, sopratutto per questo componente fondamentale per questo progetto.
 
 Ogni metodo necessario si basa sulle funzionalità offerte da `ArrayBuffer` e viene implementato 
@@ -61,7 +61,7 @@ INSERIRE QUI SCHEMA UML
 ### BotPlayer e BotPlayerImpl
 
 Per gestire i bot all'interno del gioco, è stata definito un trait generale `BotPlayer` che estende anch'esso `Hand` così da
-ereditare tutte le sue funzionalità, proprio come l'object `Player`.
+ereditare tutte le sue funzionalità, proprio come la classe `Player`.
 
 Il trait `BotPlayer` presenta due metodi fondamentali per il gioco:
 - `chooseCardToUse` che ritorna la carta scelta dal BotPlayer per essere giocata, se possibile e valida.
@@ -83,12 +83,12 @@ così da renderlo disponibile ai propri figli.
 Il metodo `isCompatible` è stato definito poi esternamente e contiene la logica per la verifica.
 Questo metodo ritorna un booleano che indica se la carta selezionata è compatibile con la carta al centro del tavolo.
 
-Il medoto `chooseColor` è stato implementato in modo da selezionare il colore più frequente tra le carte in mano
+Il metodo `chooseColor` è stato implementato in modo da selezionare il colore più frequente tra le carte in mano
 così da ritornarlo quando il controller lo richiede, automatizzando così la scelta.
 Questo metodo è generale per tutti i bot implementabili e quindi condiviso all'interno di questa classe.
 
 Il metodo `chooseCardToUse` viene invece modellato in maniera separata e diversa per ogni tipologia di 
-bot, in quanto la scelta della carta viene infuenzata in
+bot, in quanto la scelta della carta viene influenzata in
 base alla strategia di gioco che il bot deve seguire.
 
 A seguire l'implementazione di `BotPlayerImpl`:
@@ -194,7 +194,7 @@ def isCompatible(selectedCard: Card, centerCard: Card): Boolean =
 ```
 
 ### Tutorial (GUI)
-E' stata sviluppata una GUI molto semplice per il tutorial del gioco.
+È stata sviluppata una GUI molto semplice per il tutorial del gioco.
 
 Il tutorial è stato implementato in modo da guidare l'utente e mostrare tutte le possibili interazioni
 all'interno del gioco tramite una serie di immagini e testi.
