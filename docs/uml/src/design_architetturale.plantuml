@@ -15,9 +15,6 @@ package model {
 
     interface BotPlayer extends Hand
 
-    class EasyBotPlayer extends BotPlayer
-
-    class HardBotPlayer extends BotPlayer
 }
 
 package controller {
@@ -27,7 +24,7 @@ package controller {
 }
 
 package view {
-    class Gui
+    class GameGui
 }
 
 model.Deck *-- model.Card
@@ -35,7 +32,7 @@ model.Hand *-- model.Card
 
 controller.GameLoop *--* controller.GameController
 
-view.Gui *-left-* controller.GameController
+view.GameGui *-left-* controller.GameController
 
 'controller.GameController *-u- model.Deck
 'model.Player *-u-* controller.GameController
