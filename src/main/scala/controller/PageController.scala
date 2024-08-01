@@ -1,5 +1,7 @@
 package controller
 
+import controller.PageController.frame
+import model.Player
 import view.Mainmenu
 import view.achievements.AchievementGui
 import view.game.ChangeColor.ChooseColor
@@ -8,25 +10,23 @@ import view.settings.SettingsGui
 import view.tutorial.TutorialGui
 import view.{CardLayoutId, Frame, LoseScreen, WinScreen}
 
-object PageController:
+class PageController private (player: Player, gameGui: GameGui, gameLoop: GameLoop):
 
-  private val frame: Frame = Frame()
-  private val achievementGui: AchievementGui = AchievementGui()
-
-  frame.add(Mainmenu(), CardLayoutId.MainMenu)
-  frame.add(WinScreen(), CardLayoutId.Win)
-  frame.add(LoseScreen(), CardLayoutId.Lose)
-  frame.add(GameGui, CardLayoutId.Game)
-  frame.add(ChooseColor(), CardLayoutId.ChangeColor)
-  frame.add(SettingsGui(), CardLayoutId.Settings)
+  private val achievementGui: AchievementGui = AchievementGui(this)
+  frame.add(Mainmenu(this), CardLayoutId.MainMenu)
+  frame.add(WinScreen(this), CardLayoutId.Win)
+  frame.add(LoseScreen(this), CardLayoutId.Lose)
+  frame.add(gameGui, CardLayoutId.Game)
+  frame.add(ChooseColor(gameLoop), CardLayoutId.ChangeColor)
+  frame.add(SettingsGui(this), CardLayoutId.Settings)
   frame.add(achievementGui, CardLayoutId.Achievement)
-  frame.add(TutorialGui(), CardLayoutId.Tutorial)
+  frame.add(TutorialGui(this), CardLayoutId.Tutorial)
 
   def showMainMenu(): Unit =
     frame.show(CardLayoutId.MainMenu)
 
   def showGame(newGame: Boolean = true): Unit =
-    if newGame then GameLoop.start()
+    if newGame then gameLoop.start()
     frame.show(CardLayoutId.Game)
 
   def showChangeColor(): Unit =
@@ -43,12 +43,19 @@ object PageController:
     frame.show(CardLayoutId.Settings)
 
   def showWin(): Unit =
-    GameLoop.stop()
+    gameLoop.stop()
     frame.show(CardLayoutId.Win)
 
   def showLose(): Unit =
-    GameLoop.stop()
+    gameLoop.stop()
     frame.show(CardLayoutId.Lose)
 
   def closeWindow(): Unit =
     frame.dispose()
+
+object PageController:
+
+  private val frame: Frame = Frame()
+
+  def apply(player: Player, gameGui: GameGui, gameLoop: GameLoop): PageController =
+    new PageController(player, gameGui, gameLoop)

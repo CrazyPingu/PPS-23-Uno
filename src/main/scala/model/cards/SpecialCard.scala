@@ -1,6 +1,6 @@
 package model.cards
 
-import controller.GameController
+import controller.GameLoop
 import utils.Color
 import utils.ImageHandler.loadCardImage
 
@@ -20,6 +20,7 @@ abstract class SpecialCard(val color: Color, val image: Image) extends Card:
   def execute(): Unit
 
 object SpecialCard:
+  var gameLoop: GameLoop = _
 
   /**
    * Represents a change color card.
@@ -31,7 +32,7 @@ object SpecialCard:
     /**
      * Changes the color of the card that is being played.
      */
-    override def execute(): Unit = GameController.showChangeColor()
+    override def execute(): Unit = gameLoop.showChangeColor()
 
     /**
      * Represents a reverse card.
@@ -44,7 +45,7 @@ object SpecialCard:
     /**
      * Reverses the turn order.
      */
-    override def execute(): Unit = GameController.reverseDirection()
+    override def execute(): Unit = gameLoop.reverseTurnOrder()
 
     /**
      * Represents a skip turn card.
@@ -57,19 +58,20 @@ object SpecialCard:
     /**
      * The next player has to skip a certain number of turns.
      */
-    override def execute(): Unit = GameController.skipNextTurn(numberToSkip)
+    override def execute(): Unit = gameLoop.skipNextTurn(numberToSkip)
 
   /**
    * Represents a wild draw four card.
    */
-  case class WildDrawFourCard(override val color: Color = Color.Black) extends SpecialCard(color, loadCardImage("Draw4", color)):
+  case class WildDrawFourCard(override val color: Color = Color.Black)
+      extends SpecialCard(color, loadCardImage("Draw4", color)):
 
     override def toString: String = "Draw 4" + " " + color.toString
 
     /**
      * The next player has to draw a certain number of cards from the deck.
      */
-    override def execute(): Unit = GameController.nextDrawCard(4)
+    override def execute(): Unit = gameLoop.nextDrawCard(4)
 
   case class DrawTwoCard(override val color: Color) extends SpecialCard(color, loadCardImage("Draw2", color)):
 
@@ -78,4 +80,4 @@ object SpecialCard:
     /**
      * The next player has to draw a certain number of cards from the deck.
      */
-    override def execute(): Unit = GameController.nextDrawCard(2)
+    override def execute(): Unit = gameLoop.nextDrawCard(2)

@@ -8,7 +8,7 @@ import view.{Button, GridBagConstraints, Label}
 import java.awt.*
 import javax.swing.JPanel
 
-class AchievementGui private extends JPanel:
+class AchievementGui private (pageController: PageController) extends JPanel:
   setLayout(new GridBagLayout())
   AchievementGui.title.setForeground(Color.BLACK)
 
@@ -20,11 +20,11 @@ class AchievementGui private extends JPanel:
   AchievementGui.resetAchievementsButton.addActionListener(
     _ =>
       AchievementController.resetAchievements()
-      PageController.showMainMenu()
+      pageController.showMainMenu()
   )
 
   AchievementGui.goBackButton.addActionListener(
-    _ => PageController.showMainMenu()
+    _ => pageController.showMainMenu()
   )
 
   def updateGui(): Unit =
@@ -46,7 +46,7 @@ object AchievementGui:
   private val goBackButton: Button = new Button("Go back to menu")
   private var achievementTable: Table = new Table(getDataOnArray, columnNames, Array(400, 200))
 
-  def apply(): AchievementGui = new AchievementGui
+  def apply(pageController: PageController): AchievementGui = new AchievementGui(pageController)
 
   private def getDataOnArray: Array[Array[AnyRef]] =
     var stringArray: Array[Array[AnyRef]] = Array[Array[AnyRef]]()

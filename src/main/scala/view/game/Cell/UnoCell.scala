@@ -1,16 +1,16 @@
 package view.game.Cell
 
-import controller.GameController
+import controller.GameLoop
 import utils.ImageHandler
 
 /**
  * The cell that is used to call UNO when the player has only one card left
  */
-class UnoCell extends Cell:
+class UnoCell(gameLoop: GameLoop) extends Cell:
   setIcon(ImageHandler.unoButton)
 
   addActionListener(
-    _ => GameController.callUno()
+    _ => gameLoop.callUno()
   )
 
   def setChecked(checked: Boolean): Unit =

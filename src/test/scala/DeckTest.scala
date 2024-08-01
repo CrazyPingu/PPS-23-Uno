@@ -1,6 +1,6 @@
 import model.Deck
 import model.cards.SimpleCardImpl
-import model.cards.special.{ChangeColor, DrawCard, ReverseCard, SkipCard}
+import model.cards.SpecialCard.{ChangeColor, DrawTwoCard, ReverseCard, SkipCard, WildDrawFourCard}
 import org.scalatest.funsuite.AnyFunSuite
 import utils.Color
 
@@ -10,48 +10,56 @@ import utils.Color
 class DeckTest extends AnyFunSuite:
 
   test("Deck should be initialized with 108 cards"):
-    assert(Deck.size == 108)
+    val deck = new Deck()
+    assert(deck.size == 108)
 
   test("Deck should contain 19 number cards of each color"):
-    val colors = Seq(Color.Red, Color.Green, Color.Blue, Color.Yellow)
+    val deck = new Deck()
+    val colors = Color.values.filter(_ != Color.Black)
     for color <- colors do
-      val numberCards = Deck.collect:
+      val numberCards = deck.collect:
         case card: SimpleCardImpl if card.color == color => card
       assert(numberCards.size == 19)
 
   test("Deck should contain 2 reverse cards of each color"):
-    val colors = Seq(Color.Red, Color.Green, Color.Blue, Color.Yellow)
+    val deck = new Deck()
+    val colors = Color.values.filter(_ != Color.Black)
     for color <- colors do
-      val reverseCards = Deck.collect:
+      val reverseCards = deck.collect:
         case card: ReverseCard if card.color == color => card
       assert(reverseCards.size == 2)
 
   test("Deck should contain 2 skip cards of each color"):
-    val colors = Seq(Color.Red, Color.Green, Color.Blue, Color.Yellow)
+    val deck = new Deck()
+    val colors = Color.values.filter(_ != Color.Black)
     for color <- colors do
-      val skipCards = Deck.collect:
+      val skipCards = deck.collect:
         case card: SkipCard if card.color == color => card
       assert(skipCards.size == 2)
 
   test("Deck should contain 2 draw 2 cards of each color"):
-    val colors = Seq(Color.Red, Color.Green, Color.Blue, Color.Yellow)
+    val deck = new Deck()
+    val colors = Color.values.filter(_ != Color.Black)
     for color <- colors do
-      val drawCards = Deck.collect:
-        case card: DrawCard if card.color == color && card.numberToDraw == 2 => card
+      val drawCards = deck.collect:
+        case card: DrawTwoCard if card.color == color => card
       assert(drawCards.size == 2)
 
   test("Deck should contain 4 wild draw 4 cards"):
-    val wildDrawCards = Deck.collect:
-      case card: DrawCard if card.color == Color.Black && card.numberToDraw == 4 => card
+    val deck = new Deck()
+    val wildDrawCards = deck.collect:
+      case card: WildDrawFourCard if card.color == Color.Black => card
     assert(wildDrawCards.size == 4)
 
   test("Deck should contain 4 change color cards"):
-    val changeColorCards = Deck.collect:
+    val deck = new Deck()
+    val changeColorCards = deck.collect:
       case card: ChangeColor => card
     assert(changeColorCards.size == 4)
 
   test("Deck should draw a card from the top"):
-    val firstCard = Deck(0)
-    val drawnCard = Deck.draw()
+    val deck = new Deck()
+    val firstCard = deck(0)
+    val drawnCard = deck.draw()
     assert(drawnCard == firstCard)
-    assert(Deck.size == 107)
+    assert(deck.size == 107)

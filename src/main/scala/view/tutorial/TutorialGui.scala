@@ -8,7 +8,7 @@ import javax.swing.*
 import javax.swing.border.EmptyBorder
 import view.{Button, GridBagConstraints}
 
-class TutorialGui private extends JPanel:
+class TutorialGui private (private val pageController: PageController) extends JPanel:
 
   this.setBackground(new Color(10, 10, 10))
 
@@ -41,7 +41,7 @@ class TutorialGui private extends JPanel:
   )
   TutorialGui.mainMenuButton.addActionListener(
     _ =>
-      PageController.showMainMenu()
+      pageController.showMainMenu()
       TutorialGui.showSlide(0)
   )
   TutorialGui.showSlide(0)
@@ -78,4 +78,4 @@ object TutorialGui:
       imageLabel.setIcon(new ImageIcon(slide.image))
       descriptionLabel.setText(slide.description)
 
-  def apply(): TutorialGui = new TutorialGui
+  def apply(pageController: PageController): TutorialGui = new TutorialGui(pageController)

@@ -45,4 +45,4 @@ trait Hand extends ArrayBuffer[Card]:
    */
   def clearHand(): Unit = this.clear
 
-object Player extends Hand
+class Player extends Hand

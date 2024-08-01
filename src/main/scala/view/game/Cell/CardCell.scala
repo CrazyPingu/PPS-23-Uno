@@ -1,12 +1,12 @@
 package view.game.Cell
 
-import controller.GameController
+import controller.GameLoop
 import model.cards.Card
 
 /**
  * A cell that contains a card
  */
-class CardCell extends Cell:
+class CardCell(gameLoop: GameLoop) extends Cell:
   private var card: Option[Card] = None
 
   /**
@@ -26,5 +26,5 @@ class CardCell extends Cell:
     setIcon(null)
 
   addActionListener(
-    _ => if card.isDefined then GameController.chooseCard(card.get)
+    _ => if card.isDefined then gameLoop.chooseCard(card.get)
   )

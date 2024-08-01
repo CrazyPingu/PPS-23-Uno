@@ -11,7 +11,7 @@ import java.awt.{Graphics, Graphics2D, GridBagLayout, Insets}
 import javax.swing.event.{ChangeEvent, ChangeListener}
 import javax.swing.{JLabel, JPanel, JSlider}
 
-class SettingsGui private extends JPanel:
+class SettingsGui private (private val pageController: PageController) extends JPanel:
   setLayout(new GridBagLayout())
 
   add(SettingsGui.difficultyLabel, new GridBagConstraints(0, 0, 1, SettingsGui.defaultInsets))
@@ -47,7 +47,7 @@ class SettingsGui private extends JPanel:
   )
 
   SettingsGui.goBackButton.addActionListener(
-    _ => PageController.showMainMenu()
+    _ => pageController.showMainMenu()
   )
 
   private def connectSliderToLabel(slider: JSlider, label: JLabel): Unit =
@@ -85,4 +85,4 @@ object SettingsGui:
   private val resetSettings: Button = new Button("Reset settings")
   private val goBackButton: Button = new Button("Go Back to Menu")
 
-  def apply(): SettingsGui = new SettingsGui()
+  def apply(pageController: PageController): SettingsGui = new SettingsGui(pageController)

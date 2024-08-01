@@ -1,7 +1,7 @@
 import org.scalatest.funsuite.AnyFunSuite
 import model.bot.HardBotPlayerImpl
-import model.cards.special.ChangeColor
 import model.cards.SimpleCardImpl
+import model.cards.SpecialCard.ChangeColor
 import utils.Color
 import utils.ImageHandler.loadCardImage
 import utils.CardNumber.{Five, Seven, Six}
@@ -41,7 +41,7 @@ class HardBotTest extends AnyFunSuite:
 
   test("The BOT should choose the Valid Special Card"):
     val Bot = new HardBotPlayerImpl()
-    Bot.addCard(new ChangeColor())
+    Bot.addCard(ChangeColor())
     Bot.addCard(new SimpleCardImpl(Five, Color.Blue, loadCardImage("6", Color.Blue)))
     val middleCard = new SimpleCardImpl(Seven, Color.Red, loadCardImage("7", Color.Red))
     val card = Bot.chooseCardToUse(middleCard)
@@ -50,7 +50,7 @@ class HardBotTest extends AnyFunSuite:
 
   test("The BOT should choose the Special Card"):
     val Bot = new HardBotPlayerImpl()
-    Bot.addCard(new ChangeColor())
+    Bot.addCard(ChangeColor())
     Bot.addCard(new SimpleCardImpl(Seven, Color.Red, loadCardImage("7", Color.Red)))
     val middleCard = new SimpleCardImpl(Seven, Color.Red, loadCardImage("7", Color.Red))
     val card = Bot.chooseCardToUse(middleCard)

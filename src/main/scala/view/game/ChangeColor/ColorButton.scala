@@ -1,11 +1,11 @@
 package view.game.ChangeColor
 
-import controller.GameController
+import controller.GameLoop
 import utils.Color
 
 import javax.swing.JButton
 
-class ColorButton(color: Color) extends JButton:
+class ColorButton(private val color: Color, private val gameLoop: GameLoop) extends JButton:
   setBorderPainted(false)
 
   color match
@@ -16,5 +16,5 @@ class ColorButton(color: Color) extends JButton:
     case _            => ()
 
   addActionListener(
-    _ => GameController.changeColor(color)
+    _ => gameLoop.changeColor(color)
   )
