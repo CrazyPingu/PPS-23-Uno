@@ -221,7 +221,23 @@ Grazie a questa struttura, è possibile estendere facilmente l'applicazione aggi
 comportamento di quelle esistenti senza alterare il flusso generale del programma.
 
 ### GameGui
-cells, etc
+
+La gui del gioco è stata sviluppata in modo da essere il più possibile intuitiva e semplice da utilizzare.
+Si basa su una griglia di bottoni, di cui:
+- l'ultima riga è dedicata alle carte del giocatore attuale.
+- Vicino al centro é presente il mazzo di carte, l'ultima carta giocata e il bottone per chiamare uno.
+- In alto a destra é presente un'immagine che rappresenta la direzione del gioco.
+- Sopra ogni giocatore é presente una freccia che si rende visibile quando é il turno di quel giocatore.
+
+Esistono questi tipi di celle:
+- `CardCell` : cella che contiene una carta e permette di giocarla.
+- `DeckCell` : cella che contiene il mazzo di carte e permette di pescare.
+- `UnoCell` : cella che permette di chiamare uno.
+- `DirectionCell` : cella che contiene l'immagine che rappresenta la direzione del gioco.
+- `UsedCardCell` : cella che contiene l'ultima carta giocata.
+
+Tutte queste celle sono contenute in un `GridLayout` che permette di visualizzarle in modo ordinato e di gestirne la posizione.
+
 
 ---
 
