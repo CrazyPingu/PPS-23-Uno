@@ -19,8 +19,6 @@ package model {
 
 package controller {
     class GameLoop
-
-    class GameController
 }
 
 package view {
@@ -30,15 +28,14 @@ package view {
 model.Deck *-- model.Card
 model.Hand *-- model.Card
 
-controller.GameLoop *--* controller.GameController
 
-view.GameGui *-left-* controller.GameController
+view.GameGui *-left-* controller.GameLoop
 
 'controller.GameController *-u- model.Deck
 'model.Player *-u-* controller.GameController
 'model.BotPlayer *-u-* controller.GameController
 
-model *-u-* controller.GameController
+model *-u-* controller.GameLoop
 
 
 @enduml
