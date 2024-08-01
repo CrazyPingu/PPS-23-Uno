@@ -1,32 +1,51 @@
 package model.achievements
+
 import play.api.libs.functional.syntax.toFunctionalBuilderOps
-import play.api.libs.json.{JsPath, Reads, Writes}
+import play.api.libs.json.{Format, JsError, JsPath, JsResult, JsSuccess, JsValue, Json, Reads, Writes}
 
-class Achievement(private val achID: Int, private val achDesc: String, private val achieved: Boolean, private val achThreshold: Int, private val achComparator: ComparisonOperator) extends Observer:
-  val id: Int = achID
-  val description: String = achDesc
-  var isAchieved: Boolean = achieved
-  private val threshold: Int = achThreshold
-  private val comparator: ComparisonOperator = achComparator
+trait Observer:
+  def update(event: Event[?]): Unit
 
-  override def update(event: Event): Unit = event.id match
-    case `id` if this.id.equals(event.id) && !isAchieved =>
-      isAchieved = comparator.compare(event.data, threshold)
-    case _ => // Do nothing
+trait Achievement extends Observer:
+  def id: Int
+
+  def description: String
+
+  var isAchieved: Boolean
+
+trait BooleanAchievement extends Achievement
+
+trait NumericAchievement extends Achievement:
+  def threshold: Int
+
+  def comparator: ComparisonOperator
 
 object Achievement:
-  implicit val achievementWrites: Writes[Achievement] = (
-    (JsPath \ "id").write[Int] and
-      (JsPath \ "description").write[String] and
-      (JsPath \ "isAchieved").write[Boolean] and
-      (JsPath \ "threshold").write[Int] and
-      (JsPath \ "comparator").write[ComparisonOperator]
-    )(ach => (ach.id, ach.description, ach.isAchieved, ach.threshold, ach.comparator))
+  def apply(id: Int, description: String, isAchieved: Boolean): Achievement =
+    BooleanAchievementImpl(id, description, isAchieved)
 
-  implicit val achievementReads: Reads[Achievement] = (
-    (JsPath \ "id").read[Int] and
-      (JsPath \ "description").read[String] and
-      (JsPath \ "isAchieved").read[Boolean] and
-      (JsPath \ "threshold").read[Int] and
-      (JsPath \ "comparator").read[ComparisonOperator]
-    )(new Achievement(_, _, _, _, _))
+  def apply(
+    id: Int,
+    description: String,
+    isAchieved: Boolean,
+    threshold: Int,
+    comparator: ComparisonOperator
+  ): Achievement =
+    NumericAchievementImpl(id, description, isAchieved, threshold, comparator)
+
+  private class BooleanAchievementImpl(val id: Int, val description: String, var isAchieved: Boolean)
+      extends BooleanAchievement:
+    override def update(event: Event[?]): Unit = event match
+      case Event(id, data: Boolean) if event.id == this.id => isAchieved = data
+      case _                                               => ()
+
+  private class NumericAchievementImpl(
+    val id: Int,
+    val description: String,
+    var isAchieved: Boolean,
+    val threshold: Int,
+    val comparator: ComparisonOperator
+  ) extends NumericAchievement:
+    override def update(event: Event[?]): Unit = event match
+      case Event(id, data: Int) if event.id == this.id => isAchieved = comparator.compare(data, threshold)
+      case _                                           => ()

@@ -16,7 +16,7 @@ object ImageHandler:
   val backgroundTable: Image = loadImage("Table.png")
 
   val backgroundSettings: Image = loadImage("Settings.png")
-  
+
   val backgroundAchievements: Image = loadImage("Achievements.png")
 
   val unoButton: Image = loadImage("cards/UnoButton.png")
@@ -24,7 +24,7 @@ object ImageHandler:
   val direction: Image = loadImage("Direction.png")
 
   val winBackground: Image = loadImage("Win.png")
-  
+
   val defeatBackground: Image = loadImage("Defeat.png")
 
   val check: Image = loadImage("cards/Check.png")
@@ -90,8 +90,4 @@ object ImageHandler:
       val stream = getClass.getClassLoader.getResourceAsStream(path)
       if stream == null then throw new IOException(s"Resource not found: $path")
       ImageIO.read(stream)
-    catch
-      case e: IOException =>
-        System.err.println(s"Error loading image: $path")
-        e.printStackTrace()
-        null
+    catch case e: IOException => throw new IOException(s"Error loading image: $path", e)

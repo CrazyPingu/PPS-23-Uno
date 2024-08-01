@@ -1,13 +1,16 @@
-import controller.PageController
-import view.{CardLayoutId, Frame, Mainmenu}
+import controller.{GameLoop, PageController}
+import model.Player
+import model.cards.SpecialCard
+import view.game.GameGui
 
 object Main:
 
   def main(args: Array[String]): Unit =
-    val frame = new Frame()
-    val pageController = new PageController(frame)
-
-    val mainMenu = new Mainmenu(pageController)
-    frame.add(mainMenu, CardLayoutId.MainMenu)
-
+    val player: Player = Player()
+    val gameGui: GameGui = GameGui()
+    val gameLoop: GameLoop = GameLoop(player, gameGui)
+    SpecialCard.gameLoop = gameLoop
+    GameGui.gameLoop = gameLoop
+    val pageController: PageController = PageController(player, gameGui, gameLoop)
+    GameLoop.pageController = pageController
     pageController.showMainMenu()

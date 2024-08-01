@@ -4,10 +4,16 @@ import model.achievements.{Achievement, AchievementId, ComparisonOperator}
 
 class AchievementGenerator:
   val achievementList: List[Achievement] = List[Achievement](
-    Achievement(AchievementId.firstCardAchievement.value, "Play the first card.", false, 1, ComparisonOperator.Equal),
-    Achievement(AchievementId.firstPlus4Achievement.value, "Play the first +4 card.", false, 1, ComparisonOperator.Equal),
-    Achievement(AchievementId.firstColorChangeAchievement.value, "Play the first color change card.", false, 1, ComparisonOperator.Equal),
-    Achievement(AchievementId.firstWinAchievement.value, "Win your game for the first time.", false, 1, ComparisonOperator.Equal),
-    Achievement(AchievementId.firstLoseAchievement.value, "Lose your game for the first time.", false, 1, ComparisonOperator.Equal),
-    Achievement(AchievementId.hold2CardsAchievement.value, "Hold 2 cards in your hand.", false, 3, ComparisonOperator.Less)
+    Achievement(AchievementId.FirstCardAchievement.id, "Play the first card.", false),
+    Achievement(AchievementId.FirstPlus4Achievement.id, "Play the first +4 card.", false),
+    Achievement(AchievementId.FirstColorChangeAchievement.id, "Play the first color change card.", false),
+    Achievement(AchievementId.FirstWinAchievement.id, "Win your game for the first time.", false),
+    Achievement(AchievementId.FirstLoseAchievement.id, "Lose your game for the first time.", false),
+    Achievement(
+      AchievementId.Hold2CardsAchievement.id,
+      "Hold 2 cards in your hand.",
+      false,
+      2,
+      ComparisonOperator.LessThanOrEqual
+    )
   )

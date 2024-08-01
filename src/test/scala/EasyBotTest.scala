@@ -1,8 +1,8 @@
 import model.bot.EasyBotPlayerImpl
-import model.cards.special.ChangeColor
 import model.cards.SimpleCardImpl
+import model.cards.SpecialCard.ChangeColor
 import org.scalatest.funsuite.AnyFunSuite
-import utils.CardNumber.{Five, Six, Seven}
+import utils.CardNumber.{Five, Seven, Six}
 import utils.Color
 import utils.ImageHandler.loadCardImage
 
@@ -41,7 +41,7 @@ class EasyBotTest extends AnyFunSuite:
 
   test("The BOT should choose the Valid Special Card"):
     val Bot = new EasyBotPlayerImpl()
-    Bot.addCard(new ChangeColor(null))
+    Bot.addCard(ChangeColor())
     Bot.addCard(new SimpleCardImpl(Five, Color.Blue, loadCardImage("6", Color.Blue)))
     val middleCard = new SimpleCardImpl(Seven, Color.Red, loadCardImage("7", Color.Red))
     val card = Bot.chooseCardToUse(middleCard)

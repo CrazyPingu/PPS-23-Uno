@@ -1,17 +1,38 @@
 package model.achievements
 
-class AchievementObservable extends Observable:
-  var achievementList: List[Achievement] = List()
+trait Observable[A <: Observer]:
+  private var observers: List[A] = List()
 
-  override def addObserver(observer: Observer): Unit = observer match
-    case observer: Achievement => achievementList = observer :: achievementList
-    case _ => throw new IllegalArgumentException("Invalid observer type. It must be an Achievement.")
+  def addObserver(observer: A): Unit =
+    observers = observer :: observers
 
-  override def addObservers(observers: List[Observer]): Unit = 
-    observers.foreach(addObserver)
-  
-  override def removeObserver(observer: Observer) : Unit =
-    achievementList = achievementList.filterNot(_ == observer)
-  
-  override def notifyObserver(event: Event) : Unit =
-    achievementList.foreach(_.update(event))
+  def addObservers(newObservers: List[A]): Unit =
+    observers = newObservers ++ observers
+
+  def notifyObservers(event: Event[?]): Unit =
+    observers.foreach(_.update(event))
+
+  def removeObserver(observer: A): Unit =
+    observers = observers.filterNot(_ == observer)
+
+  def clearObservers(): Unit =
+    observers = List()
+
+  def getObservers: List[A] = observers
+
+trait AchievementObservable extends Observable[Achievement]:
+  def generateAchievementData(): List[AchievementData] =
+    getObservers.map(
+      achievement => AchievementData(achievement.id, achievement.isAchieved)
+    )
+
+  def loadDataFromAchievementData(achievementData: List[AchievementData]): Unit =
+    getObservers.foreach(
+      achievement =>
+        val data = achievementData.find(_.id == achievement.id)
+        if data.isDefined then achievement.isAchieved = data.get.data
+    )
+
+object AchievementObservable:
+  def apply(): AchievementObservable = new AchievementObservableImpl
+  private class AchievementObservableImpl extends AchievementObservable

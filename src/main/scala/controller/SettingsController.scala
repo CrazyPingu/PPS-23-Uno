@@ -1,18 +1,20 @@
 package controller
 
 import model.settings.Difficulty.Difficulty
-import model.settings.{GameSettings, Settings, SettingsImpl}
+import model.settings.{Settings, SettingsManager}
 import view.settings.SettingsGui
 
-class SettingsController:
+object SettingsController:
   private val PROJECT_ROOT: String = System.getProperty("user.dir")
   private val SETTINGS_FILEPATH: String = s"$PROJECT_ROOT/config/settings.json"
 
-  private var gui: Option[SettingsGui] = None
-  val settings: Settings = SettingsImpl(SETTINGS_FILEPATH)
+  private val settingsManager: SettingsManager = SettingsManager(SETTINGS_FILEPATH)
 
-  def saveSettings(gameSettings: GameSettings): Unit =
-    settings.updateSettings(gameSettings)
+  def getCurrentSettings: Settings =
+    settingsManager.settings
+
+  def saveSettings(settings: Settings): Unit =
+    settingsManager.updateSettings(settings)
 
   def resetSettings(): Unit =
-    settings.updateSettings(GameSettings.DEFAULT_SETTINGS)
+    settingsManager.updateSettings(Settings.DEFAULT_SETTINGS)

@@ -1,26 +1,31 @@
 package controller
 
-import model.achievements.{Achievement, AchievementGenerator, AchievementObservable, Event}
+import model.achievements.{Achievement, AchievementData, AchievementGenerator, AchievementObservable, Event}
 import utils.JsonUtils
 
-class AchievementController:
+object AchievementController:
   private val PROJECT_ROOT: String = System.getProperty("user.dir")
-  private val ACHIEVEMENT_FILEPATH: String = s"$PROJECT_ROOT/achievement/achievement.json"
+  private val ACHIEVEMENT_FILEPATH: String = s"$PROJECT_ROOT/data/achievement.json"
 
-  private var achievementObservable: AchievementObservable = AchievementObservable()
-  achievementObservable.addObservers(
-    JsonUtils.loadFromFile[List[Achievement]](ACHIEVEMENT_FILEPATH).getOrElse(AchievementGenerator().achievementList)
-  )
+  private val achievementObservable: AchievementObservable = AchievementObservable()
 
-  def notifyAchievements(event: Event): Unit =
-    achievementObservable.notifyObserver(event)
+  initialize()
+
+  private def initialize(): Unit =
+    achievementObservable.addObservers(AchievementGenerator().achievementList)
+    val achievementData: Option[List[AchievementData]] =
+      JsonUtils.loadFromFile[List[AchievementData]](ACHIEVEMENT_FILEPATH)
+    if achievementData.isDefined then achievementObservable.loadDataFromAchievementData(achievementData.get)
+
+  def notifyAchievements(event: Event[?]): Unit =
+    achievementObservable.notifyObservers(event)
 
   def saveAchievements(): Unit =
-    JsonUtils.saveToFile(ACHIEVEMENT_FILEPATH, achievementObservable.achievementList)
-  
-  def resetAchievements(): Unit =
-    achievementObservable = AchievementObservable()
-    achievementObservable.addObservers(AchievementGenerator().achievementList)
-    JsonUtils.saveToFile(ACHIEVEMENT_FILEPATH, AchievementGenerator().achievementList)
+    JsonUtils.saveToFile(ACHIEVEMENT_FILEPATH, achievementObservable.generateAchievementData())
 
-  def achievementList: List[Achievement] = achievementObservable.achievementList
+  def resetAchievements(): Unit =
+    achievementObservable.clearObservers()
+    achievementObservable.addObservers(AchievementGenerator().achievementList)
+    JsonUtils.saveToFile(ACHIEVEMENT_FILEPATH, achievementObservable.generateAchievementData())
+
+  def achievementList: List[Achievement] = achievementObservable.getObservers

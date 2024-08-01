@@ -1,37 +1,26 @@
 package controller
 
-import model.cards.factory.CardFactoryImpl
+import controller.PageController.frame
+import model.Player
+import view.Mainmenu
 import view.achievements.AchievementGui
 import view.game.ChangeColor.ChooseColor
-import view.game.Gui
+import view.game.GameGui
 import view.settings.SettingsGui
 import view.tutorial.TutorialGui
 import view.{CardLayoutId, Frame, LoseScreen, WinScreen}
 
-class PageController(private val frame: Frame):
+case class PageController private (player: Player, gameGui: GameGui, gameLoop: GameLoop):
 
-  private val settingsController: SettingsController = SettingsController()
-  private val settingsGui: SettingsGui = SettingsGui(this, settingsController)
-
-  private val achievementController: AchievementController = AchievementController()
-  private val achievementGui: AchievementGui = AchievementGui(this, achievementController)
-
-  private val tutorialGui: TutorialGui = TutorialGui(this)
-  
-  private val cardFactory: CardFactoryImpl = CardFactoryImpl()
-  private val controller = new GameController(this, achievementController, cardFactory)
-  cardFactory.attachController(controller)
-  private val gui = new Gui(controller)
-  private val gameLoop = new GameLoop(controller, settingsController, gui, cardFactory)
-  controller.setGuiAndGameLoop(gui, gameLoop)
-  
-  frame.add(new WinScreen(this), CardLayoutId.Win)
-  frame.add(new LoseScreen(this), CardLayoutId.Lose)
-  frame.add(gui, CardLayoutId.Game)
-  frame.add(new ChooseColor(controller), CardLayoutId.ChangeColor)
-  frame.add(settingsGui, CardLayoutId.Settings)
+  private val achievementGui: AchievementGui = AchievementGui(this)
+  frame.add(Mainmenu(this), CardLayoutId.MainMenu)
+  frame.add(WinScreen(this), CardLayoutId.Win)
+  frame.add(LoseScreen(this), CardLayoutId.Lose)
+  frame.add(gameGui, CardLayoutId.Game)
+  frame.add(ChooseColor(gameLoop), CardLayoutId.ChangeColor)
+  frame.add(SettingsGui(this), CardLayoutId.Settings)
   frame.add(achievementGui, CardLayoutId.Achievement)
-  frame.add(tutorialGui, CardLayoutId.Tutorial)
+  frame.add(TutorialGui(this), CardLayoutId.Tutorial)
 
   def showMainMenu(): Unit =
     frame.show(CardLayoutId.MainMenu)
@@ -63,3 +52,10 @@ class PageController(private val frame: Frame):
 
   def closeWindow(): Unit =
     frame.dispose()
+
+object PageController:
+
+  private val frame: Frame = Frame()
+
+  def apply(player: Player, gameGui: GameGui, gameLoop: GameLoop): PageController =
+    new PageController(player, gameGui, gameLoop)
