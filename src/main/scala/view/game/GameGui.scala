@@ -8,8 +8,23 @@ import utils.ImageHandler.{backgroundTable, gameLogo, retroCards, rotateImage, t
 import utils.Rotation.{FLIP_HORIZONTAL, FLIP_VERTICAL, NONE, ROTATE_LEFT, ROTATE_RIGHT}
 import utils.{ImageHandler, Rotation}
 import view.game.Cell.{CardCell, Cell, DeckCell, DirectionCell, TurnIndicatorCell, UnoCell, UsedCardCell}
-import view.game.CoordinateHandler.*
-import view.game.GameGui.{bot1, bot2, bot3, directionCell, gameLoop, layout, player, turnCells, unoButton, usedCardCell}
+import view.game.GameGui.{
+  arrowCoordinate,
+  bot1,
+  bot2,
+  bot3,
+  deckCoordinate,
+  directionCell,
+  directionCellCoordinate,
+  gameLoop,
+  panelGridDimension,
+  player,
+  turnCells,
+  unoButton,
+  unoCallCoordinate,
+  usedCardCell,
+  usedCardCoordinate
+}
 
 import java.awt.{Component, Graphics, Graphics2D, GridLayout}
 import javax.swing.JPanel
@@ -18,7 +33,7 @@ import javax.swing.JPanel
  * The graphical user interface of the game
  */
 class GameGui private extends JPanel:
-  setLayout(GameGui.layout)
+  setLayout(new GridLayout(panelGridDimension(1), panelGridDimension(0)))
 
   /**
    * Set the entity of the game and create the GUI
@@ -40,10 +55,10 @@ class GameGui private extends JPanel:
   private def createGui(): Unit =
     this.removeAll()
     unoButton = UnoCell(gameLoop)
-    val lastRow = GameGui.layout.getRows - 1
-    val lastCol = GameGui.layout.getColumns - 1
+    val lastRow = GameGui.panelGridDimension(1) - 1
+    val lastCol = panelGridDimension(0) - 1
 
-    for row <- 0 until GameGui.layout.getRows; col <- 0 until GameGui.layout.getColumns do
+    for row <- 0 until GameGui.panelGridDimension(1); col <- 0 until panelGridDimension(0) do
       val cell = (row, col) match
         case (r, c) if r == deckCoordinate(1) && c == deckCoordinate(0)                   => new DeckCell(gameLoop)
         case (r, c) if r == usedCardCoordinate(1) && c == usedCardCoordinate(0)           => usedCardCell
@@ -62,24 +77,24 @@ class GameGui private extends JPanel:
    * Update the GUI in case of changes
    */
   def updateGui(): Unit =
-    val lastRow = GameGui.layout.getRows - 1
-    val lastCol = GameGui.layout.getColumns - 1
+    val lastRow = panelGridDimension(1) - 1
+    val lastCol = panelGridDimension(0) - 1
 
     for i <- 0 until getComponentCount do
       val component = getComponent(i)
 
-      (i / GameGui.layout.getColumns, i % GameGui.layout.getColumns) match
+      (i / panelGridDimension(0), i % panelGridDimension(0)) match
 //        Bot2 hand top row
         case (0, c) =>
           applyIcon(
             component,
-            c - (GameGui.layout.getColumns - bot2.size) / 2,
-            isWithinHand(c, (GameGui.layout.getColumns - bot2.size) / 2, bot2.size),
+            c - (panelGridDimension(0) - bot2.size) / 2,
+            isWithinHand(c, (panelGridDimension(0) - bot2.size) / 2, bot2.size),
             FLIP_VERTICAL
           )
 
 //        Player hand bottom row
-        case (r, c) if r == lastRow => applyIcon(component, c - (GameGui.layout.getColumns - player.size) / 2)
+        case (r, c) if r == lastRow => applyIcon(component, c - (panelGridDimension(0) - player.size) / 2)
 
 //        Bot1 hand left column
         case (r, 0) => applyIconToColumns(component, bot1.size, r)
@@ -99,8 +114,8 @@ class GameGui private extends JPanel:
     def applyIconToColumns(component: Component, handSize: Int, indexRow: Int): Unit =
       applyIcon(
         component,
-        indexRow - (GameGui.layout.getRows - handSize) / 2,
-        isWithinHand(indexRow, (GameGui.layout.getRows - handSize) / 2, handSize),
+        indexRow - (panelGridDimension(1) - handSize) / 2,
+        isWithinHand(indexRow, (panelGridDimension(1) - handSize) / 2, handSize),
         NONE
       )
 
@@ -146,9 +161,9 @@ class GameGui private extends JPanel:
    * @param toggle false to block the player, true to allow the player to perform actions
    */
   def allowPlayerAction(toggle: Boolean): Unit =
-    getComponent(deckCoordinate(1) * GameGui.layout.getColumns + deckCoordinate(0)).setEnabled(toggle)
-    for i <- 0 until GameGui.layout.getColumns do
-      getComponent((GameGui.layout.getRows - 1) * GameGui.layout.getColumns + i).setEnabled(toggle)
+    getComponent(deckCoordinate(1) * panelGridDimension(0) + deckCoordinate(0)).setEnabled(toggle)
+    for i <- 0 until panelGridDimension(0) do
+      getComponent((panelGridDimension(1) - 1) * panelGridDimension(0) + i).setEnabled(toggle)
 
   /**
    * Reverse the direction of the game
@@ -189,7 +204,19 @@ class GameGui private extends JPanel:
 
 object GameGui:
   var gameLoop: GameLoop = _
-  private val layout: GridLayout = new GridLayout(panelGridDimension(1), panelGridDimension(0))
+
+  private val panelGridDimension: (Int, Int) = (27, 11)
+  private val deckCoordinate: (Int, Int) = (panelGridDimension(0) / 2 - 2, panelGridDimension(1) / 2)
+  private val usedCardCoordinate: (Int, Int) = (panelGridDimension(0) / 2 - 1, panelGridDimension(1) / 2)
+  private val unoCallCoordinate: (Int, Int) = (panelGridDimension(0) / 2 + 1, panelGridDimension(1) / 2)
+  private val directionCellCoordinate: (Int, Int) = (panelGridDimension(0) - 5, 2)
+  private val arrowCoordinate: List[(Int, Int)] = List(
+    (panelGridDimension(1) - 3, panelGridDimension(0) / 2),
+    (panelGridDimension(1) / 2, 2),
+    (2, panelGridDimension(0) / 2),
+    (panelGridDimension(1) / 2, panelGridDimension(0) - 3)
+  )
+
   private var unoButton: UnoCell = new UnoCell(gameLoop)
   private val directionCell: DirectionCell = new DirectionCell
   private val usedCardCell: UsedCardCell = new UsedCardCell
