@@ -191,14 +191,34 @@ La verifica avviene in base a tutti i criteri possibili:
 
 
 ## GameLoop
+Per gestire il loop di gioco, è stato sviluppato un GameLoop che si occupa della 
+gestione del gioco in generale, delle fasi di gioco e delle interazioni tra i vari giocatori.
+I metodi principali del GameLoop sono i seguenti raffigurati nel diagramma UML:
 
-## GameController
+![Game Loop](../uml/gameLoop.png)
+
+Questi metodi sono:
+- `start` che inizia il gioco, inizializzando il mazzo di carte, le mani dei giocatori e il tavolo di gioco.
+- `stop` che termina il gioco.
+- `reverseTurnOrder` che inverte l'ordine di gioco.
+- `nextDrawCard` che fa pescare al giocatore successivo un numero di carte definito.
+- `skipNextTurn` che fa saltare il turno al giocatore successivo.
+- `chooseCard` che data una carta, se giocabile, la gioca e la rimuove dalla mano del giocatore.
+- `drawCard` che fa pescare una carta al giocatore attuale.
+- `showChangeColor` che mostra la finestra di dialogo per la scelta del colore da parte del giocatore.
+- `changeColor` che cambia il colore in gioco.
+- `callUno` che notifica la chiamata di UNO da parte del giocatore.
+- `nextTurn` che passa al turno successivo.
 
 
 ## GUI Generale che è gestita da un PageController che si occupa di gestire e switchare le varie cards
 
 ### PageController
-
+La classe PageController è stata sviluppata per gestire la logica di navigazione e visualizzazione delle diverse schermate all'interno 
+dell'applicazione di gioco. Questa classe svolge un ruolo cruciale nell'organizzazione delle varie interfacce grafiche, 
+facilitando la transizione tra di esse e mantenendo un controllo centralizzato sulle operazioni relative al ciclo di gioco.
+Grazie a questa struttura, è possibile estendere facilmente l'applicazione aggiungendo nuove schermate o modificando il 
+comportamento di quelle esistenti senza alterare il flusso generale del programma.
 
 ### GameGui
 cells, etc

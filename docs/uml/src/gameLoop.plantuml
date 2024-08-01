@@ -2,10 +2,10 @@
 
 class GameLoop {
     +start()
+    +stop()
     +reverseTurnOrder()
     +nextDrawCard(numToDraw)
     +skipNextTurn(numberToSkip)
-    +stop()
     +chooseCard(card, hand)
     +drawCard(hand)
     +showChangeColor()
