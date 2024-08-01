@@ -1,7 +1,7 @@
 package model
 
-import model.cards.Card
-import model.cards.factory.CardFactory
+import model.cards.SpecialCard.{ChangeColor, DrawTwoCard, ReverseCard, SkipCard, WildDrawFourCard}
+import model.cards.{Card, SimpleCard}
 import utils.{CardNumber, Color}
 
 import scala.collection.mutable.ArrayBuffer
@@ -18,19 +18,18 @@ object Deck extends ArrayBuffer[Card]:
   initialize()
 
   def initialize(): Unit =
-    // Add colored cards to the deck
     for color <- Color.values if color != Color.Black do
-      this += CardFactory.createSimpleCard(CardNumber.Zero, color)
+      this += SimpleCard(CardNumber.Zero, color)
       for _ <- 0 to 1 do
-        this += CardFactory.createSkipCard(1, color)
-        this += CardFactory.createReverseCard(color)
-        this += CardFactory.createDrawCard(2, color)
-      for number <- 0 to 17 do this += CardFactory.createSimpleCard(CardNumber.values(number / 2), color)
+        this += SkipCard(color)
+        this += ReverseCard(color)
+        this += DrawTwoCard(color)
+      for number <- 0 to 17 do this += SimpleCard(CardNumber.values(number / 2), color)
 
     // Add wild cards to the deck
     for _ <- 0 to 3 do
-      this += CardFactory.createChangeColor()
-      this += CardFactory.createDrawCard(4, Color.Black)
+      this += ChangeColor()
+      this += WildDrawFourCard()
 
     this.shuffle()
 

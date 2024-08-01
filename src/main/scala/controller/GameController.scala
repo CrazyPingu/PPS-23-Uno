@@ -2,8 +2,7 @@ package controller
 
 import model.achievements.{AchievementId, Event}
 import model.bot.BotPlayer
-import model.cards.factory.CardFactory
-import model.cards.special.{ChangeColor, DrawCard}
+import model.cards.SpecialCard.{ChangeColor, WildDrawFourCard}
 import model.cards.{Card, SpecialCard}
 import model.{Deck, Hand, Player}
 import utils.Color
@@ -77,9 +76,9 @@ object GameController:
    */
   def changeColor(color: Color): Unit =
     lastPlayedCard match
-      case _: ChangeColor => lastPlayedCard = CardFactory.createChangeColor(color)
-      case _: DrawCard    => lastPlayedCard = CardFactory.createDrawCard(4, color)
-      case _              =>
+      case _: ChangeColor      => lastPlayedCard = ChangeColor(color)
+      case _: WildDrawFourCard => lastPlayedCard = WildDrawFourCard(color)
+      case _                   =>
 
     disposeCard(lastPlayedCard)
     PageController.showGame(false)
@@ -99,7 +98,7 @@ object GameController:
 
   private def checkIfSpecialCard(card: Card, isPlayer: Boolean = false): Unit =
     card match
-      case c: DrawCard if c.numberToDraw == 4 && c.color == Color.Black && isPlayer =>
+      case c: WildDrawFourCard if c.color == Color.Black && isPlayer =>
         AchievementController.notifyAchievements(Event(AchievementId.firstPlus4Achievement.value, 1))
         c.execute()
       case c: ChangeColor if c.color == Color.Black && isPlayer =>
