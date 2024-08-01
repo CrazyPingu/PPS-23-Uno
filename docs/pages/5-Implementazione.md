@@ -185,12 +185,12 @@ Nel momento in cui si finiscono i criteri da controllare, il metodo ritorna `fal
 
 ```scala 3
 def isCompatible(selectedCard: Card, centerCard: Card): Boolean =
-(selectedCard, centerCard) match
-case (s, c) if s.color == Color.Black || c.color == Color.Black        => true
-case (s, c) if s.color == c.color                                      => true
-case (s: SimpleCard, c: SimpleCard) if s.num == c.num                  => true
-case (s, c) if s.getClass == c.getClass && !s.isInstanceOf[SimpleCard] => true
-case _                                                                 => false
+  (selectedCard, centerCard) match
+  case (s, c) if s.color == Color.Black || c.color == Color.Black        => true
+  case (s, c) if s.color == c.color                                      => true
+  case (s: SimpleCard, c: SimpleCard) if s.num == c.num                  => true
+  case (s, c) if s.getClass == c.getClass && !s.isInstanceOf[SimpleCard] => true
+  case _                                                                 => false
 ```
 
 ### Tutorial (GUI)
@@ -401,7 +401,67 @@ class Deck extends ArrayBuffer[Card]:
 Il `Deck` é composto da tutte le carte del gioco, inizialmente mescolate.
 Il metodo `draw` permette di pescare una carta dal mazzo.
 
-- PageController
+### Page Controller
+
+Il `PageController` é il controller principale dell'ambiente grafico, e si occupa
+di gestire lo scambio tra le varie schermate del gioco.
+
+```scala 3
+case class PageController private (player: Player, gameGui: GameGui, gameLoop: GameLoop):
+
+  private val achievementGui: AchievementGui = AchievementGui(this)
+  frame.add(Mainmenu(this), CardLayoutId.MainMenu)
+  frame.add(WinScreen(this), CardLayoutId.Win)
+  frame.add(LoseScreen(this), CardLayoutId.Lose)
+  frame.add(gameGui, CardLayoutId.Game)
+  frame.add(ChooseColor(gameLoop), CardLayoutId.ChangeColor)
+  frame.add(SettingsGui(this), CardLayoutId.Settings)
+  frame.add(achievementGui, CardLayoutId.Achievement)
+  frame.add(TutorialGui(this), CardLayoutId.Tutorial)
+
+  def showMainMenu(): Unit =
+    frame.show(CardLayoutId.MainMenu)
+
+  def showGame(newGame: Boolean = true): Unit =
+    if newGame then gameLoop.start()
+    frame.show(CardLayoutId.Game)
+
+  def showChangeColor(): Unit =
+    frame.show(CardLayoutId.ChangeColor)
+
+  def showTutorial(): Unit =
+    frame.show(CardLayoutId.Tutorial)
+
+  def showAchievements(): Unit =
+    achievementGui.updateGui()
+    frame.show(CardLayoutId.Achievement)
+
+  def showSettings(): Unit =
+    frame.show(CardLayoutId.Settings)
+
+  def showWin(): Unit =
+    gameLoop.stop()
+    frame.show(CardLayoutId.Win)
+
+  def showLose(): Unit =
+    gameLoop.stop()
+    frame.show(CardLayoutId.Lose)
+
+  def closeWindow(): Unit =
+    frame.dispose()
+
+object PageController:
+
+  private val frame: Frame = Frame()
+
+  def apply(player: Player, gameGui: GameGui, gameLoop: GameLoop): PageController =
+    new PageController(player, gameGui, gameLoop)
+  ```
+
+L'intero controller si basa sul `Frame` che contiene tutte le schermate del gioco che, 
+basandosi sui `CardLayout`, permette di cambiare dinamicamente la schermata visualizzata.
+
+### Main Menu
   - Main Menu
   - Game Board
     - Cells
