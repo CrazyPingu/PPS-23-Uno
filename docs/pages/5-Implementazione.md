@@ -25,7 +25,7 @@ Ogni metodo necessario si basa sulle funzionalità offerte da `ArrayBuffer` e vi
 all'interno del trait come mostrato successivamente:
 
 
-```scala
+```scala 3
 trait Hand extends ArrayBuffer[Card]:
 
   def addCard(card: Card): Unit = this += card
@@ -67,7 +67,7 @@ Il trait `BotPlayer` presenta due metodi fondamentali per il gioco:
 - `chooseCardToUse` che ritorna la carta scelta dal BotPlayer per essere giocata, se possibile e valida.
 - `chooseColor` che automatizza e ritorna il colore scelto dal BotPlayer in caso di necessità.
 
-```scala
+```scala 3
 
 trait BotPlayer extends Hand:
   def chooseCardToUse(card: Card): Option[Card]
@@ -93,20 +93,20 @@ base alla strategia di gioco che il bot deve seguire.
 
 A seguire l'implementazione di `BotPlayerImpl`:
 
-```scala
+```scala 3
 abstract class BotPlayerImpl extends BotPlayer:
 
-protected def isCompatible(selectedCard: Card, centerCard: Card): Boolean =
-Compatibility.isCompatible(selectedCard, centerCard)
-
-def chooseColor(): Color =
-val colorCounts = mutable.Map[Color, Int]().withDefaultValue(0)
-    for card <- this do colorCounts(card.color) += 1
-    if colorCounts.isEmpty then return Random.shuffle(Color.values.filterNot(_ == Color.Black).toList).head
-    val sortedColors = colorCounts.toSeq.sortBy(-_(1))
-    val mostFrequent = sortedColors.head(0)
-    if mostFrequent == Color.Black then Random.shuffle(Color.values.filterNot(_ == Color.Black)).toList.head
-    else mostFrequent
+  protected def isCompatible(selectedCard: Card, centerCard: Card): Boolean =
+  Compatibility.isCompatible(selectedCard, centerCard)
+  
+  def chooseColor(): Color =
+    val colorCounts = mutable.Map[Color, Int]().withDefaultValue(0)
+        for card <- this do colorCounts(card.color) += 1
+        if colorCounts.isEmpty then return Random.shuffle(Color.values.filterNot(_ == Color.Black).toList).head
+        val sortedColors = colorCounts.toSeq.sortBy(-_(1))
+        val mostFrequent = sortedColors.head(0)
+        if mostFrequent == Color.Black then Random.shuffle(Color.values.filterNot(_ == Color.Black)).toList.head
+        else mostFrequent
  ```
 ### EasyBotPlayerImpl
 `EasyBotPlayer` è un `BotPlayerImpl` che gioca in maniera casuale, senza particolari strategie o logiche.
@@ -117,7 +117,7 @@ metodo `chooseCardToUse` in modo da poter effettuare una scelta casuale tra le c
 Per implementare questa scelta, il metodo `chooseCardToUse` ricerca le carte compatibili con quella al centro del tavolo, 
 se ne esistono, ne seleziona una casuale e la ritorna sfruttando `Some`, altrimenti ritorna `None`.
 
-```scala
+```scala 3
 class EasyBotPlayerImpl extends BotPlayerImpl:
   override def chooseCardToUse(centerCard: Card): Option[Card] =
     val compatibleCards = this.filter(
@@ -126,7 +126,7 @@ class EasyBotPlayerImpl extends BotPlayerImpl:
     if compatibleCards.nonEmpty then
       val card = compatibleCards.head
       Some(card)
-  else None
+    else None
 ```
 ### HardBotPlayerImpl
 `HardBotPlayer` è un `BotPlayerImpl` che gioca in maniera più strategica e intelligente, cercando di massimizzare le
@@ -144,7 +144,7 @@ Altrimenti, se non sono presenti carte speciali nelle carte compatibili,
 ne seleziona una casuale e la ritorna sfruttando `Some`.
 Nel caso invece che non ci siano carte compatibili, ritorna `None`.
 
-```scala
+```scala 3
 class HardBotPlayerImpl extends BotPlayerImpl:
   override def chooseCardToUse(centerCard: Card): Option[Card] =
     val compatibleCards = this.filter(
@@ -157,10 +157,10 @@ class HardBotPlayerImpl extends BotPlayerImpl:
       if specialCards.nonEmpty then
         val card = specialCards.head
         Some(card)
-    else
-      val card = compatibleCards.head
-      Some(card)
-  else None
+      else
+        val card = compatibleCards.head
+        Some(card)
+    else None
 ```
 
 ### Compatibility
@@ -183,7 +183,7 @@ Durante la verifica vengono comparati i vari criteri.
 Appena viene rilevato un criterio compatibile, la funzione ritorna `true`.
 Nel momento in cui si finiscono i criteri da controllare, il metodo ritorna `false`.
 
-```scala
+```scala 3
 def isCompatible(selectedCard: Card, centerCard: Card): Boolean =
 (selectedCard, centerCard) match
 case (s, c) if s.color == Color.Black || c.color == Color.Black        => true
@@ -202,13 +202,13 @@ all'interno del gioco tramite una serie di immagini e testi.
 Per sviluppare le varie schermate del tutorial, è stata sviluppata una classe generica
 `GeneralTutorialSlide` che contiene un'immagine, un titolo e una descrizione.
 
-```scala
+```scala 3
 class GeneralTutorialSlide(val image: Image, val title: String, val description: String)
 ```
 
 Successivamente, è stata implementata una factory che generi le varie schermate del tutorial quando necessario
 
-```scala
+```scala 3
 class TutorialSlideFactory:
     def createCardSlide(): GeneralTutorialSlide =
         new GeneralTutorialSlide(
@@ -273,14 +273,133 @@ Insert code here
 
 ## Samuele De Tuglie
 
-- Card
-  - SimpleCard
-  - SpecialCard
-    - DrawCard
-    - SkipCard
-    - ReverseCard
-    - ChangeColor
-  - Deck
+### Card
+
+Lo sviluppo della classe `Card` é stato fondamentale per il funzionamento del gioco.
+
+Di carte ne esistono di due tipologie: `SimpleCard` e `SpecialCard`. Siccome sia le carte semplici che le carte speciali
+sono caratterizzate da un colore, si é deciso di creare un trait `Card` formato da un campo `color` di tipo `Color`.
+
+```scala 3
+trait Card:
+
+  def color: Color
+
+  def image: Image
+```
+
+I colori disponibili sono stati definiti in un enum `Color` che contiene i colori base del gioco.
+
+```scala 3
+enum Color(val rgb: Int):
+  case Red extends Color(0xff0000)
+  case Green extends Color(0x00ff00)
+  case Blue extends Color(0x0000ff)
+  case Yellow extends Color(0xffff00)
+  case Black extends Color(0x000000)
+```
+
+#### SimpleCard
+Le `SimpleCard` sono le carte normali del gioco, caratterizzate da un numero e da un colore.
+
+```scala 3
+
+trait SimpleCard extends Card:
+  
+  def num: CardNumber
+
+object SimpleCard:
+  def apply(num: CardNumber, color: Color): SimpleCard =
+    SimpleCardImpl(num, color, loadCardImage(num.value.toString, color))
+```
+
+Per indicare il numero della carta, si é deciso di creare un enum `CardNumber` che contiene i numeri delle carte.
+
+```scala 3
+enum CardNumber(val value: Int):
+  case Zero extends CardNumber(0)
+  case One extends CardNumber(1)
+  case Two extends CardNumber(2)
+  case Three extends CardNumber(3)
+  case Four extends CardNumber(4)
+  case Five extends CardNumber(5)
+  case Six extends CardNumber(6)
+  case Seven extends CardNumber(7)
+  case Eight extends CardNumber(8)
+  case Nine extends CardNumber(9)
+```
+
+#### SpecialCard
+
+Le `SpecialCard` sono le carte speciali del gioco, caratterizzate da un colore, da un'immagine e da un metodo `execute`
+che verrà chiamato quando la carta verrà giocata.
+
+
+```scala 3
+
+abstract class SpecialCard(val color: Color, val image: Image) extends Card:
+  def execute(): Unit
+
+object SpecialCard:
+  var gameLoop: GameLoop = _
+  
+  case class ChangeColor(override val color: Color = Color.Black) extends SpecialCard(color, loadCardImage("Wild", color)):
+    override def toString: String = "ChangeColor " + color.toString
+    override def execute(): Unit = gameLoop.showChangeColor()
+  
+  case class ReverseCard(override val color: Color) extends SpecialCard(color, loadCardImage("Reverse", color)):
+    override def toString: String = "Reverse " + color.toString
+    override def execute(): Unit = gameLoop.reverseTurnOrder()
+
+
+  case class SkipCard(override val color: Color, numberToSkip: Int = 1) extends SpecialCard(color, loadCardImage("Skip", color)):
+    override def toString: String = "Skip " + color.toString
+    override def execute(): Unit = gameLoop.skipNextTurn(numberToSkip)
+
+
+  case class WildDrawFourCard(override val color: Color = Color.Black) extends SpecialCard(color, loadCardImage("Draw4", color)):
+    override def toString: String = "Draw 4" + " " + color.toString
+    override def execute(): Unit = gameLoop.nextDrawCard(4)
+
+  case class DrawTwoCard(override val color: Color) extends SpecialCard(color, loadCardImage("Draw2", color)):
+    override def toString: String = "Draw 2" + " " + color.toString
+    override def execute(): Unit = gameLoop.nextDrawCard(2)
+```
+
+Qui sono state definite le carte speciali `ChangeColor`, `ReverseCard`, `SkipCard`, `WildDrawFourCard` e `DrawTwoCard`.
+Di base la carta `ChangeColor` e la carta `WildDrawFourCard` sono di colore nero, tuttavia una volta giocate
+il giocatore può scegliere il colore che preferisce.
+
+### Deck
+
+Il `Deck` é una collezione di carte non ordinata, inizialmente composto da tutte le carte del gioco.
+
+```scala 3
+class Deck extends ArrayBuffer[Card]:
+
+  for color <- Color.values if color != Color.Black do
+    this += SimpleCard(CardNumber.Zero, color)
+    for _ <- 0 to 1 do
+      this += SkipCard(color)
+      this += ReverseCard(color)
+      this += DrawTwoCard(color)
+    for number <- 0 to 17 do this += SimpleCard(CardNumber.values(number / 2), color)
+  for _ <- 0 to 3 do
+    this += ChangeColor()
+    this += WildDrawFourCard()
+
+  this.shuffle()
+
+  private def shuffle(): Unit =
+    val shuffledList = Random.shuffle(this)
+    this.clear()
+    this.addAll(shuffledList)
+  
+  def draw(): Card = this.remove(0)
+```
+
+Il `Deck` é composto da tutte le carte del gioco, inizialmente mescolate.
+Il metodo `draw` permette di pescare una carta dal mazzo.
 
 - PageController
   - Main Menu
