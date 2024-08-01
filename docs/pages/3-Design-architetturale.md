@@ -1,11 +1,5 @@
 # Design architetturale
 
-Design architetturale (architettura complessiva, 
-descrizione di pattern architetturali usati, 
-eventuali componenti del sistema distribuito,
-scelte tecnologiche cruciali ai fini architetturali -- 
-corredato da pochi ma efficaci diagrammi)
-
 ## Architettura complessiva
 L'architettura complessiva è mostrata e riepilogata nel successivo diagramma UML:
 
@@ -13,28 +7,27 @@ L'architettura complessiva è mostrata e riepilogata nel successivo diagramma UM
 
 Di seguito una breve descrizione per ogni componente illustrato:
 
-- Card -> Elemento principale del gioco, rappresenta una carta singola.
-  - SimpleCard -> Una carta semplice, che è caratterizzata da un colore e un numero.
-  - SpecialCard -> Carta speciale, che ha un effetto particolare a seguito della propria giocata.
 
-- Deck -> Modello che rappresenta una collezione di carte, semplici e speciali, con la possibilità di pescare da esso.
-- Hand -> Modello che anch'esso rappresenta una collezione di carte, minore di quella del mazzo. Quest'ultimo componente è la
+- `Card` &rarr; Elemento principale del gioco, struttura base per ogni carta in gioco.
+  - `SimpleCard` &rarr; Una carta semplice, che è caratterizzata da un colore e un numero.
+  - `SpecialCard` &rarr; Una carta speciale, che ha un effetto particolare a seguito della propria giocata.
+
+
+- `Deck` &rarr; Modello che rappresenta una collezione di carte non ordinata, semplici e speciali, che offre la possibilità di pescare da esso.
+- `Hand` &rarr; Modello che anch'esso rappresenta una collezione di carte non ordinata, minore di quella del mazzo. Quest'ultimo componente è la
 base di ogni giocatore e bot, in quanto rappresenta la mano di carte che ogni giocatore possiede durante una partita.
 
-- Player -> Componente che rappresenta un giocatore all'interno del gioco, che contiene una mano di carte gestibili durante una partita.
-- BotPlayer -> Unità fondamentale che rappresenta un bot generico, anch'esso presenta una mano gestibile.
-  - EasyBotPlayer -> Implementazione di un bot con difficoltà facile, che come regola base gioca sempre la prima carta valida che trova.
-  - HardBotPlayer -> Implementazione di un bot con difficoltà difficile, che come regola base gioca sempre una carta speciale se possibile, altrimenti gioca la prima carta valida che trova.
 
-- GameLoop -> Componente model che si occupa interamente di gestire e modellare la logica del gioco e il rispetto
-delle regole.
+- `Player` &rarr; Componente che rappresenta un giocatore all'interno del gioco, che contiene una mano di carte gestibili durante una partita.
+- `BotPlayer` &rarr; Unità fondamentale che rappresenta un bot generico, anch'esso presenta una mano gestibile, struttura base di ogni bot implementabile.
 
-- GameController -> Intermediario controller tra la GUI e il GameLoop, si occupa di gestire e sincronizzare gli eventi,
+
+- `GameLoop` &rarr; Componente cruciale che si occupa interamente di gestire e modellare la logica del gioco e il rispetto
+delle regole durante lo svolgimento di ogni partita.
+- `GameGui` &rarr; Interfaccia grafica in grado di mostrare le numerose interfacce
+  presenti all'interno del programma quando viene richiesto.
+- `GameController` &rarr; Intermediario controller tra la GUI e il GameLoop, si occupa di gestire e sincronizzare gli eventi,
 le azioni e le interazioni con l'utente che avvengono nel tempo.
-
-- Gui -> Interfaccia grafica in grado di mostrare le numerose interfacce
-presenti all'interno del programma quando viene richiesto.
-
 
 
 ## Pattern architetturali
@@ -51,7 +44,7 @@ All'interno del progetto, i package sono stati distribuiti proprio seguendo ques
   - Contiene gli elementi che si occupano 
 di gestire gli eventi del gioco e le azioni dei bot e dell'utente
 - Model
-  - Contiene i componenti principali necessari per la gestione del gioco
+  - Contiene i componenti principali necessari per lo svolgimento del gioco
 - View
   - Contiene il necessario a formare quelle che saranno le interfacce grafiche del gioco
 
