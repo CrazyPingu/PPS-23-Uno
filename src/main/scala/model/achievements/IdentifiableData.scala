@@ -1,15 +1,15 @@
 package model.achievements
 
-import play.api.libs.json.{Format, Json}
+import play.api.libs.json.{Format, JsError, JsResult, JsSuccess, JsValue, Json, OFormat, Reads, Writes}
 
-trait IdentifiableData[T, U]:
-  def id: T
+trait IdentifiableData[D]:
+  def id: Int
 
-  def data: U
+  def data: D
 
-object IdentifiableData:
-  implicit val format: Format[IdentifiableData[_, _]] = Json.format
+case class Event[D](override val id: Int, override val data: D) extends IdentifiableData[D]
 
-case class Event[T](id: Int, data: T) extends IdentifiableData[Int, T]
+case class AchievementData(override val id: Int, override val data: Boolean) extends IdentifiableData[Boolean]
 
-case class AchievementData(id: Int, isAchieved: Boolean) extends IdentifiableData[Int, Boolean]
+object AchievementData:
+  given Format[AchievementData] = Json.format[AchievementData]

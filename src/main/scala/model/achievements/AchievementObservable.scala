@@ -30,7 +30,7 @@ trait AchievementObservable extends Observable[Achievement]:
     getObservers.foreach(
       achievement =>
         val data = achievementData.find(_.id == achievement.id)
-        if data.isDefined then achievement.isAchieved = data.get.isAchieved
+        if data.isDefined then achievement.isAchieved = data.get.data
     )
 
 object AchievementObservable:
