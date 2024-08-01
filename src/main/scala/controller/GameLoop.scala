@@ -21,7 +21,7 @@ import model.bot.{BotPlayer, EasyBotPlayerImpl, HardBotPlayerImpl}
 import model.cards.SpecialCard.{ChangeColor, WildDrawFourCard}
 import model.cards.{Card, SimpleCard, SpecialCard}
 import model.settings.Difficulty.Difficulty
-import model.settings.{Difficulty, GameSettings}
+import model.settings.{Difficulty, Settings}
 import model.{Deck, Hand, Player}
 import utils.Color
 import utils.Compatibility.isCompatible
@@ -36,7 +36,7 @@ case class GameLoop private (player: Player, gameGui: GameGui):
   def start(): Unit =
     player.clearHand()
 
-    val currentSettings: GameSettings = SettingsController.settings.gameSettings
+    val currentSettings: Settings = SettingsController.getCurrentSettings
     val bots = createBotPlayers(currentSettings.difficulty)
     bot1 = bots(0)
     bot2 = bots(1)

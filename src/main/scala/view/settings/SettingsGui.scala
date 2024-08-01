@@ -2,7 +2,7 @@ package view.settings
 
 import controller.{PageController, SettingsController}
 import model.settings.Difficulty.Difficulty
-import model.settings.{Difficulty, GameSettings}
+import model.settings.{Difficulty, Settings}
 import utils.ImageHandler.backgroundSettings
 import view.{Button, ComboBox, GridBagConstraints, Label}
 
@@ -32,7 +32,7 @@ class SettingsGui private (private val pageController: PageController) extends J
 
   SettingsGui.saveSettings.addActionListener(
     _ =>
-      val newSettings: GameSettings = GameSettings(
+      val newSettings: Settings = Settings(
         Difficulty.fromInt(SettingsGui.difficultyOptions.getSelectedIndex),
         SettingsGui.startCardSlider.getValue,
         SettingsGui.handicapSlider.getValue
@@ -58,7 +58,7 @@ class SettingsGui private (private val pageController: PageController) extends J
     )
 
   private def updateWithSavedSettings(): Unit =
-    val currentSettings: GameSettings = SettingsController.settings.gameSettings
+    val currentSettings: Settings = SettingsController.getCurrentSettings
     SettingsGui.difficultyOptions.setSelectedIndex(Difficulty.toInt(currentSettings.difficulty))
     SettingsGui.startCardSlider.setValue(currentSettings.startCardValue)
     SettingsGui.handicapSlider.setValue(currentSettings.handicap)
