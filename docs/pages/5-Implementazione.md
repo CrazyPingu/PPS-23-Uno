@@ -7,6 +7,29 @@ all'uso di meccanismi avanzati di Scala)
 
 Il seguente contenuto è da dividere in sottosezioni:
 
+
+## Montanari Nicola
+
+- Hand
+
+  - Player
+
+- BotPlayer
+  - BotPlayerImpl
+    - EasyBotPlayerImpl
+    - HardBotPlayerImpl
+- isCompatible
+
+- Interfaccia Grafica
+  - Tutorial
+
+### Componenti Sviluppati insieme a Samuele De Tuglie
+
+- GameLoop
+- GameController
+
+## Samuele De Tuglie
+
 - Card
   - SimpleCard
   - SpecialCard
@@ -15,38 +38,25 @@ Il seguente contenuto è da dividere in sottosezioni:
     - ReverseCard
     - ChangeColor
   - Deck
-  - Player
 
-- BotPlayer
-  - BotPlayerImpl
-    - EasyBotPlayerImpl
-    - HardBotPlayerImpl
-- Compatibility
+- PageController
+  - Main Menu
+  - Game Board
+    - Cells
+  - ChangeColorGui
+  - Frame
 
-- Achievements
-  - AchievementController
+
+## Pablo Sebastian Vargas Grateron
 
 - Settings
   - SettingsController
 
-- GameLoop
-- GameController
+- Achievements
+  - AchievementController
 
-- PageController
-- Interfaccia Grafica
-  - Tutorial
-  - Main Menu
-  - Achievement
-  - Game Board
-    - Cells
-  - Settings
+Gui di entrambe
 
-
-## Montanari Nicola
-
-## Samuele De Tuglie
-
-## Pablo Sebastian Vargas Grateron
 
 ---
 
