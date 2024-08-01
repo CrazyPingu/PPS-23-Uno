@@ -36,8 +36,8 @@ object Achievement:
   private class BooleanAchievementImpl(val id: Int, val description: String, var isAchieved: Boolean)
       extends BooleanAchievement:
     override def update(event: Event[?]): Unit = event match
-      case Event(id, data: Boolean) if event.id == id => isAchieved = data
-      case _                                          => ()
+      case Event(id, data: Boolean) if event.id == this.id => isAchieved = data
+      case _                                               => ()
 
   private class NumericAchievementImpl(
     val id: Int,
@@ -47,5 +47,5 @@ object Achievement:
     val comparator: ComparisonOperator
   ) extends NumericAchievement:
     override def update(event: Event[?]): Unit = event match
-      case Event(id, data: Int) if event.id == id => isAchieved = comparator.compare(data, threshold)
-      case _                                      => ()
+      case Event(id, data: Int) if event.id == this.id => isAchieved = comparator.compare(data, threshold)
+      case _                                           => ()
