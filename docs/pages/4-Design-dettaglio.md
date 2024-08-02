@@ -18,8 +18,7 @@ La Card base è caratterizzata da due semplici attributi condivisi da tutte le c
 Per la gestione dei colori, onde evitare errori di tipo, si è deciso di creare un Enum `Color`
 che rappresenta i colori possibili di una carta.
 
-Per la creazione delle carte si è deciso di utilizzare un `CardFactory`, 
-una Factory che è in grado di generare qualsiasi carta necessaria, sia Semplice che Speciale, in base all'esigenza.
+![Card UML](../uml/cards.png)
 
 ### SimpleCard
 Una SimpleCard è una carta base, che non ha particolari effetti o abilità speciali, è figlia diretta di Card e quindi 
