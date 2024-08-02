@@ -5,9 +5,6 @@ di cosa fatto/co-fatto e con chi, e descrizione di aspetti implementativi import
 non già presenti nel design, come ad esempio relativamente 
 all'uso di meccanismi avanzati di Scala)
 
-Il seguente contenuto è da dividere in sottosezioni:
-
-
 ## Montanari Nicola
 
 ### Hand
@@ -55,8 +52,6 @@ le funzionalità necessarie per gestire i comportamenti di un giocatore all'inte
 ```scala
 object Player extends Hand
 ```
-### BOTS
-INSERIRE QUI SCHEMA UML
 
 ### BotPlayer e BotPlayerImpl
 
@@ -259,12 +254,39 @@ La scelta di questa struttura è stata fatta per garantire una maggiore scalabil
 in un futuro in cui si volessero aggiungere nuove schermate dopo l'aggiunta di nuove funzionalità.
 
 
+Per ogni slide contenuta nell'Array,
+viene creata una schermata all'interno della pagina del tutorial, ordinata in base
+all'ordine di inserimento all'interno dell'Array.
+
 ```scala
-Insert code here
+private val SlideFactory = new TutorialSlideFactory()
+private val slides = Array(
+  SlideFactory.createCompatibilitySlide(),
+  SlideFactory.createSpecialCardSlide(),
+  SlideFactory.createCardSlide(),
+  SlideFactory.createDeckSlide(),
+  SlideFactory.createUnoSlide(),
+  SlideFactory.createWinLoseSlide()
+)
 ```
 
-- Interfaccia Grafica
-  - Tutorial
+Per mostrare una slide, è stato implementato un metodo `showSlide` che si occupa di mostrare i contenuti della 
+slide richiesta all'interno dell'interfaccia.
+
+
+```scala
+private def showSlide(index: Int): Unit =
+  if index >= 0 && index < slides.length then
+  prevButton.setEnabled(index != 0)
+  nextButton.setEnabled(index != slides.length - 1)
+  currentSlideIndex = index
+  val slide = slides(index)
+  titleLabel.setText(slide.title)
+  imageLabel.setIcon(new ImageIcon(slide.image))
+  descriptionLabel.setText(slide.description)
+```
+
+
 
 ## Componenti Sviluppati da Nicola Montanari e Samuele De Tuglie
 
