@@ -8,6 +8,11 @@ import javax.swing.*
 import javax.swing.border.EmptyBorder
 import view.{Button, GridBagConstraints}
 
+/**
+ * A class representing the tutorial GUI.
+ *
+ * @param pageController The page controller.
+ */
 class TutorialGui private (private val pageController: PageController) extends JPanel:
 
   this.setBackground(new Color(10, 10, 10))
@@ -67,7 +72,6 @@ object TutorialGui:
   private val buttonPanel = new JPanel(new GridBagLayout())
   private val descriptionLabel = new JLabel("", SwingConstants.CENTER)
   private val textPanel = new JPanel(new GridLayout(2, 1))
-
   private def showSlide(index: Int): Unit =
     if index >= 0 && index < slides.length then
       prevButton.setEnabled(index != 0)
