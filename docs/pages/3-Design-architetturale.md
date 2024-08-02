@@ -22,6 +22,10 @@ base di ogni giocatore e bot, in quanto rappresenta la mano di carte che ogni gi
 - `BotPlayer` &rarr; Unità fondamentale che rappresenta un bot generico, anch'esso presenta una mano gestibile, struttura base di ogni bot implementabile.
 
 
+- `Achievement` &rarr; Componente che rappresenta un obiettivo da raggiungere durante una partita, che può essere di vario tipo.
+- `AchievementObserver` &rarr; Interfaccia che rappresenta un osservatore di un obiettivo, che notifica il raggiungimento di un obiettivo.
+
+
 - `GameLoop` &rarr; Componente cruciale che si occupa interamente di gestire e modellare la logica del gioco e il rispetto
 delle regole durante lo svolgimento di ogni partita.
 - `GameGui` &rarr; Interfaccia grafica in grado di mostrare le numerose interfacce
@@ -47,9 +51,8 @@ di gestire gli eventi del gioco e le azioni dei bot e dell'utente
   - Contiene il necessario a formare quelle che saranno le interfacce grafiche del gioco
 
 ## Scelte tecnologiche
-Per la realizzazione di questo progetto, non risulta essere necessario l'impiego di alcuna
-tecnologia o framework particolare, in quanto si ritiene che il progetto si possa realizzare grazie
-all'utilizzo di Scala 3.x.
+Per la realizzazione di questo progetto è stata utilizzata la versione 3.x di Scala. Per La gestione dei file in formato 
+JSON è stato utilizzato il framework `Play-JSON`.
 
 ---
 
