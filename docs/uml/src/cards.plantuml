@@ -8,15 +8,25 @@ Enum Color{
     BLACK
 }
 
+Enum CardNumber{
+    ZERO
+    ONE
+    TWO
+    THREE
+    FOUR
+    FIVE
+    SIX
+    SEVEN
+    EIGHT
+    NINE
+}
+
 interface Card {
-    + Color color
+    + color : Color
 }
 
 interface SimpleCard implements Card {
-}
-
-class SimpleCardImpl implements SimpleCard {
-    + int number
+    + number : CardNumber
 }
 
 abstract class SpecialCard implements Card {
@@ -27,7 +37,7 @@ class ReverseCard extends SpecialCard {}
 class ChangeColor extends SpecialCard {}
 
 class SkipCard extends SpecialCard {
-    - int numberToSkip
+    - numberToSkip : Int
 }
 
 class DrawTwoCard extends SpecialCard {
@@ -35,14 +45,14 @@ class DrawTwoCard extends SpecialCard {
 
 class WildDraw4Card extends SpecialCard {
 }
-class Deck implements List<Card>{
-    + void shuffle()
-    + Card draw()
-}
-
-class PlayerHand implements List<Card> {
-    + void addCard(Card card)
-    + void playCard(Card card)
-}
+'class Deck implements List<Card>{
+'    + shuffle() : void
+'    + draw() : Card
+'}
+'
+'class PlayerHand implements List<Card> {
+'    + addCard(Card card) : void
+'    + playCard(Card card) : void
+'}
 
 @enduml
