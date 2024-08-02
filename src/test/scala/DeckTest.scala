@@ -1,5 +1,5 @@
 import model.Deck
-import model.cards.SimpleCardImpl
+import model.cards.SimpleCard
 import model.cards.SpecialCard.{ChangeColor, DrawTwoCard, ReverseCard, SkipCard, WildDrawFourCard}
 import org.scalatest.funsuite.AnyFunSuite
 import utils.Color
@@ -18,7 +18,7 @@ class DeckTest extends AnyFunSuite:
     val colors = Color.values.filter(_ != Color.Black)
     for color <- colors do
       val numberCards = deck.collect:
-        case card: SimpleCardImpl if card.color == color => card
+        case card: SimpleCard if card.color == color => card
       assert(numberCards.size == 19)
 
   test("Deck should contain 2 reverse cards of each color"):

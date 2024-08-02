@@ -23,7 +23,6 @@ class Deck extends ArrayBuffer[Card]:
       this += DrawTwoCard(color)
     for number <- 0 to 17 do this += SimpleCard(CardNumber.values(number / 2), color)
 
-  // Add wild cards to the deck
   for _ <- 0 to 3 do
     this += ChangeColor()
     this += WildDrawFourCard()
