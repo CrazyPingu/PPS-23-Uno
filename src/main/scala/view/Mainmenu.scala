@@ -2,12 +2,18 @@ package view
 
 import controller.PageController
 import utils.ImageHandler.{backgroundTable, gameLogo}
-import view.{Button, GridBagConstraints}
 
 import java.awt.GridBagLayout
 import java.awt.event.ActionListener
 import javax.swing.*
 
+/**
+ * Represents the main menu of the game.
+ * The main manu is the first screen that the player sees when the game is started.
+ * The main menu contains buttons to start a new game, show the tutorial, show the achievements, show the settings and exit the game.
+ *
+ * @param pageController The controller of the pages.
+ */
 class Mainmenu private (private val pageController: PageController) extends JPanel:
   setLayout(new GridBagLayout())
 
@@ -50,6 +56,9 @@ class Mainmenu private (private val pageController: PageController) extends JPan
     super.paintComponent(g)
     g.drawImage(backgroundTable, 0, 0, this.getWidth, this.getHeight, this)
 
+/**
+ * Companion object of the Mainmenu class.
+ */
 object Mainmenu:
   private val startButton = new Button("New Game", (200, 50))
   private val tutorialButton = new Button("Tutorial", (200, 50))
@@ -57,5 +66,11 @@ object Mainmenu:
   private val settingsButton = new Button("Settings", (200, 50))
   private val exitButton = new Button("Exit", (200, 50))
 
+  /**
+   * Creates a new main menu.
+   *
+   * @param pageController The controller of the pages.
+   * @return The main menu.
+   */
   def apply(pageController: PageController): Mainmenu =
     new Mainmenu(pageController)

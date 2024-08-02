@@ -3,8 +3,19 @@ package view
 import java.awt.{Color, Dimension}
 import javax.swing.JButton
 
+/**
+ * Represents a button in the game.
+ *
+ * @param text The text of the button.
+ */
 class Button(text: String) extends JButton:
 
+  /**
+   * Creates a button with a specific size.
+   *
+   * @param text The text of the button.
+   * @param buttonSize The size of the button.
+   */
   def this(text: String, buttonSize: (Int, Int)) =
     this(text)
     setPreferredSize(new Dimension(buttonSize(0), buttonSize(1)))

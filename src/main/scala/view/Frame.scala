@@ -55,8 +55,15 @@ class Frame extends JFrame:
    */
   def isShowing(layoutId: CardLayoutId): Boolean = Frame.currentLayout == layoutId
 
+/**
+ * Companion object of the Frame class
+ */
 object Frame:
   private val cardLayout: CardLayout = new CardLayout
   private val cardPanel: JPanel = new JPanel(cardLayout)
   private var currentLayout: CardLayoutId = _
+
+  /**
+   * @return a new instance of the Frame class
+   */
   def apply(): Frame = new Frame()
