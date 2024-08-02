@@ -31,6 +31,13 @@ import scala.concurrent.Future
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.util.Random
 
+
+/**
+ * A class representing the main game loop.
+ *
+ * @param player  The player of the game.
+ * @param gameGui The GUI of the game.
+ */
 case class GameLoop private (player: Player, gameGui: GameGui):
 
   def start(): Unit =
