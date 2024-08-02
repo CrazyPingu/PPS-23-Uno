@@ -14,6 +14,11 @@ enum Color(val rgb: Int):
   case Yellow extends Color(0xffff00)
   case Black extends Color(0x000000)
 
+/**
+ * Represents the possible numbers of the simple cards in the game.
+ *
+ * @param value The integer value of the card
+ */
 enum CardNumber(val value: Int):
   case Zero extends CardNumber(0)
   case One extends CardNumber(1)
