@@ -2,7 +2,6 @@ import model.cards.SimpleCard
 import org.scalatest.funsuite.AnyFunSuite
 import utils.CardNumber.Five
 import utils.Color
-import utils.ImageHandler.loadCardImage
 
 /**
  * Tests for the SimpleCardImpl class.

@@ -4,8 +4,10 @@ import model.cards.SpecialCard.ChangeColor
 import org.scalatest.funsuite.AnyFunSuite
 import utils.CardNumber.{Five, Seven, Six}
 import utils.Color
-import utils.ImageHandler.loadCardImage
 
+/**
+ * Test to check the correct behavior of the EasyBotPlayerImpl class.
+ */
 class EasyBotTest extends AnyFunSuite:
 
   test("The BOT should start with empty hand"):

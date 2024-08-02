@@ -5,6 +5,9 @@ import model.cards.SpecialCard.ChangeColor
 import utils.Color
 import utils.CardNumber.{Five, Seven, Six}
 
+/**
+ * Test to check the correct behavior of the HardBotPlayerImpl class.
+ */
 class HardBotTest extends AnyFunSuite:
 
   test("The BOT should start with empty hand"):
