@@ -1,10 +1,5 @@
 # Design di dettaglio
 
-Design di dettaglio (scelte rilevanti, 
-pattern di progettazione, 
-organizzazione del codice -- corredato da pochi ma efficaci diagrammi)
-
-
 ## Card
 Una Card è un elemento chiave per l'intero svolgimento di una partita di UNO.
 Una Carta è un elemento giocabile all'interno di una partita, che comprende dei valori e caratteristiche con
@@ -128,6 +123,11 @@ Un Player è un giocatore umano e partecipante attivo alla partita di UNO.
 
 Un Player è semplicemente un figlio diretto di Hand e viene gestito in maniera diretta dal Controller del gioco.
 
+## Bots
+A seguire un UML che mostra come sono strutturate le classi dei Bot:
+
+![Diagramma UML](../uml/bots.png)
+
 ## BotPlayer
 Un BotPlayer è un giocatore non umano alla partita di UNO.
 Anche il BotPlayer è un figlio diretto di Hand.
@@ -241,17 +241,17 @@ opportuno.
 Il GameLoop è il cuore della logica del gioco, responsabile della gestione delle dinamiche di gioco, 
 delle diverse fasi e delle interazioni tra i giocatori. I suoi metodi principali includono:
 
-- start: Avvia il gioco, occupandosi dell'inizializzazione del mazzo di carte, della distribuzione delle mani ai giocatori e della preparazione del tavolo di gioco.
-- stop: Termina il gioco e gestisce le operazioni di chiusura necessarie.
-- reverseTurnOrder: Inverte l'ordine dei turni dei giocatori.
-- nextDrawCard: Fa pescare un numero specifico di carte al giocatore successivo.
-- skipNextTurn: Salta il turno del prossimo giocatore.
-- chooseCard: Gioca una carta dalla mano del giocatore, se valida, e la rimuove dalla mano del giocatore.
-- drawCard: Fa pescare una carta al giocatore di turno.
-- showChangeColor: Mostra un'interfaccia per permettere al giocatore di selezionare un nuovo colore di gioco.
-- changeColor: Cambia il colore attivo nel gioco in base alla scelta del giocatore.
-- callUno: Gestisce la dichiarazione di "UNO" da parte del giocatore.
-- nextTurn: Passa il turno al giocatore successivo.
+- `start` &rarr; Avvia il gioco, occupandosi dell'inizializzazione del mazzo di carte, della distribuzione delle mani ai giocatori e della preparazione del tavolo di gioco.
+- `stop` &rarr; Termina il gioco e gestisce le operazioni di chiusura necessarie.
+- `reverseTurnOrder` &rarr; Inverte l'ordine dei turni dei giocatori.
+- `nextDrawCard` &rarr; Fa pescare un numero specifico di carte al giocatore successivo.
+- `skipNextTurn` &rarr; Salta il turno del prossimo giocatore.
+- `chooseCard` &rarr; Gioca una carta dalla mano del giocatore, se valida, e la rimuove dalla mano del giocatore.
+- `drawCard` &rarr; Fa pescare una carta al giocatore di turno.
+- `showChangeColor` &rarr; Mostra un'interfaccia per permettere al giocatore di selezionare un nuovo colore di gioco.
+- `changeColor` &rarr; Cambia il colore attivo nel gioco in base alla scelta del giocatore.
+- `callUno` &rarr; Gestisce la dichiarazione di "UNO" da parte del giocatore.
+- `nextTurn` &rarr; Passa il turno al giocatore successivo.
 
 ## PageController
 La PageController è una classe fondamentale per la gestione della navigazione e della visualizzazione delle 
