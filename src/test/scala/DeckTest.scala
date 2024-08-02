@@ -63,3 +63,10 @@ class DeckTest extends AnyFunSuite:
     val drawnCard = deck.draw()
     assert(drawnCard == firstCard)
     assert(deck.size == 107)
+
+  test("Deck should draw a random SimpleCard"):
+    val deck = new Deck()
+    for i <- 1 to 10 do
+      val drawnCard = deck.drawRandomSimpleCard()
+      assert(drawnCard.isInstanceOf[SimpleCard])
+      assert(deck.size == 108 - i)

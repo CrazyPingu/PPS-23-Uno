@@ -43,3 +43,14 @@ class Deck extends ArrayBuffer[Card]:
    * @return The card at the top of the deck.
    */
   def draw(): Card = this.remove(0)
+
+  /**
+   * Draws a random simple card from the deck.
+   *
+   * @return A random simple card.
+   */
+  def drawRandomSimpleCard(): SimpleCard =
+    val simpleCards = this.filter(_.isInstanceOf[SimpleCard]).map(_.asInstanceOf[SimpleCard])
+    val card = simpleCards(Random.nextInt(simpleCards.length))
+    this -= card
+    card

@@ -53,7 +53,7 @@ case class GameLoop private (private val player: Player, private val gameGui: Ga
 
     gameGui.setEntity(bot1, bot2, bot3, player)
 
-    disposeCard(deck.draw())
+    disposeCard(deck.drawRandomSimpleCard())
 
     gameGui.setUnoButtonChecked(false)
 
