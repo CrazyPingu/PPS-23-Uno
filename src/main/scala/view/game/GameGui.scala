@@ -41,6 +41,7 @@ class GameGui private extends JPanel:
    * @param bot1 the first bot
    * @param bot2 the second bot
    * @param bot3 the third bot
+   * @param player the player
    */
   def setEntity(bot1: BotPlayer, bot2: BotPlayer, bot3: BotPlayer, player: Player): Unit =
     GameGui.bot1 = bot1
@@ -124,18 +125,19 @@ class GameGui private extends JPanel:
      *
      * @param position      the position to check
      * @param startPosition the start position of the hand
+     * @param handSize the size of the hand
      * @return true if the position is within the hand, false otherwise
      */
-    def isWithinHand(position: Int, startPosition: Int, hSize: Int): Boolean =
-      position >= startPosition && position < startPosition + hSize
+    def isWithinHand(position: Int, startPosition: Int, handSize: Int): Boolean =
+      position >= startPosition && position < startPosition + handSize
 
     /**
      * Apply the icon to the component understanding if it is a card or a cell
      *
      * @param component the component to apply the icon
      * @param indexInHand the index of the possible card in the hand of the player
-     * @param action true if you want to show the card / set the retro of the card visible, false otherwise
-     * @param rotation the rotation of the card
+     * @param action true if you want to show the card / set the retro of the card visible, false otherwise. Default is true
+     * @param rotation the rotation of the card. Default is NONE
      */
     def applyIcon(component: Component, indexInHand: Int, action: Boolean = true, rotation: Rotation = NONE): Unit =
       component match
@@ -188,7 +190,7 @@ class GameGui private extends JPanel:
    * Update the turn arrow
    *
    * @param turn current turn
-   * @param numOfPlayer number of player
+   * @param numOfPlayer number of player in the game. Default is 4
    */
   def updateTurnArrow(turn: Int, numOfPlayer: Int = 4): Unit =
     for i <- arrowCoordinate.indices do
@@ -202,6 +204,9 @@ class GameGui private extends JPanel:
     val g2d: Graphics2D = g.asInstanceOf[Graphics2D]
     g2d.drawImage(backgroundTable, 0, 0, getWidth, getHeight, this)
 
+/**
+ * Companion object of the GameGui class
+ */
 object GameGui:
   var gameLoop: GameLoop = _
 
@@ -233,4 +238,7 @@ object GameGui:
     (arrowCoordinate(3), new TurnIndicatorCell(NONE)) // Bot3
   )
 
+  /**
+   * @return the game GUI
+   */
   def apply(): GameGui = new GameGui()

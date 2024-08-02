@@ -9,7 +9,6 @@ import utils.Color
  */
 trait BotPlayer extends Hand:
 
-
   /**
    * Chooses a card to play from the hand.
    *

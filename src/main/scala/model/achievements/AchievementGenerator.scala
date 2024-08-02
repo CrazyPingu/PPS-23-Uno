@@ -2,6 +2,9 @@ package model.achievements
 
 import model.achievements.{Achievement, AchievementId, ComparisonOperator}
 
+/**
+ * A class responsible for generating a list of achievements.
+ */
 class AchievementGenerator:
   val achievementList: List[Achievement] = List[Achievement](
     Achievement(AchievementId.FirstCardAchievement.id, "Play the first card.", false),

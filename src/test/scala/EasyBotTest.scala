@@ -1,11 +1,13 @@
 import model.bot.EasyBotPlayerImpl
-import model.cards.SimpleCardImpl
+import model.cards.SimpleCard
 import model.cards.SpecialCard.ChangeColor
 import org.scalatest.funsuite.AnyFunSuite
 import utils.CardNumber.{Five, Seven, Six}
 import utils.Color
-import utils.ImageHandler.loadCardImage
 
+/**
+ * Test to check the correct behavior of the EasyBotPlayerImpl class.
+ */
 class EasyBotTest extends AnyFunSuite:
 
   test("The BOT should start with empty hand"):
@@ -14,27 +16,27 @@ class EasyBotTest extends AnyFunSuite:
 
   test("The BOT should choose the card"):
     val Bot = new EasyBotPlayerImpl()
-    Bot.addCard(new SimpleCardImpl(Five, Color.Red, loadCardImage("5", Color.Red)))
-    val middleCard = new SimpleCardImpl(Five, Color.Blue, loadCardImage("5", Color.Blue))
+    Bot.addCard(SimpleCard(Five, Color.Red))
+    val middleCard = SimpleCard(Five, Color.Blue)
     val card = Bot.chooseCardToUse(middleCard)
     assert(card.isDefined)
-    Bot.addCard(new SimpleCardImpl(Five, Color.Red, loadCardImage("5", Color.Red)))
-    val middleCard2 = new SimpleCardImpl(Five, Color.Red, loadCardImage("5", Color.Red))
+    Bot.addCard(SimpleCard(Five, Color.Red))
+    val middleCard2 = SimpleCard(Five, Color.Red)
     val card2 = Bot.chooseCardToUse(middleCard2)
     assert(card.isDefined)
 
   test("The BOT should NOT choose and remove the card, because it's not compatible"):
     val Bot = new EasyBotPlayerImpl()
-    Bot.addCard(new SimpleCardImpl(Five, Color.Red, loadCardImage("5", Color.Red)))
-    val middleCard = new SimpleCardImpl(Six, Color.Blue, loadCardImage("6", Color.Blue))
+    Bot.addCard(SimpleCard(Five, Color.Red))
+    val middleCard = SimpleCard(Six, Color.Blue)
     val card = Bot.chooseCardToUse(middleCard)
     assert(card.isEmpty)
 
   test("The BOT should choose the Valid Simple Card"):
     val Bot = new EasyBotPlayerImpl()
-    Bot.addCard(new SimpleCardImpl(Five, Color.Red, loadCardImage("5", Color.Red)))
-    Bot.addCard(new SimpleCardImpl(Six, Color.Blue, loadCardImage("6", Color.Blue)))
-    val middleCard = new SimpleCardImpl(Seven, Color.Red, loadCardImage("7", Color.Red))
+    Bot.addCard(SimpleCard(Five, Color.Red))
+    Bot.addCard(SimpleCard(Six, Color.Blue))
+    val middleCard = SimpleCard(Seven, Color.Red)
     val card = Bot.chooseCardToUse(middleCard)
     assert(card.get.color == Color.Red)
     assert(card.isDefined)
@@ -42,8 +44,8 @@ class EasyBotTest extends AnyFunSuite:
   test("The BOT should choose the Valid Special Card"):
     val Bot = new EasyBotPlayerImpl()
     Bot.addCard(ChangeColor())
-    Bot.addCard(new SimpleCardImpl(Five, Color.Blue, loadCardImage("6", Color.Blue)))
-    val middleCard = new SimpleCardImpl(Seven, Color.Red, loadCardImage("7", Color.Red))
+    Bot.addCard(SimpleCard(Five, Color.Blue))
+    val middleCard = SimpleCard(Seven, Color.Red)
     val card = Bot.chooseCardToUse(middleCard)
     assert(card.get.color == Color.Black)
     assert(card.isDefined)

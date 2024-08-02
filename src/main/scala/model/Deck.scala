@@ -23,7 +23,6 @@ class Deck extends ArrayBuffer[Card]:
       this += DrawTwoCard(color)
     for number <- 0 to 17 do this += SimpleCard(CardNumber.values(number / 2), color)
 
-  // Add wild cards to the deck
   for _ <- 0 to 3 do
     this += ChangeColor()
     this += WildDrawFourCard()
@@ -44,3 +43,14 @@ class Deck extends ArrayBuffer[Card]:
    * @return The card at the top of the deck.
    */
   def draw(): Card = this.remove(0)
+
+  /**
+   * Draws a random simple card from the deck.
+   *
+   * @return A random simple card.
+   */
+  def drawRandomSimpleCard(): SimpleCard =
+    val simpleCards = this.filter(_.isInstanceOf[SimpleCard]).map(_.asInstanceOf[SimpleCard])
+    val card = simpleCards(Random.nextInt(simpleCards.length))
+    this -= card
+    card

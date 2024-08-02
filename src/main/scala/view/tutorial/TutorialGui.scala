@@ -51,6 +51,9 @@ class TutorialGui private (private val pageController: PageController) extends J
   )
   TutorialGui.showSlide(0)
 
+/**
+ * The companion object of the tutorial GUI.
+ */
 object TutorialGui:
   private var currentSlideIndex = 0
   private val SlideFactory = new TutorialSlideFactory()
@@ -72,6 +75,11 @@ object TutorialGui:
   private val buttonPanel = new JPanel(new GridBagLayout())
   private val descriptionLabel = new JLabel("", SwingConstants.CENTER)
   private val textPanel = new JPanel(new GridLayout(2, 1))
+
+  /**
+   * Shows a slide.
+   * @param index The index of the slide.
+   */
   private def showSlide(index: Int): Unit =
     if index >= 0 && index < slides.length then
       prevButton.setEnabled(index != 0)
@@ -82,4 +90,9 @@ object TutorialGui:
       imageLabel.setIcon(new ImageIcon(slide.image))
       descriptionLabel.setText(slide.description)
 
+  /**
+   * Creates a tutorial GUI.
+   * @param pageController The page controller.
+   * @return The tutorial GUI.
+   */
   def apply(pageController: PageController): TutorialGui = new TutorialGui(pageController)

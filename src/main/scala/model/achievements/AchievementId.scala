@@ -1,5 +1,8 @@
 package model.achievements
 
+/**
+ * An enumeration representing different achievement IDs.
+ */
 object AchievementId extends Enumeration:
   type AchievementId = Value
 

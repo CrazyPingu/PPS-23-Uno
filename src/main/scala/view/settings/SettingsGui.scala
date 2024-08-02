@@ -11,6 +11,11 @@ import java.awt.{Graphics, Graphics2D, GridBagLayout, Insets}
 import javax.swing.event.{ChangeEvent, ChangeListener}
 import javax.swing.{JLabel, JPanel, JSlider}
 
+/**
+ * The SettingsGui class represents the GUI for managing game settings.
+ *
+ * @param pageController The controller for managing page transitions.
+ */
 class SettingsGui private (private val pageController: PageController) extends JPanel:
   setLayout(new GridBagLayout())
 
@@ -50,6 +55,12 @@ class SettingsGui private (private val pageController: PageController) extends J
     _ => pageController.showMainMenu()
   )
 
+  /**
+   * Connects a slider to a label to update the label with the slider's value.
+   *
+   * @param slider The slider to connect.
+   * @param label  The label to update.
+   */
   private def connectSliderToLabel(slider: JSlider, label: JLabel): Unit =
     slider.addChangeListener(
       (e: ChangeEvent) =>
@@ -57,17 +68,28 @@ class SettingsGui private (private val pageController: PageController) extends J
         label.setText(slider.getValue.toString)
     )
 
+  /**
+   * Updates the GUI with the saved settings.
+   */
   private def updateWithSavedSettings(): Unit =
     val currentSettings: Settings = SettingsController.getCurrentSettings
     SettingsGui.difficultyOptions.setSelectedIndex(Difficulty.toInt(currentSettings.difficulty))
     SettingsGui.startCardSlider.setValue(currentSettings.startCardValue)
     SettingsGui.handicapSlider.setValue(currentSettings.handicap)
 
+  /**
+   * Paints the background image for the settings panel.
+   *
+   * @param g The graphics context.
+   */
   override protected def paintComponent(g: Graphics): Unit =
     super.paintComponent(g)
     val g2d: Graphics2D = g.asInstanceOf[Graphics2D]
     g2d.drawImage(backgroundSettings, 0, 0, getWidth, getHeight, this)
 
+/**
+ * Companion object for the SettingsGui class.
+ */
 object SettingsGui:
   private val MIN_STARTING_CARDS: Int = 4
   private val MAX_STARTING_CARDS: Int = 7
@@ -85,4 +107,10 @@ object SettingsGui:
   private val resetSettings: Button = new Button("Reset settings")
   private val goBackButton: Button = new Button("Go Back to Menu")
 
+  /**
+   * Creates a new SettingsGui instance.
+   *
+   * @param pageController The controller for managing page transitions.
+   * @return A new SettingsGui instance.
+   */
   def apply(pageController: PageController): SettingsGui = new SettingsGui(pageController)

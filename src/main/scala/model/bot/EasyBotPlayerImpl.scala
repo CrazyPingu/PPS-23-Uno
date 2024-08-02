@@ -4,7 +4,7 @@ import model.cards.Card
 
 /**
  * A class representing an easy bot player.
- * 
+ *
  * An easy bot player plays the first compatible card it finds in its hand.
  */
 class EasyBotPlayerImpl extends BotPlayerImpl:

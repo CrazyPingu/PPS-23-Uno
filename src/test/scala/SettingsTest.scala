@@ -4,6 +4,9 @@ import org.scalatest.funsuite.AnyFunSuite
 
 import java.nio.file.{Files, Paths}
 
+/**
+ * Test class for the SettingsManager class.
+ */
 class SettingsTest extends AnyFunSuite with BeforeAndAfterAll:
 
   private val projectRoot: String = System.getProperty("user.dir")

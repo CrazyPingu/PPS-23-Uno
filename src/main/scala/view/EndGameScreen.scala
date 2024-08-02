@@ -6,6 +6,12 @@ import java.awt.{GridBagLayout, Image, Insets}
 import javax.swing.JPanel
 import utils.ImageHandler.{defeatBackground, winBackground}
 
+/**
+ * Represents the screen that is shown when the game ends.
+ *
+ * @param backgroundImage The background image of the screen.
+ * @param pageController The controller of the pages.
+ */
 abstract class EndGameScreen(private val backgroundImage: Image, private val pageController: PageController)
     extends JPanel:
 
@@ -24,6 +30,16 @@ abstract class EndGameScreen(private val backgroundImage: Image, private val pag
     super.paintComponent(g)
     g.drawImage(backgroundImage, 0, 0, this.getWidth, this.getHeight, this)
 
+/**
+ * Represents the screen that is shown when the player wins the game.
+ *
+ * @param pageController The controller of the pages.
+ */
 class WinScreen(private val pageController: PageController) extends EndGameScreen(winBackground, pageController)
 
+/**
+ * Represents the screen that is shown when the player loses the game.
+ *
+ * @param pageController The controller of the pages.
+ */
 class LoseScreen(private val pageController: PageController) extends EndGameScreen(defeatBackground, pageController)

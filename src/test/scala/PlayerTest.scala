@@ -1,5 +1,5 @@
 import model.Player
-import model.cards.SimpleCardImpl
+import model.cards.SimpleCard
 import model.cards.SpecialCard.ChangeColor
 import org.scalatest.funsuite.AnyFunSuite
 import utils.CardNumber.Five
@@ -20,7 +20,7 @@ class PlayerTest extends AnyFunSuite:
   test("Should be able to add a SimpleCard"):
     val player: Player = new Player()
     assert(player.isEmpty)
-    val simpleCard = new SimpleCardImpl(Five, Color.Red, loadCardImage("5", Color.Red))
+    val simpleCard = SimpleCard(Five, Color.Red)
     player.addCard(simpleCard)
     assert(player.size == 1)
 
@@ -28,7 +28,7 @@ class PlayerTest extends AnyFunSuite:
     val player: Player = new Player()
     assert(player.isEmpty)
     for num <- 0 to N_CARDS do
-      val simpleCard = new SimpleCardImpl(CardNumber.values(num), Color.Red, loadCardImage(num.toString, Color.Red))
+      val simpleCard = SimpleCard(CardNumber.values(num), Color.Red)
       player.addCard(simpleCard)
       assert(player.size == num + 1)
 
@@ -50,7 +50,7 @@ class PlayerTest extends AnyFunSuite:
   test("Should be able to remove a SimpleCard"):
     val player: Player = new Player()
     assert(player.isEmpty)
-    val simpleCard = new SimpleCardImpl(Five, Color.Red, loadCardImage("5", Color.Red))
+    val simpleCard = SimpleCard(Five, Color.Red)
     player.addCard(simpleCard)
     assert(player.size == 1)
     player.removeCard(simpleCard)
@@ -87,7 +87,7 @@ class PlayerTest extends AnyFunSuite:
   test("Check if the Hand has a precise SimpleCard"):
     val player: Player = new Player()
     assert(player.isEmpty)
-    val simpleCard = new SimpleCardImpl(Five, Color.Red, loadCardImage("5", Color.Red))
+    val simpleCard = SimpleCard(Five, Color.Red)
     player.addCard(simpleCard)
     assert(player.hasCard(simpleCard))
 
@@ -101,7 +101,7 @@ class PlayerTest extends AnyFunSuite:
   test("Check if the Hand has a precise SpecialCard and a precise SimpleCard"):
     val player: Player = new Player()
     assert(player.isEmpty)
-    val simpleCard = new SimpleCardImpl(Five, Color.Red, loadCardImage("5", Color.Red))
+    val simpleCard = SimpleCard(Five, Color.Red)
     val specialCard = ChangeColor()
     player.addCard(specialCard)
     player.addCard(simpleCard)

@@ -21,7 +21,7 @@ class TutorialSlideFactory:
 
   /**
    * Creates a slide that explains how to draw a card.
-   * 
+   *
    * @return The slide that explains how to draw a card.
    */
   def createDeckSlide(): GeneralTutorialSlide =
@@ -30,10 +30,10 @@ class TutorialSlideFactory:
       "How to Draw a Card",
       "Draw a card from the deck if you can’t play any of your current cards"
     )
-  
+
   /**
    * Creates a slide that explains how to play a card.
-   * 
+   *
    * @return The slide that explains how to play a card.
    */
   def createCompatibilitySlide(): GeneralTutorialSlide =
@@ -42,10 +42,10 @@ class TutorialSlideFactory:
       "Card Compatibility",
       "Play cards that match the color or number of the top card on the discard pile"
     )
-  
+
   /**
    * Creates a slide that explains how to call UNO.
-   * 
+   *
    * @return The slide that explains how to call UNO.
    */
   def createUnoSlide(): GeneralTutorialSlide =
@@ -57,7 +57,7 @@ class TutorialSlideFactory:
 
   /**
    * Creates a slide that explains how to win a game.
-   * 
+   *
    * @return The slide that explains how to win a game.
    */
   def createWinLoseSlide(): GeneralTutorialSlide =
@@ -69,7 +69,7 @@ class TutorialSlideFactory:
 
   /**
    * Creates a slide that explains special cards.
-   * 
+   *
    * @return The slide that explains special cards.
    */
   def createSpecialCardSlide(): GeneralTutorialSlide =

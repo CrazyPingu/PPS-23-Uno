@@ -16,6 +16,9 @@ import utils.JsonUtils
 
 import java.nio.file.{Files, Paths}
 
+/**
+ * Tests for the Achievement class.
+ */
 class AchievementTest extends AnyFunSuite with BeforeAndAfterAll:
 
   private val projectRoot: String = System.getProperty("user.dir")
