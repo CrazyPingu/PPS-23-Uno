@@ -317,6 +317,37 @@ Successivamente, controlla il tipo di giocatore che deve giocare:
 Nel caso in cui il bot abbia scelto una carta da giocare, il bot la gioca, altrimenti pesca una carta.
 - Se è un giocatore umano, il gioco abilita le azioni del giocatore.
 
+Le carte speciali in UNO, come la carta `WildDrawFourCard` o la `ChangeColor`, eseguono azioni specifiche che influenzano il flusso di gioco. 
+Il metodo `checkIfSpecialCard` identifica se la carta giocata è una carta speciale e, in tal caso, esegue l'azione corrispondente.
+
+```scala 3
+  private def checkIfSpecialCard(card: Card, isPlayer: Boolean = false): Unit =
+    gameGui.updateGui()
+    card match
+      case c: WildDrawFourCard if c.color == Color.Black && isPlayer =>
+        AchievementController.notifyAchievements(Event(AchievementId.FirstPlus4Achievement.id, true))
+        c.execute()
+      case c: ChangeColor if c.color == Color.Black && isPlayer =>
+        AchievementController.notifyAchievements(Event(AchievementId.FirstColorChangeAchievement.id, true))
+        c.execute()
+      case c: SpecialCard => c.execute()
+      case _              => ()
+```
+Nel caso in cui la carta giocata sia una carta speciale, il metodo `execute` della carta viene chiamato, eseguendo l'azione corrispondente.
+
+Infine il `GameLoop` si occupa di gestire la pressione del bottone `Uno` e di gestire le azioni che ne conseguono.
+
+```scala 3
+  def callUno(): Unit =
+    if player.getCardCount == 1 then
+      unoCalled = true
+      gameGui.setUnoButtonChecked(true)
+
+  private def checkUno(): Unit =
+    if !unoCalled && player.getCardCount == 1 then unoNotCalled()
+    unoCalled = false
+    gameGui.setUnoButtonChecked(false)
+```
 ## Samuele De Tuglie
 
 ### Card
