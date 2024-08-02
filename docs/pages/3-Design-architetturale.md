@@ -50,8 +50,6 @@ di gestire gli eventi del gioco e le azioni dei bot e dell'utente
 Per la realizzazione di questo progetto, non risulta essere necessario l'impiego di alcuna
 tecnologia o framework particolare, in quanto si ritiene che il progetto si possa realizzare grazie
 all'utilizzo di Scala 3.x.
-L'unica tecnologia particolare da 
-utilizzare per il completamento del progetto è quella per l'implementazione di un'interfaccia grafica.
 
 ---
 

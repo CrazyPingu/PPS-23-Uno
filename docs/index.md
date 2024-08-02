@@ -6,4 +6,5 @@
 4. [Design architetturale](./pages/3-Design-architetturale)
 5. [Design di dettaglio](./pages/4-Design-dettaglio)
 6. [Implementazione](./pages/5-Implementazione)
-7. [Conclusioni](./pages/7-Conclusioni.md)
+7. [Conclusioni](./pages/6-Testing.md)
+8. [Conclusioni](./pages/7-Conclusioni.md)

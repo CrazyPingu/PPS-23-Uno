@@ -976,7 +976,7 @@ La `SettingsGui` è stata sviluppata per visualizzare e modificare le impostazio
 una serie di componenti grafici che permettono di modificare le impostazioni del gioco:
 - `Difficulty` che contiene uno slider che permette di selezionare la difficoltà del gioco.
 - `Start Card Value` che contiene uno slider che permette di selezionare il valore iniziale delle carte tra 4 e 7.
-- `Handicap` che contiene uno slider che permette di selezionare il handicap del gioco tra -3 a 3.
+- `Handicap` che contiene uno slider che permette di selezionare l'handicap del gioco tra -3 a 3.
 
 Nel fondo della schermata ci sono due bottoni:
 - `Save settings` permette di salvare le impostazioni.

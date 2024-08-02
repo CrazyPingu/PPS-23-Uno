@@ -27,7 +27,7 @@ Al termine di ogni _sprint_ si esegue una revisione, che consente al team di ada
 Nel nostro progetto si sono presentati tre ruoli principali:
 
 - Product Owner: il cui compito é di verificare l'adeguatezza del sistema che si sta sviluppando, ruolo svolto da Pablo Sebastian Vargas Grateron.
-- Scrum Master: il cui ruolo e quello di mediare tra il Product Owner e il Development Team, ruolo svolto da Nicola Montanari.
+- Scrum Master: il cui ruolo é quello di mediare tra il Product Owner e il Development Team, ruolo svolto da Nicola Montanari.
 - Development Team: team che si occupa dello sviluppo del progetto e del testing, composto da:
   - Samuele De Tuglie
   - Pablo Sebastian Vargas Grateron

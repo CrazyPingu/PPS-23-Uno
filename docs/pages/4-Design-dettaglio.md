@@ -206,7 +206,7 @@ Le funzioni principali del `AchievementController` includono:
 - Recupera gli obiettivi già raggiunti da un giocatore, leggendo i dati di salvataggio da un file.
 - Registra e memorizza lo stato attuale degli obiettivi raggiunti da un giocatore.
 - Fornisce un elenco aggiornato degli obiettivi che un giocatore ha sbloccato.
-- ipristina lo stato degli obiettivi, consentendo di riavviare il progresso degli stessi come se fosse una nuova sessione.
+- Ripristina lo stato degli obiettivi, consentendo di riavviare il progresso degli stessi come se fosse una nuova sessione.
 
 Un aspetto chiave dell'implementazione del `AchievementController` è la separazione tra la logica degli obiettivi e i 
 dati di salvataggio. Questo significa che la definizione di cosa costituisce un obiettivo e le regole che determinano 
