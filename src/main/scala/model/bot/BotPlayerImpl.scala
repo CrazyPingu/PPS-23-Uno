@@ -6,7 +6,18 @@ import utils.{Color, Compatibility}
 import scala.collection.mutable
 import scala.util.Random
 
+/**
+ * An abstract class representing a bot player.
+ *
+ * Contains the common logic for bot players.
+ */
 abstract class BotPlayerImpl extends BotPlayer:
+
+  /**
+   * Compare a card with the card at the center of the table.
+   *
+   * @return `true` if the cards are compatible, `false` otherwise.
+   */
   protected def isCompatible(selectedCard: Card, centerCard: Card): Boolean =
     Compatibility.isCompatible(selectedCard, centerCard)
 
