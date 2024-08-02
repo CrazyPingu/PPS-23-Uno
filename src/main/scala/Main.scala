@@ -9,7 +9,7 @@ object Main:
     val player: Player = Player()
     val gameGui: GameGui = GameGui()
     val gameLoop: GameLoop = GameLoop(player, gameGui)
-    SpecialCard.gameLoop = gameLoop
+    SpecialCard.setGameLoop(gameLoop)
     GameGui.gameLoop = gameLoop
     val pageController: PageController = PageController(player, gameGui, gameLoop)
     GameLoop.pageController = pageController
