@@ -3,12 +3,18 @@ package utils
 import java.awt.Image
 import java.awt.geom.AffineTransform
 import java.awt.image.{AffineTransformOp, BufferedImage}
-import java.io.{File, IOException}
+import java.io.IOException
 import javax.imageio.ImageIO
 
+/**
+ * Represents the possible rotations of an image.
+ */
 enum Rotation:
   case NONE, FLIP_HORIZONTAL, FLIP_VERTICAL, ROTATE_RIGHT, ROTATE_LEFT
 
+/**
+ * Loads and stores all the images used in the game.
+ */
 object ImageHandler:
 
   val retroCards: Image = loadImage("cards/Retro.png")
@@ -45,9 +51,23 @@ object ImageHandler:
 
   val tutorialWin: Image = loadImage("tutorial/Win.png")
 
+  /**
+   * Loads the image of a card.
+   *
+   * @param cardName The name of the card.
+   * @param color The color of the card.
+   * @return The image of the card.
+   */
   def loadCardImage(cardName: String, color: Color): Image =
     loadImage("cards/" + color.toString + "/" + color.toString + "_" + cardName + ".png")
 
+  /**
+   * Rotates an image.
+   *
+   * @param img The image to rotate.
+   * @param rotation The rotation to apply.
+   * @return The rotated image.
+   */
   def rotateImage(img: Image, rotation: Rotation): Image =
     if rotation == Rotation.NONE then img
     else
@@ -74,6 +94,12 @@ object ImageHandler:
       val op = new AffineTransformOp(tx, AffineTransformOp.TYPE_BILINEAR)
       op.filter(toBufferedImage(img), null)
 
+  /**
+   * Converts an Image to a BufferedImage.
+   *
+   * @param img The image to convert.
+   * @return The converted image.
+   */
   private def toBufferedImage(img: Image): BufferedImage =
     img match
       case image: BufferedImage => image
@@ -85,6 +111,12 @@ object ImageHandler:
         bGr.dispose()
         bimage
 
+  /**
+   * Loads an image from the resources.
+   *
+   * @param path The path of the image.
+   * @return The loaded image.
+   */
   private def loadImage(path: String): Image =
     try
       val stream = getClass.getClassLoader.getResourceAsStream(path)
