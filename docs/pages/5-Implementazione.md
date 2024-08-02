@@ -960,6 +960,20 @@ object AchievementData:
   implicit val format: Format[AchievementData] = Json.format[AchievementData]
 ```
 
+- Dentro il file `ComparisonOperator.scala`:
+```scala 3
+implicit val comparisonOperatorFormat: Format[ComparisonOperator] = new Format[ComparisonOperator]:
+  def reads(json: JsValue): JsResult[ComparisonOperator] = json match
+    case JsString("LessThan")           => JsSuccess(LessThan)
+    case JsString("LessThanOrEqual")    => JsSuccess(LessThanOrEqual)
+    case JsString("Equal")              => JsSuccess(Equal)
+    case JsString("GreaterThanOrEqual") => JsSuccess(GreaterThanOrEqual)
+    case JsString("GreaterThan")        => JsSuccess(GreaterThan)
+    case _                              => JsError("Unknown ComparisonOperator")
+
+  def writes(op: ComparisonOperator): JsValue = JsString(op.toString)
+```
+
 ### AchievementGui
 
 La `AchievementGui` è stata sviluppata per visualizzare gli obiettivi raggiunti all'interno del gioco.
