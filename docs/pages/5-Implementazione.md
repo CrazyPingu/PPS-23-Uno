@@ -585,17 +585,371 @@ class WinScreen(private val pageController: PageController) extends EndGameScree
 class LoseScreen(private val pageController: PageController) extends EndGameScreen(defeatBackground, pageController)
 ```
 
-
 ## Pablo Sebastian Vargas Grateron
 
-- Settings
-  - SettingsController
+### Achievement
 
-- Achievements
-  - AchievementController
+Il componente `Achievement` è stato sviluppato per gestire gli obiettivi all'interno di un gioco, utilizzando il pattern 
+Observer. Questo approccio consente di notificare automaticamente gli oggetti interessati ogni volta che un obiettivo 
+viene raggiunto.
 
-Gui di entrambe
+Alla base, è stato definito un trait `Observer`, che include il metodo update, utilizzato per notificare gli osservatori 
+quando un evento significativo si verifica. Su questo si costruisce il trait `Achievement`, che estende `Observer` e aggiunge 
+i campi `id`, `description` e `isAchieved`, permettendo di rappresentare un obiettivo specifico, descriverlo e monitorarne lo 
+stato di raggiungimento.
 
+```scala 3
+trait Observer:
+  def update(event: Event[?]): Unit
+  
+trait Achievement extends Observer:
+  def id: Int
+  def description: String
+  var isAchieved: Boolean
+```
+
+In risposta alla necessità di gestire le diverse condizioni legate agli achievement, sono stati creati due trait specializzati 
+aggiuntivi: `BooleanAchievement` e `NumericAchievement`:
+- `BooleanAchievement` rappresenta gli obiettivi che dipendono da una soglia booleana.
+- `NumericAchievement`, invece, è pensato per obiettivi numerici, aggiungendo i campi `threshold` e `comparator`.
+
+```scala 3
+trait BooleanAchievement extends Achievement
+
+trait NumericAchievement extends Achievement:
+  def threshold: Int
+  def comparator: ComparisonOperator
+```
+
+L'implementazione del componente `Achievement` è stata realizzata utilizzando un object con metodi `apply` sovraccaricati.
+Questo design rende la creazione di obiettivi flessibile, permettendo di gestire diverse tipologie di Achievement con
+un'interfaccia uniforme, senza dover ricordare nomi di costruttori differenti.
+
+```scala 3
+object Achievement:
+  def apply(id: Int, description: String, isAchieved: Boolean): Achievement =
+    BooleanAchievementImpl(id, description, isAchieved)
+
+  def apply(
+    id: Int,
+    description: String,
+    isAchieved: Boolean,
+    threshold: Int,
+    comparator: ComparisonOperator
+  ): Achievement =
+    NumericAchievementImpl(id, description, isAchieved, threshold, comparator)
+```
+
+#### ComparisonOperator
+
+Per gestire la valutazione degli obiettivi numerici, è stato definito un sealed trait `ComparisonOperator`, che rappresenta 
+una serie di operatori di confronto utilizzabili su valori interi. Ogni operatore è implementato come un oggetto all'interno 
+dell'object ComparisonOperator, con un metodo compare che effettua il confronto tra due interi e restituisce un risultato 
+booleano.
+
+```scala 3
+sealed trait ComparisonOperator:
+  def compare(value: Int, threshold: Int): Boolean
+
+object ComparisonOperator:
+  case object LessThan extends ComparisonOperator:
+    val compare: (Int, Int) => Boolean = _ < _
+  
+  case object LessThanOrEqual extends ComparisonOperator:
+    val compare: (Int, Int) => Boolean = _ <= _
+  
+  case object Equal extends ComparisonOperator:
+    val compare: (Int, Int) => Boolean = _ == _
+  
+  case object GreaterThanOrEqual extends ComparisonOperator:
+    val compare: (Int, Int) => Boolean = _ >= _
+  
+  case object GreaterThan extends ComparisonOperator:
+    val compare: (Int, Int) => Boolean = _ > _
+```
+
+### AchievementObservable
+
+Il trait `AchievementObservable` è stato sviluppato per gestire la notifica degli osservatori quando un obiettivo viene raggiunto.
+
+Per questa implementazione è stato sviluppato il trait `Observable`, che include i metodi per la gestione degli osservatori
+e la notifica degli eventi.
+
+```scala 3
+trait Observable[A <: Observer]:
+  private var observers: List[A] = List()
+
+  def addObserver(observer: A): Unit =
+    observers = observer :: observers
+
+  def addObservers(newObservers: List[A]): Unit =
+    observers = newObservers ++ observers
+
+  def notifyObservers(event: Event[?]): Unit =
+    observers.foreach(_.update(event))
+
+  def removeObserver(observer: A): Unit =
+    observers = observers.filterNot(_ == observer)
+
+  def clearObservers(): Unit =
+    observers = List()
+
+  def getObservers: List[A] = observers
+  
+```
+
+`AchievementObservable` estende `Observable` e aggiunge i metodi `generateAchievementData` e `loadDataFromAchievementData`, 
+che permettono di trasformare gli obiettivi in dati e viceversa.
+
+```scala 3
+
+trait AchievementObservable extends Observable[Achievement]:
+  def generateAchievementData(): List[AchievementData] =
+    getObservers.map(
+      achievement => AchievementData(achievement.id, achievement.isAchieved)
+    )
+
+  def loadDataFromAchievementData(achievementData: List[AchievementData]): Unit =
+    getObservers.foreach(
+      achievement =>
+        val data = achievementData.find(_.id == achievement.id)
+        if data.isDefined then achievement.isAchieved = data.get.data
+    )
+```
+
+Infine è stato implementato un companion object `AchievementObservable` che permette di creare un oggetto `AchievementObservableImpl`, 
+garantendo la corretta implementazione del trait ed evitando modifiche non controllate.
+
+```scala 3
+object AchievementObservable:
+  def apply(): AchievementObservable = new AchievementObservableImpl
+  private class AchievementObservableImpl extends AchievementObservable
+```
+
+### IdentifiableData, Event e AchievementData
+
+Per gestire i dati che devono essere identificati in modo univoco, è stato definito un trait `IdentifiableData` che include
+un campo `id` di tipo `Int` e un campo `data` di tipo `A`.
+
+```scala 3
+trait IdentifiableData[D]:
+  def id: Int
+  def data: D
+```
+
+Questo trait ci permette di creare una serie di classi che estendono `IdentifiableData`:
+- `Event[D]` è una classe generica utilizzata per rappresentare eventi e comunicare aggiornamenti agli osservatori. 
+Ogni evento ha un identificatore unico `id` e un campo di tipo generico `D` per trasportare i dati associati all'evento. 
+Questa implementazione ci permette di usare un unica classe per mandare dati di tipo diverso, ad esempio: `Event[Int]` 
+per gli obiettivi numerici e `Event[Boolean]` per gli obiettivi booleani.
+
+```scala 3
+case class Event[D](override val id: Int, override val data: D) extends IdentifiableData[D]
+```
+
+- `AchievementData` è una classe che rappresenta i dati di un obiettivo, con un id e un valore booleano che indica se l'obiettivo
+è stato raggiunto o meno.
+
+```scala 3
+case class AchievementData(override val id: Int, override val data: Boolean) extends IdentifiableData[Boolean]
+```
+
+### AchievementController
+
+Il controller `AchievementController` è stato sviluppato per gestire la logica degli obiettivi all'interno del gioco.
+Questo componente si occupa di notificare gli osservatori quando un obiettivo viene raggiunto e di gestire il salvataggio
+e il caricamento degli obiettivi.
+
+```scala 3
+object AchievementController:
+  private val PROJECT_ROOT: String = System.getProperty("user.dir")
+  private val ACHIEVEMENT_FILEPATH: String = s"$PROJECT_ROOT/data/achievement.json"
+
+  private val achievementObservable: AchievementObservable = AchievementObservable()
+
+  initialize()
+
+  private def initialize(): Unit =
+    achievementObservable.addObservers(AchievementGenerator().achievementList)
+    val achievementData: Option[List[AchievementData]] =
+      JsonUtils.loadFromFile[List[AchievementData]](ACHIEVEMENT_FILEPATH)
+    if achievementData.isDefined then achievementObservable.loadDataFromAchievementData(achievementData.get)
+
+  def notifyAchievements(event: Event[?]): Unit =
+    achievementObservable.notifyObservers(event)
+
+  def saveAchievements(): Unit =
+    JsonUtils.saveToFile(ACHIEVEMENT_FILEPATH, achievementObservable.generateAchievementData())
+
+  def resetAchievements(): Unit =
+    achievementObservable.clearObservers()
+    achievementObservable.addObservers(AchievementGenerator().achievementList)
+    JsonUtils.saveToFile(ACHIEVEMENT_FILEPATH, achievementObservable.generateAchievementData())
+
+  def achievementList: List[Achievement] = achievementObservable.getObservers
+```
+
+Come si osserva nel codice, in questo controller sono presenti i seguenti metodi:
+- `initialize` si occupa di inizializzare il controller, caricando gli obiettivi dal file `achievement.json`. Nel caso
+il file non esista, vengono caricati gli obiettivi di default.
+- `notifyAchievements` notifica gli osservatori quando un obiettivo viene raggiunto. Questa funzione è un wrapper per il metodo
+`notifyObservers` di `AchievementObservable` dato che è privato.
+- `saveAchievements` salva gli obiettivi raggiunti nel file `achievement.json`.
+- `resetAchievements` resetta gli obiettivi, caricando quelli di default.
+- `achievementList` restituisce la lista degli obiettivi.
+
+L'approccio utilizzato per gestire gli obiettivi nel gioco sfrutta un object chiamato `AchievementGenerator`, 
+che si occupa di generare e mantenere la lista degli obiettivi. Questa lista rappresenta la logica del gioco, 
+definendo quali obiettivi esistono e come funzionano. D'altra parte, i dati relativi agli obiettivi raggiunti dai 
+giocatori vengono gestiti tramite la classe `AchievementData`, che viene generata e aggiornata da un altro oggetto,
+`AchievementObservable`.
+
+### Settings
+
+La classe `Settings` è stata sviluppata per contenere i dati relativi alle impostazioni del gioco, insieme a un companion 
+object `Settings` che contiene le impostazioni di default.
+
+```scala 3
+case class Settings(difficulty: Difficulty, startCardValue: Int, handicap: Int)
+
+object Settings:
+  val DEFAULT_SETTINGS: Settings = Settings(Difficulty.Easy, 7, 0)
+```
+
+#### SettingsManager
+
+Il trait `SettingsManager` è stato sviluppato per gestire le impostazioni del gioco, permettendo di salvare e caricare le
+impostazioni da un file. Questo trait genera automaticamente le impostazioni di default.
+
+```scala 3
+trait SettingsManager:
+  var settings: Settings = Settings.DEFAULT_SETTINGS
+  def updateSettings(newSettings: Settings): Unit
+  def resetSettings(): Unit
+```
+
+L'implementazione di `SettingsManager` è stata realizzata utilizzando un companion object con un metodo `apply` che 
+restituisce un'istanza di `SettingsManagerImpl`, garantendo la corretta implementazione del trait ed evitando 
+modifiche non controllate.
+
+Come si osserva nell'implementazione del `SettingsManagerImpl`, le impostazioni vengono caricate al momento della creazione
+dell'istanza, permettendo di accedere alle impostazioni in qualsiasi momento. Nel caso non sia possibile caricare le impostazioni
+dal file, vengono utilizzate le impostazioni di default.
+
+```scala 3
+object SettingsManager:
+  def apply(filePath: String): SettingsManager = SettingsManagerImpl(filePath)
+
+  private class SettingsManagerImpl(private val filePath: String) extends SettingsManager:
+    settings = JsonUtils.loadFromFile[Settings](filePath).getOrElse(Settings.DEFAULT_SETTINGS)
+
+    override def updateSettings(newSettings: Settings): Unit =
+      settings = newSettings
+      JsonUtils.saveToFile(filePath, settings)
+```
+
+### SettingsController
+
+Il controller `SettingsController` è stato sviluppato per gestire le impostazioni del gioco, permettendo di aggiornare e
+salvare le impostazioni verso un file predefinito.
+
+```scala 3
+object SettingsController:
+  private val PROJECT_ROOT: String = System.getProperty("user.dir")
+  private val SETTINGS_FILEPATH: String = s"$PROJECT_ROOT/config/settings.json"
+
+  private val settingsManager: SettingsManager = SettingsManager(SETTINGS_FILEPATH)
+
+  def getCurrentSettings: Settings =
+    settingsManager.settings
+
+  def saveSettings(settings: Settings): Unit =
+    settingsManager.updateSettings(settings)
+
+  def resetSettings(): Unit =
+    settingsManager.updateSettings(Settings.DEFAULT_SETTINGS)
+```
+
+Essenzialmente, il settings controller è un wrapper per `SettingsManager` che contiene il path del file di salvataggio,
+permettendo di accedere alle impostazioni correnti, salvarle e resettarle.
+
+### JsonUtils e format dei file con Play JSON library
+
+Con la libreria Play JSON, è stato sviluppato un oggetto `JsonUtils` che permette di salvare e caricare dati da file
+in formato JSON.
+
+```scala 3
+object JsonUtils:
+
+  def loadFromFile[T](filePath: String)(implicit reads: Reads[T]): Option[T] =
+    val path = Paths.get(filePath)
+    if Files.exists(path) then
+      val json = new String(Files.readAllBytes(path))
+      Json.parse(json).asOpt[T]
+    else None
+
+  def saveToFile[T](filePath: String, data: T)(implicit writes: Writes[T]): Unit =
+    val json = Json.prettyPrint(Json.toJson(data))
+    val path = Paths.get(filePath)
+    if !Files.exists(path.getParent) then Files.createDirectories(path.getParent)
+    Files.write(path, json.getBytes, StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING)
+```
+
+Questo object sfrutta i parametri contestuali di Scala per permettere la serializzazione e deserializzazione di dati.
+In questo modo, è possibile salvare e caricare dati in formato JSON in modo flessibile e sicuro.
+
+Ad esempio, le seguenti classi `Settings` e `AchievementData` contengono parametri contestuali che permettono
+la conversione in JSON:
+
+- Dentro il file `Settings.scala`:
+```scala 3
+implicit val gameSettingsFormat: OFormat[Settings] = Json.format[Settings]
+```
+
+- Dentro il file `IdentifiableData.scala`:
+```scala 3
+object AchievementData:
+  given Format[AchievementData] = Json.format[AchievementData]
+```
+
+### AchievementGui
+
+La `AchievementGui` è stata sviluppata per visualizzare gli obiettivi raggiunti all'interno del gioco.
+Questa schermata contiene una tabella che mostra gli obiettivi, con una riga per ogni obiettivo e due colonne: 
+una per la descrizione dell'obiettivo e una per indicare se l'obiettivo è stato raggiunto o meno.
+
+Nel fondo della schermata ci sono due bottoni:
+- `Reset Achievements` permette di resettare gli obiettivi.
+- `Return to Main Menu` permette di tornare al menu principale.
+
+### SettingsGui
+
+La `SettingsGui` è stata sviluppata per visualizzare e modificare le impostazioni del gioco. Questa schermata contiene
+una serie di componenti grafici che permettono di modificare le impostazioni del gioco:
+- `Difficulty` che contiene uno slider che permette di selezionare la difficoltà del gioco.
+- `Start Card Value` che contiene uno slider che permette di selezionare il valore iniziale delle carte tra 4 e 7.
+- `Handicap` che contiene uno slider che permette di selezionare il handicap del gioco tra -3 a 3.
+
+Nel fondo della schermata ci sono due bottoni:
+- `Save settings` permette di salvare le impostazioni.
+- `Return to Main Menu` permette di tornare al menu principale.
+- `Reset settings` permette di resettare le impostazioni.
+
+La schermata rileva automaticamente le impostazioni correnti e le visualizza nei componenti grafici.
+Quando si salvano le impostazioni, viene generata una classe `Settings` con i valori selezionati e comunicata al controller
+`SettingsController` per essere salvata.
+
+```scala 3
+SettingsGui.saveSettings.addActionListener(
+  _ =>
+    val newSettings: Settings = Settings(
+      Difficulty.fromInt(SettingsGui.difficultyOptions.getSelectedIndex),
+      SettingsGui.startCardSlider.getValue,
+      SettingsGui.handicapSlider.getValue
+    )
+    SettingsController.saveSettings(newSettings)
+)
+```
 
 ---
 

@@ -180,15 +180,62 @@ La verifica avviene in base a tutti i criteri possibili:
 
 ## Achievements
 
-### AchievementObservable
+Gli _Achievements_ sono obiettivi che i giocatori possono raggiungere durante una partita di UNO,
+che vengono registrati e valutati dopo aver concluso una partita. La progettazione degli achievement è stata fatta
+seguendo il pattern Observer, in modo da garantire una gestione modulare e flessibile degli obiettivi.
+
+![Diagramma UML](../uml/achievement.png)
+
+Nel diagramma si può osservare la struttura dei principali componenti che compongono il sistema di Achievements:
+- `Achievement` &rarr; Interfaccia che definisce i metodi necessari per la gestione degli obiettivi.
+- `AchievementObservable` &rarr; Interfaccia che definisce i metodi per la registrazione e la notifica degli osservatori.
+
+Quando un evento di gioco si verifica, gli oggetti `Achievement` registrati come osservatori vengono notificati e 
+valutano se l'obiettivo associato è stato raggiunto, aggiornando il proprio stato di conseguenza.
+
+L'interfaccia `AchievementObservable` fornisce anche dei metodi per ottenere o caricare gli obiettivi raggiunti,
+in modo da poter gestire uno storico delle prestazioni dei giocatori.
 
 ### AchievementController
 
+Per gestire il caricamento, il salvataggio e la visualizzazione degli obiettivi del gioco, è stato progettato un
+`AchievementController`, che coordina tutte le operazioni relative agli obiettivi. Questo controller centralizza 
+le operazioni principali associate agli obiettivi, garantendo un'interfaccia unificata per la gestione degli stessi.
+
+Le funzioni principali del `AchievementController` includono:
+- Tiene traccia dei progressi di un giocatore e aggiorna gli obiettivi raggiunti in base agli eventi di gioco.
+- Recupera gli obiettivi già raggiunti da un giocatore, leggendo i dati di salvataggio da un file.
+- Registra e memorizza lo stato attuale degli obiettivi raggiunti da un giocatore.
+- Fornisce un elenco aggiornato degli obiettivi che un giocatore ha sbloccato.
+- ipristina lo stato degli obiettivi, consentendo di riavviare il progresso degli stessi come se fosse una nuova sessione.
+
+Un aspetto chiave dell'implementazione del `AchievementController` è la separazione tra la logica degli obiettivi e i 
+dati di salvataggio. Questo significa che la definizione di cosa costituisce un obiettivo e le regole che determinano 
+il suo raggiungimento sono mantenute separate dalle informazioni che memorizzano quali obiettivi sono stati 
+effettivamente sbloccati da un giocatore e in che stato si trovano.
+
+Un ulteriore vantaggio di questo approccio è la robustezza nella gestione del caricamento dei dati degli obiettivi. 
+Anche se in future versioni del gioco vengono definiti nuovi obiettivi, i dati di salvataggio delle versioni 
+precedenti rimangono pienamente compatibili. Ciò è possibile perché il caricamento dei dati degli obiettivi avviene 
+in base all'id univoco di ciascun obiettivo. Di conseguenza, i progressi di un giocatore possono essere correttamente 
+mappati ai rispettivi obiettivi anche dopo l'introduzione di nuovi traguardi.
 
 ## Settings
 
-### SettingsController
+Le impostazioni di gioco sono modellate attraverso un oggetto `Settings` che contiene i parametri principali:
+- `difficulty`: Il livello di difficoltà del gioco, che è rappresentato da un enum.
+- `startCardValue`: Il valore del numero di carte iniziali di tutti i giocatori.
+- `handicap`: Un valore di handicap applicato al gioco per i bot, il quale può essere negativo o positivo.
 
+L'oggetto deve essere serializzabile, in modo da poter essere salvato e caricato da file.
+
+### SettingsManager e SettingsController
+
+Le impostazioni di gioco sono gestite attraverso due componenti principali:
+- `SettingsManager` &rarr; Si occupa di gestire il salvataggio e il caricamento delle impostazioni da file.
+- `SettingsController` &rarr; Si occupa di gestire le operazioni connesse alle impostazioni, come la modifica e il salvataggio 
+in un determinato path o richiamare il `SettingsManager` per il caricamento e il salvataggio delle impostazioni nel momento
+opportuno.
 
 ## GameLoop
 Il GameLoop è il cuore della logica del gioco, responsabile della gestione delle dinamiche di gioco, 
