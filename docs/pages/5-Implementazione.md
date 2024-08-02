@@ -258,7 +258,7 @@ Per ogni slide contenuta nell'Array,
 viene creata una schermata all'interno della pagina del tutorial, ordinata in base
 all'ordine di inserimento all'interno dell'Array.
 
-```scala
+```scala 3
 private val SlideFactory = new TutorialSlideFactory()
 private val slides = Array(
   SlideFactory.createCompatibilitySlide(),
@@ -274,16 +274,16 @@ Per mostrare una slide, è stato implementato un metodo `showSlide` che si occup
 slide richiesta all'interno dell'interfaccia.
 
 
-```scala
+```scala 3
 private def showSlide(index: Int): Unit =
   if index >= 0 && index < slides.length then
-  prevButton.setEnabled(index != 0)
-  nextButton.setEnabled(index != slides.length - 1)
-  currentSlideIndex = index
-  val slide = slides(index)
-  titleLabel.setText(slide.title)
-  imageLabel.setIcon(new ImageIcon(slide.image))
-  descriptionLabel.setText(slide.description)
+      prevButton.setEnabled(index != 0)
+      nextButton.setEnabled(index != slides.length - 1)
+      currentSlideIndex = index
+      val slide = slides(index)
+      titleLabel.setText(slide.title)
+      imageLabel.setIcon(new ImageIcon(slide.image))
+      descriptionLabel.setText(slide.description)
 ```
 
 
