@@ -45,4 +45,7 @@ trait Hand extends ArrayBuffer[Card]:
    */
   def clearHand(): Unit = this.clear
 
+/**
+ * A class representing the human Player's hand.
+ */
 class Player extends Hand
