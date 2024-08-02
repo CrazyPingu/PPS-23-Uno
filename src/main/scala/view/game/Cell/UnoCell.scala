@@ -13,5 +13,10 @@ class UnoCell(gameLoop: GameLoop) extends Cell:
     _ => gameLoop.callUno()
   )
 
+  /**
+   * Set the icon of the cell to the checked or unchecked icon
+   *
+   * @param checked true if the icon should be the checked icon, false otherwise
+   */
   def setChecked(checked: Boolean): Unit =
     setIcon(if checked then ImageHandler.check else ImageHandler.unoButton)

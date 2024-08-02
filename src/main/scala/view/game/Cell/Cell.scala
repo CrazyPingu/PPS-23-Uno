@@ -5,7 +5,7 @@ import utils.Rotation
 import utils.Rotation.NONE
 
 import java.awt.Image
-import java.awt.event.ComponentAdapter
+import java.awt.event.{ComponentAdapter, ComponentEvent}
 import javax.swing.{ImageIcon, JButton}
 
 /**
@@ -16,7 +16,6 @@ class Cell extends JButton:
   setContentAreaFilled(false)
   setFocusPainted(false)
   setOpaque(false)
-  setContentAreaFilled(false)
 
   /**
    * Constructor of the cell
@@ -36,18 +35,20 @@ class Cell extends JButton:
     if img == null then
       super.setIcon(null)
       super.setDisabledIcon(null)
-    else if getWidth > 0 && getHeight > 0 then
-      val rotatedImage: Image = rotateImage(img, rotation)
-      val image: ImageIcon = new ImageIcon(rotatedImage.getScaledInstance(getWidth, getHeight, Image.SCALE_SMOOTH))
-      super.setIcon(image)
-      super.setDisabledIcon(image)
+    else if getWidth > 0 && getHeight > 0 then updateIcon(img, rotation)
     else
       addComponentListener(
         new ComponentAdapter:
-          override def componentResized(e: java.awt.event.ComponentEvent): Unit =
-            val image: ImageIcon =
-              new ImageIcon(rotateImage(img, rotation).getScaledInstance(getWidth, getHeight, Image.SCALE_SMOOTH))
-            setIcon(image)
-            setDisabledIcon(image)
+          override def componentResized(e: ComponentEvent): Unit =
+            updateIcon(img, rotation)
             removeComponentListener(this)
       )
+
+  /**
+   * Update the icon of the cell based on current dimensions and rotation.
+   */
+  private def updateIcon(img: Image, rotation: Rotation): Unit =
+    val rotatedImage: Image = rotateImage(img, rotation)
+    val imageIcon: ImageIcon = new ImageIcon(rotatedImage.getScaledInstance(getWidth, getHeight, Image.SCALE_SMOOTH))
+    super.setIcon(imageIcon)
+    super.setDisabledIcon(imageIcon)
