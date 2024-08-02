@@ -24,7 +24,7 @@ class SettingsTest extends AnyFunSuite with BeforeAndAfterAll:
   test("Resetting the settings"):
     val settingsManager: SettingsManager = SettingsManager(settingsFilePath)
     assert(settingsManager.settings.equals(Settings(Difficulty.Hard, 7, 0)))
-    settingsManager.resetSettings()
+    settingsManager.updateSettings(Settings.DEFAULT_SETTINGS)
     assert(settingsManager.settings.equals(Settings.DEFAULT_SETTINGS))
 
   override def afterAll(): Unit =

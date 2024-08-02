@@ -17,8 +17,6 @@ trait SettingsManager:
 
   def updateSettings(newSettings: Settings): Unit
 
-  def resetSettings(): Unit
-
 object SettingsManager:
   def apply(filePath: String): SettingsManager = SettingsManagerImpl(filePath)
 
@@ -27,10 +25,6 @@ object SettingsManager:
 
     override def updateSettings(newSettings: Settings): Unit =
       settings = newSettings
-      JsonUtils.saveToFile(filePath, settings)
-
-    override def resetSettings(): Unit =
-      settings = Settings.DEFAULT_SETTINGS
       JsonUtils.saveToFile(filePath, settings)
 
 object Difficulty extends Enumeration:
