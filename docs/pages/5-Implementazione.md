@@ -957,7 +957,7 @@ implicit val gameSettingsFormat: OFormat[Settings] = Json.format[Settings]
 - Dentro il file `IdentifiableData.scala`:
 ```scala 3
 object AchievementData:
-  given Format[AchievementData] = Json.format[AchievementData]
+  implicit val format: Format[AchievementData] = Json.format[AchievementData]
 ```
 
 ### AchievementGui
