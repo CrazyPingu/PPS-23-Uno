@@ -19,6 +19,6 @@ object Main:
     val gameLoop: GameLoop = GameLoop(player, gameGui)
     SpecialCard.setGameLoop(gameLoop)
     GameGui.gameLoop = gameLoop
-    val pageController: PageController = PageController(player, gameGui, gameLoop)
+    val pageController: PageController = PageController(gameGui, gameLoop)
     GameLoop.pageController = pageController
     pageController.showMainMenu()

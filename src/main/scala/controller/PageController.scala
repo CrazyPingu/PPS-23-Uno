@@ -1,7 +1,6 @@
 package controller
 
 import controller.PageController.frame
-import model.Player
 import view.Mainmenu
 import view.achievements.AchievementGui
 import view.game.ChangeColor.ChooseColor
@@ -13,12 +12,10 @@ import view.{CardLayoutId, Frame, LoseScreen, WinScreen}
 /**
  * Controller for the pages of the game
  *
- * @param player the player of the game
  * @param gameGui the game gui, which is the main game view
  * @param gameLoop the game loop that controls the game
  */
 case class PageController private (
-  private val player: Player,
   private val gameGui: GameGui,
   private val gameLoop: GameLoop
 ):
@@ -103,10 +100,9 @@ object PageController:
   /**
    * Creates a new PageController instance
    *
-   * @param player the player of the game
    * @param gameGui the game gui, which is the main game view
    * @param gameLoop the game loop that controls the game
    * @return a new PageController instance
    */
-  def apply(player: Player, gameGui: GameGui, gameLoop: GameLoop): PageController =
-    new PageController(player, gameGui, gameLoop)
+  def apply( gameGui: GameGui, gameLoop: GameLoop): PageController =
+    new PageController(gameGui, gameLoop)
