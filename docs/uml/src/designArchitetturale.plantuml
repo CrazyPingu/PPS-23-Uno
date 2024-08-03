@@ -1,0 +1,45 @@
+@startuml design_high_level
+
+package model {
+    interface Card
+
+    Class SimpleCard extends Card
+
+    Class SpecialCard extends Card
+
+    Class Deck
+
+    interface Hand
+
+    Class Player extends Hand
+
+    interface BotPlayer extends Hand
+
+    interface Achievement
+
+    interface AchievementObservable
+
+}
+
+package controller {
+    class GameLoop
+}
+
+package view {
+    class GameGui
+}
+
+model.Deck *-- model.Card
+model.Hand *-- model.Card
+model.AchievementObservable *-- model.Achievement
+
+view.GameGui *-left-* controller.GameLoop
+
+'controller.GameController *-u- model.Deck
+'model.Player *-u-* controller.GameController
+'model.BotPlayer *-u-* controller.GameController
+
+model *-u-* controller.GameLoop
+
+
+@enduml
