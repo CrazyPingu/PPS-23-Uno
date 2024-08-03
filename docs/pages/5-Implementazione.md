@@ -17,7 +17,7 @@ Ogni metodo necessario si basa sulle funzionalità offerte da `ArrayBuffer` e vi
 all'interno del trait come mostrato successivamente:
 
 
-```scala 3
+```scala
 trait Hand extends ArrayBuffer[Card]:
 
   def addCard(card: Card): Unit = this += card
@@ -57,7 +57,7 @@ Il trait `BotPlayer` presenta due metodi fondamentali per il gioco:
 - `chooseCardToUse` che ritorna la carta scelta dal BotPlayer per essere giocata, se possibile e valida.
 - `chooseColor` che automatizza e ritorna il colore scelto dal BotPlayer in caso di necessità.
 
-```scala 3
+```scala
 
 trait BotPlayer extends Hand:
   def chooseCardToUse(card: Card): Option[Card]
@@ -83,7 +83,7 @@ base alla strategia di gioco che il bot deve seguire.
 
 A seguire l'implementazione di `BotPlayerImpl`:
 
-```scala 3
+```scala
 abstract class BotPlayerImpl extends BotPlayer:
 
   protected def isCompatible(selectedCard: Card, centerCard: Card): Boolean =
@@ -107,7 +107,7 @@ metodo `chooseCardToUse` in modo da poter effettuare una scelta casuale tra le c
 Per implementare questa scelta, il metodo `chooseCardToUse` ricerca le carte compatibili con quella al centro del tavolo, 
 se ne esistono, ne seleziona una casuale e la ritorna sfruttando `Some`, altrimenti ritorna `None`.
 
-```scala 3
+```scala
 class EasyBotPlayerImpl extends BotPlayerImpl:
   override def chooseCardToUse(centerCard: Card): Option[Card] =
     val compatibleCards = this.filter(
@@ -134,7 +134,7 @@ Altrimenti, se non sono presenti carte speciali nelle carte compatibili,
 ne seleziona una casuale e la ritorna sfruttando `Some`.
 Nel caso invece che non ci siano carte compatibili, ritorna `None`.
 
-```scala 3
+```scala
 class HardBotPlayerImpl extends BotPlayerImpl:
   override def chooseCardToUse(centerCard: Card): Option[Card] =
     val compatibleCards = this.filter(
@@ -173,7 +173,7 @@ Durante la verifica vengono comparati i vari criteri.
 Appena viene rilevato un criterio compatibile, la funzione ritorna `true`.
 Nel momento in cui si finiscono i criteri da controllare, il metodo ritorna `false`.
 
-```scala 3
+```scala
 def isCompatible(selectedCard: Card, centerCard: Card): Boolean =
   (selectedCard, centerCard) match
   case (s, c) if s.color == Color.Black || c.color == Color.Black        => true
@@ -192,13 +192,13 @@ all'interno del gioco tramite una serie di immagini e testi.
 Per sviluppare le varie schermate del tutorial, è stata sviluppata una classe generica
 `GeneralTutorialSlide` che contiene un'immagine, un titolo e una descrizione.
 
-```scala 3
+```scala
 class GeneralTutorialSlide(val image: Image, val title: String, val description: String)
 ```
 
 Successivamente, è stata implementata una factory che generi le varie schermate del tutorial quando necessario
 
-```scala 3
+```scala
 class TutorialSlideFactory:
     def createCardSlide(): GeneralTutorialSlide =
         new GeneralTutorialSlide(
@@ -253,7 +253,7 @@ Per ogni slide contenuta nell'Array,
 viene creata una schermata all'interno della pagina del tutorial, ordinata in base
 all'ordine di inserimento all'interno dell'Array.
 
-```scala 3
+```scala
 private val SlideFactory = new TutorialSlideFactory()
 private val slides = Array(
   SlideFactory.createCompatibilitySlide(),
@@ -269,7 +269,7 @@ Per mostrare una slide, è stato implementato un metodo `showSlide` che si occup
 slide richiesta all'interno dell'interfaccia.
 
 
-```scala 3
+```scala
 private def showSlide(index: Int): Unit =
   if index >= 0 && index < slides.length then
       prevButton.setEnabled(index != 0)
@@ -294,7 +294,7 @@ e alle interazioni che avvengono tra i giocatori.
 Il suo metodo principale è `nextTurn` che si occupa di gestire il turno successivo, controllando il tipo di giocatore
 che deve giocare e gestendo le azioni di gioco.
 
-```scala 3
+```scala
   private def nextTurn(): Unit =
       if !isRunning then return
       Future:
@@ -320,7 +320,7 @@ Nel caso in cui il bot abbia scelto una carta da giocare, il bot la gioca, altri
 Le carte speciali in UNO, come la carta `WildDrawFourCard` o la `ChangeColor`, eseguono azioni specifiche che influenzano il flusso di gioco. 
 Il metodo `checkIfSpecialCard` identifica se la carta giocata è una carta speciale e, in tal caso, esegue l'azione corrispondente.
 
-```scala 3
+```scala
   private def checkIfSpecialCard(card: Card, isPlayer: Boolean = false): Unit =
     gameGui.updateGui()
     card match
@@ -337,7 +337,7 @@ Nel caso in cui la carta giocata sia una carta speciale, il metodo `execute` del
 
 Infine il `GameLoop` si occupa di gestire la pressione del bottone `Uno` e di gestire le azioni che ne conseguono.
 
-```scala 3
+```scala
   def callUno(): Unit =
     if player.getCardCount == 1 then
       unoCalled = true
@@ -357,7 +357,7 @@ Lo sviluppo della classe `Card` é stato fondamentale per il funzionamento del g
 Di carte ne esistono di due tipologie: `SimpleCard` e `SpecialCard`. Siccome sia le carte semplici che le carte speciali
 sono caratterizzate da un colore, si é deciso di creare un trait `Card` formato da un campo `color` di tipo `Color`.
 
-```scala 3
+```scala
 trait Card:
 
   def color: Color
@@ -367,7 +367,7 @@ trait Card:
 
 I colori disponibili sono stati definiti in un enum `Color` che contiene i colori base del gioco.
 
-```scala 3
+```scala
 enum Color(val rgb: Int):
   case Red extends Color(0xff0000)
   case Green extends Color(0x00ff00)
@@ -379,7 +379,7 @@ enum Color(val rgb: Int):
 #### SimpleCard
 Le `SimpleCard` sono le carte normali del gioco, caratterizzate da un numero e da un colore.
 
-```scala 3
+```scala
 
 trait SimpleCard extends Card:
   
@@ -392,7 +392,7 @@ object SimpleCard:
 
 Per indicare il numero della carta, si é deciso di creare un enum `CardNumber` che contiene i numeri delle carte.
 
-```scala 3
+```scala
 enum CardNumber(val value: Int):
   case Zero extends CardNumber(0)
   case One extends CardNumber(1)
@@ -412,7 +412,7 @@ Le `SpecialCard` sono le carte speciali del gioco, caratterizzate da un colore, 
 che verrà chiamato quando la carta verrà giocata.
 
 
-```scala 3
+```scala
 
 abstract class SpecialCard(val color: Color, val image: Image) extends Card:
   def execute(): Unit
@@ -451,7 +451,7 @@ il giocatore può scegliere il colore che preferisce.
 
 Il `Deck` é una collezione di carte non ordinata, inizialmente composto da tutte le carte del gioco.
 
-```scala 3
+```scala
 class Deck extends ArrayBuffer[Card]:
 
   for color <- Color.values if color != Color.Black do
@@ -483,7 +483,7 @@ Il metodo `draw` permette di pescare una carta dal mazzo.
 Il `PageController` é il controller principale dell'ambiente grafico, e si occupa
 di gestire lo scambio tra le varie schermate del gioco.
 
-```scala 3
+```scala
 case class PageController private (player: Player, gameGui: GameGui, gameLoop: GameLoop):
 
   private val achievementGui: AchievementGui = AchievementGui(this)
@@ -540,7 +540,7 @@ L'intera interfaccia grafica si basa sul `Frame`, un'implementazione di `JFrame`
 le varie schermate del gioco aggiungendo la possibilità di scambiare tra le varie schermate in modo semplice e veloce
 attraverso l'utilizzo di un `CardLayout`.
 
-```scala 3
+```scala
 class Frame extends JFrame:
   setTitle("PPS-23-UNO")
   setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE)
@@ -573,7 +573,7 @@ object Frame:
 
 Come _look and feel_ é stato scelto Nimbus, in modo da assicurarsi che l'interfaccia grafica sia coerente su tutti i sistemi operativi.
 Per la gestione dei pannelli si utilizza un enum `CardLayoutId` che permette di identificare in modo univoco ogni schermata.
-```scala 3
+```scala
 enum CardLayoutId:
   case Game, MainMenu, Settings, Tutorial, Achievement, Win, Lose, ChangeColor, Base
 ```
@@ -609,7 +609,7 @@ Queste due schermate sono schermate di fine partita, che vengono visualizzate qu
 Data la loro somiglianza, é stato scelto di creare una classe astratta `EndGameScreen` che contiene la logica comune
 tra le due schermate, e due classi `WinScreen` e `LoseScreen` che estendono `EndGameScreen` e implementano la logica specifica
 per la vittoria e la sconfitta.
-```scala 3
+```scala
 abstract class EndGameScreen(private val backgroundImage: Image, private val pageController: PageController)
     extends JPanel:
 
@@ -646,7 +646,7 @@ quando un evento significativo si verifica. Su questo si costruisce il trait `Ac
 i campi `id`, `description` e `isAchieved`, permettendo di rappresentare un obiettivo specifico, descriverlo e monitorarne lo 
 stato di raggiungimento.
 
-```scala 3
+```scala
 trait Observer:
   def update(event: Event[?]): Unit
   
@@ -661,7 +661,7 @@ aggiuntivi: `BooleanAchievement` e `NumericAchievement`:
 - `BooleanAchievement` rappresenta gli obiettivi che dipendono da una soglia booleana.
 - `NumericAchievement`, invece, è pensato per obiettivi numerici, aggiungendo i campi `threshold` e `comparator`.
 
-```scala 3
+```scala
 trait BooleanAchievement extends Achievement
 
 trait NumericAchievement extends Achievement:
@@ -673,7 +673,7 @@ L'implementazione del componente `Achievement` è stata realizzata utilizzando u
 Questo design rende la creazione di obiettivi flessibile, permettendo di gestire diverse tipologie di Achievement con
 un'interfaccia uniforme, senza dover ricordare nomi di costruttori differenti.
 
-```scala 3
+```scala
 object Achievement:
   def apply(id: Int, description: String, isAchieved: Boolean): Achievement =
     BooleanAchievementImpl(id, description, isAchieved)
@@ -695,7 +695,7 @@ una serie di operatori di confronto utilizzabili su valori interi. Ogni operator
 dell'object ComparisonOperator, con un metodo compare che effettua il confronto tra due interi e restituisce un risultato 
 booleano.
 
-```scala 3
+```scala
 sealed trait ComparisonOperator:
   def compare(value: Int, threshold: Int): Boolean
 
@@ -723,7 +723,7 @@ Il trait `AchievementObservable` è stato sviluppato per gestire la notifica deg
 Per questa implementazione è stato sviluppato il trait `Observable`, che include i metodi per la gestione degli osservatori
 e la notifica degli eventi.
 
-```scala 3
+```scala
 trait Observable[A <: Observer]:
   private var observers: List[A] = List()
 
@@ -749,7 +749,7 @@ trait Observable[A <: Observer]:
 `AchievementObservable` estende `Observable` e aggiunge i metodi `generateAchievementData` e `loadDataFromAchievementData`, 
 che permettono di trasformare gli obiettivi in dati e viceversa.
 
-```scala 3
+```scala
 
 trait AchievementObservable extends Observable[Achievement]:
   def generateAchievementData(): List[AchievementData] =
@@ -768,7 +768,7 @@ trait AchievementObservable extends Observable[Achievement]:
 Infine è stato implementato un companion object `AchievementObservable` che permette di creare un oggetto `AchievementObservableImpl`, 
 garantendo la corretta implementazione del trait ed evitando modifiche non controllate.
 
-```scala 3
+```scala
 object AchievementObservable:
   def apply(): AchievementObservable = new AchievementObservableImpl
   private class AchievementObservableImpl extends AchievementObservable
@@ -779,7 +779,7 @@ object AchievementObservable:
 Per gestire i dati che devono essere identificati in modo univoco, è stato definito un trait `IdentifiableData` che include
 un campo `id` di tipo `Int` e un campo `data` di tipo `A`.
 
-```scala 3
+```scala
 trait IdentifiableData[D]:
   def id: Int
   def data: D
@@ -791,14 +791,14 @@ Ogni evento ha un identificatore unico `id` e un campo di tipo generico `D` per 
 Questa implementazione ci permette di usare un unica classe per mandare dati di tipo diverso, ad esempio: `Event[Int]` 
 per gli obiettivi numerici e `Event[Boolean]` per gli obiettivi booleani.
 
-```scala 3
+```scala
 case class Event[D](override val id: Int, override val data: D) extends IdentifiableData[D]
 ```
 
 - `AchievementData` è una classe che rappresenta i dati di un obiettivo, con un id e un valore booleano che indica se l'obiettivo
 è stato raggiunto o meno.
 
-```scala 3
+```scala
 case class AchievementData(override val id: Int, override val data: Boolean) extends IdentifiableData[Boolean]
 ```
 
@@ -808,7 +808,7 @@ Il controller `AchievementController` è stato sviluppato per gestire la logica 
 Questo componente si occupa di notificare gli osservatori quando un obiettivo viene raggiunto e di gestire il salvataggio
 e il caricamento degli obiettivi.
 
-```scala 3
+```scala
 object AchievementController:
   private val PROJECT_ROOT: String = System.getProperty("user.dir")
   private val ACHIEVEMENT_FILEPATH: String = s"$PROJECT_ROOT/data/achievement.json"
@@ -857,7 +857,7 @@ giocatori vengono gestiti tramite la classe `AchievementData`, che viene generat
 La classe `Settings` è stata sviluppata per contenere i dati relativi alle impostazioni del gioco, insieme a un companion 
 object `Settings` che contiene le impostazioni di default.
 
-```scala 3
+```scala
 case class Settings(difficulty: Difficulty, startCardValue: Int, handicap: Int)
 
 object Settings:
@@ -869,7 +869,7 @@ object Settings:
 Il trait `SettingsManager` è stato sviluppato per gestire le impostazioni del gioco, permettendo di salvare e caricare le
 impostazioni da un file. Questo trait genera automaticamente le impostazioni di default.
 
-```scala 3
+```scala
 trait SettingsManager:
   var settings: Settings = Settings.DEFAULT_SETTINGS
   def updateSettings(newSettings: Settings): Unit
@@ -884,7 +884,7 @@ Come si osserva nell'implementazione del `SettingsManagerImpl`, le impostazioni 
 dell'istanza, permettendo di accedere alle impostazioni in qualsiasi momento. Nel caso non sia possibile caricare le impostazioni
 dal file, vengono utilizzate le impostazioni di default.
 
-```scala 3
+```scala
 object SettingsManager:
   def apply(filePath: String): SettingsManager = SettingsManagerImpl(filePath)
 
@@ -901,7 +901,7 @@ object SettingsManager:
 Il controller `SettingsController` è stato sviluppato per gestire le impostazioni del gioco, permettendo di aggiornare e
 salvare le impostazioni verso un file predefinito.
 
-```scala 3
+```scala
 object SettingsController:
   private val PROJECT_ROOT: String = System.getProperty("user.dir")
   private val SETTINGS_FILEPATH: String = s"$PROJECT_ROOT/config/settings.json"
@@ -926,7 +926,7 @@ permettendo di accedere alle impostazioni correnti, salvarle e resettarle.
 Con la libreria Play JSON, è stato sviluppato un oggetto `JsonUtils` che permette di salvare e caricare dati da file
 in formato JSON.
 
-```scala 3
+```scala
 object JsonUtils:
 
   def loadFromFile[T](filePath: String)(implicit reads: Reads[T]): Option[T] =
@@ -950,18 +950,18 @@ Ad esempio, le seguenti classi `Settings` e `AchievementData` contengono paramet
 la conversione in JSON:
 
 - Dentro il file `Settings.scala`:
-```scala 3
+```scala
 implicit val gameSettingsFormat: OFormat[Settings] = Json.format[Settings]
 ```
 
 - Dentro il file `IdentifiableData.scala`:
-```scala 3
+```scala
 object AchievementData:
   implicit val format: Format[AchievementData] = Json.format[AchievementData]
 ```
 
 - Dentro il file `ComparisonOperator.scala`:
-```scala 3
+```scala
 implicit val comparisonOperatorFormat: Format[ComparisonOperator] = new Format[ComparisonOperator]:
   def reads(json: JsValue): JsResult[ComparisonOperator] = json match
     case JsString("LessThan")           => JsSuccess(LessThan)
@@ -1001,7 +1001,7 @@ La schermata rileva automaticamente le impostazioni correnti e le visualizza nei
 Quando si salvano le impostazioni, viene generata una classe `Settings` con i valori selezionati e comunicata al controller
 `SettingsController` per essere salvata.
 
-```scala 3
+```scala
 SettingsGui.saveSettings.addActionListener(
   _ =>
     val newSettings: Settings = Settings(
