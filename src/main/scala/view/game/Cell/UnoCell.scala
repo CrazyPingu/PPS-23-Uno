@@ -6,7 +6,7 @@ import utils.ImageHandler
 /**
  * The cell that is used to call UNO when the player has only one card left
  */
-class UnoCell(gameLoop: GameLoop) extends Cell:
+class UnoCell(private val gameLoop: GameLoop) extends Cell:
   setIcon(ImageHandler.unoButton)
 
   addActionListener(

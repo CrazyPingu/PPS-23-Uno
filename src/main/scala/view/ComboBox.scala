@@ -8,7 +8,7 @@ import javax.swing.{DefaultComboBoxModel, JComboBox}
  *
  * @param items The items to be displayed in the combo box.
  */
-class ComboBox(items: Array[String]) extends JComboBox:
+class ComboBox(private val items: Array[String]) extends JComboBox:
 
   /**
    * Creates a ComboBox with a specific size.

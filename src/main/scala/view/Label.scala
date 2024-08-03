@@ -8,7 +8,7 @@ import javax.swing.JLabel
  *
  * @param text The text to be displayed in the label.
  */
-class Label(text: String) extends JLabel:
+class Label(private val text: String) extends JLabel:
 
   /**
    * Creates a Label with a specific size.

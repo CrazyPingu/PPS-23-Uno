@@ -17,7 +17,11 @@ import view.{CardLayoutId, Frame, LoseScreen, WinScreen}
  * @param gameGui the game gui, which is the main game view
  * @param gameLoop the game loop that controls the game
  */
-case class PageController private (player: Player, gameGui: GameGui, gameLoop: GameLoop):
+case class PageController private (
+  private val player: Player,
+  private val gameGui: GameGui,
+  private val gameLoop: GameLoop
+):
 
   private val achievementGui: AchievementGui = AchievementGui(this)
   frame.add(Mainmenu(this), CardLayoutId.MainMenu)

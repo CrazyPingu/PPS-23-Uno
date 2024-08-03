@@ -6,7 +6,7 @@ import utils.ImageHandler
 /**
  * The cell that represents the deck of the game
  */
-class DeckCell(gameLoop: GameLoop) extends Cell:
+class DeckCell(private val gameLoop: GameLoop) extends Cell:
   setIcon(ImageHandler.retroCards)
 
   addActionListener(

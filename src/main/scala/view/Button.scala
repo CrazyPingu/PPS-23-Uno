@@ -8,7 +8,7 @@ import javax.swing.JButton
  *
  * @param text The text of the button.
  */
-class Button(text: String) extends JButton:
+class Button(private val text: String) extends JButton:
 
   /**
    * Creates a button with a specific size.

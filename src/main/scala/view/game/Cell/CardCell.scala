@@ -6,7 +6,7 @@ import model.cards.Card
 /**
  * A cell that contains a card
  */
-class CardCell(gameLoop: GameLoop) extends Cell:
+class CardCell(private val gameLoop: GameLoop) extends Cell:
   private var card: Option[Card] = None
 
   /**
