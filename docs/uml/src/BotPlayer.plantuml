@@ -1,0 +1,36 @@
+@startuml Bots
+
+class Hand{
+    +addCard()
+    +removeCard()
+    +getCardCount()
+    +hasCard()
+    +clearHand()
+}
+
+class BotPlayerImpl{
+    +isCompatible()
+}
+
+class BotPlayer{
+    +chooseCardToUse()
+    +chooseColor()
+}
+
+    class Hand extends ArrayBuffer
+
+    class Player extends Hand
+
+    interface BotPlayer extends Hand
+
+    abstract BotPlayerImpl extends BotPlayer
+
+    class EasyBotPlayerImpl extends BotPlayerImpl
+
+    class HardBotPlayerImpl extends BotPlayerImpl
+
+    Hand <|-[hidden]r- BotPlayer
+
+
+
+@enduml

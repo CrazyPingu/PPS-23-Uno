@@ -17,3 +17,4 @@ project/*
 
 achievement.json
 settings.json
+/.metals

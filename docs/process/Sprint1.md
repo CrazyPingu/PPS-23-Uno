@@ -1,6 +1,8 @@
-# Sprint Planning
+# First Sprint: 30/06/2024
 
-## Sprint Goal
+## Sprint Planning
+
+### Sprint Goal
 
 L'obiettivo di questo sprint è discutere e organizzare la struttura del progetto, impostare il repository e 
 l'ambiente di sviluppo con le configurazioni necessarie, e progettare e costruire i modelli necessari per il gioco. 
@@ -10,15 +12,15 @@ configurazioni iniziali, installare e configurare gli strumenti necessari come I
 assicurare un ambiente di sviluppo coerente per tutti i membri del team, e progettare e sviluppare i modelli 
 essenziali per il gioco.
 
-## Deadline
+### Deadline
 
-La _Deadline_ di questo sprint è stata fissata al 03/07/2024.
+La _Deadline_ di questo sprint è stata fissata al 03/07/2024 (7 giorni).
 
-# Sprint Review
+## Sprint Review
 
 Il team ha completato con successo tutti gli obiettivi prefissati per questo sprint dentro la _Deadline_ stabilita.
 
-# Sprint Retrospective
+## Sprint Retrospective
 
 Durante lo svolgimento di questo sprint i componenti del team hanno avuto modo di confrontarsi e collaborare 
 attivamente facendo emergere numerose considerazioni e riflessioni sul lavoro svolto. Grazie a queste ultime 
