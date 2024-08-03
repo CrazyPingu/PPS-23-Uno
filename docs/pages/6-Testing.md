@@ -19,4 +19,6 @@ dell'interfaccia utente funzionino correttamente, includendo
 la verifica della corretta visualizzazione degli elementi del gioco come carte, mani o mazzo,
 l'interazione con i vari pulsanti e l'aggiornamento in tempo reale dello stato del gioco.
 
+---
+
 [Indice](../index.md) | [Capitolo Precedente](./5-Implementazione.md) | [Capitolo Successivo](./7-Conclusioni.md)
